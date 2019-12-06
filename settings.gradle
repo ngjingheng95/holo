@@ -1,0 +1,1 @@
+include ':app', ':arcore_for_all_client', ':camera'

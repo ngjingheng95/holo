@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+   Copyright 2018 Google LLC.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<resources>
+    <string name="app_name">AR Hologram</string>
+    <string name="permissions_denied_title">Permissions Denied</string>
+    <string name="permissions_denied_message">Some REQUIRED_PERMISSIONS have been denied and ignored. All REQUIRED_PERMISSIONS must be accepted before continuing.\n\nAccept all REQUIRED_PERMISSIONS to continue.</string>
+    <string name="permissions_denied_button">Continue</string>
+    <string name="title_activity_create_ar">CreateARActivity</string>
+    <string name="title_activity_show_video">ShowVideoActivity</string>
+    <string name="imagedescription">image</string>
+    <string name="open_camera">Open Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="no_enough_permission">No enough permissions(CAMERA, RECORD_AUDIO, WRITE_EXTERNAL_STORAGE)</string>
+    <string name="recording">Recording</string>
+    <string name="record">Record</string>
+    <string name="shot">Shot</string>
+    <string name="cancel">Cancel</string>
+    <string name="image_mode">Image Mode</string>
+    <string name="video_mode">Video Mode</string>
+    <string name="finish">Finish</string>
+    <string name="flip">Flip</string>
+    <string name="play_file">Play[%s]</string>
+    <string name="done">Done</string>
+    <string name="fill">Fill</string>
+    <string name="zoom">Zoom</string>
+    <string name="video_size">Video size</string>
+    <string name="image_size">Image size</string>
+    <string name="ratio">Ratio</string>
+    <string name="flash_auto">Auto</string>
+    <string name="flash_on">On</string>
+    <string name="flash_off">Off</string>
+</resources>

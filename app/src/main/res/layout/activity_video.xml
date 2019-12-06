@@ -1,0 +1,229 @@
+<!--
+   Copyright 2018 Google LLC.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ChromaKeyVideoActivity">
+
+  <fragment
+      android:id="@+id/ux_fragment"
+      class="com.google.ar.sceneform.samples.chromakeyvideo.WritingArFragment"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent" />
+  <RelativeLayout
+      android:id="@+id/playback_group"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      >
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/create_holo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="center"
+        android:layout_alignBottom="@+id/playback_play_pause"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_toLeftOf="@+id/playback_play_pause"
+        android:clickable="true"
+        android:src="@drawable/create_ar"
+        app:backgroundTint="@color/ultraLightGrey"
+        app:fabSize="normal"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/playback_play_pause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/capture_video"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_toLeftOf="@+id/capture_video"
+        android:clickable="true"
+        android:src="@drawable/ic_pause_white"
+        android:tint="@color/darkGrey"
+        app:backgroundTint="@color/ultraLightGrey"
+        android:visibility="invisible"
+        app:fabSize="mini"/>
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/capture_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/capture_video"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@+id/capture_video"
+        android:clickable="true"
+        android:src="@drawable/ic_photo_camera_24dp"
+        android:tint="@color/darkGrey"
+        app:backgroundTint="@color/ultraLightGrey"
+        app:fabSize="mini"
+        android:visibility="invisible"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/capture_video"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="25dp"
+        app:elevation="1dp"
+        android:clickable="true"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:srcCompat="@drawable/round_videocam"
+        android:tint="@color/darkGrey"
+        app:backgroundTint="@color/ultraLightGrey"
+        app:fabSize="normal"/>
+
+  </RelativeLayout>
+  <RelativeLayout
+      android:id="@+id/placement_group"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:clipChildren="false"
+      android:clipToPadding="false"
+      android:elevation="12dp">
+
+        <View
+            android:id="@+id/placement_menu_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha=".45"
+            android:background="@android:color/black"/>
+
+      <android.support.v7.widget.CardView
+          android:id="@+id/placement_menu"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentEnd="false"
+          android:layout_marginTop="500dp"
+          android:paddingTop="16dp"
+          android:paddingBottom="16dp"
+          android:translationX="16dp"
+          app:cardCornerRadius="8dp">
+
+          <android.support.design.widget.TabLayout
+              android:id="@+id/tabs"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              app:tabGravity="fill"
+              app:tabMode="fixed">
+
+              <android.support.design.widget.TabItem
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="My Holos" />
+
+              <android.support.design.widget.TabItem
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="Featured" />
+
+              <android.support.design.widget.TabItem
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="Characters" />
+
+              <android.support.design.widget.TabItem
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="Animals" />
+
+          </android.support.design.widget.TabLayout>
+
+          <ScrollView
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_below="@id/tabs"
+              android:layout_marginTop="60dp">
+
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:layout_below="@id/tabs"
+                  android:orientation="vertical">
+
+                  <GridView
+                      android:id="@+id/gallery"
+                      android:layout_width="match_parent"
+                      android:layout_height="700dp"
+                      android:layout_below="@id/tabs"
+                      android:gravity="center"
+                      android:horizontalSpacing="1dp"
+                      android:numColumns="4"
+                      android:stretchMode="columnWidth"
+                      android:verticalSpacing="1dp" />
+
+                  <GridView
+                      android:id="@+id/gallery2"
+                      android:layout_width="match_parent"
+                      android:layout_height="700dp"
+                      android:layout_below="@id/tabs"
+                      android:gravity="center"
+                      android:horizontalSpacing="1dp"
+                      android:numColumns="4"
+                      android:stretchMode="columnWidth"
+                      android:verticalSpacing="1dp"
+                      android:visibility="gone" />
+
+                  <GridView
+                      android:id="@+id/gallery3"
+                      android:layout_width="match_parent"
+                      android:layout_height="700dp"
+                      android:layout_below="@id/tabs"
+                      android:gravity="center"
+                      android:horizontalSpacing="1dp"
+                      android:numColumns="4"
+                      android:stretchMode="columnWidth"
+                      android:verticalSpacing="1dp"
+                      android:visibility="gone" />
+
+                  <GridView
+                      android:id="@+id/gallery4"
+                      android:layout_width="match_parent"
+                      android:layout_height="700dp"
+                      android:layout_below="@id/tabs"
+                      android:gravity="center"
+                      android:horizontalSpacing="1dp"
+                      android:numColumns="4"
+                      android:stretchMode="columnWidth"
+                      android:verticalSpacing="1dp"
+                      android:visibility="gone" />
+
+              </LinearLayout>
+
+          </ScrollView>
+      </android.support.v7.widget.CardView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/placement_fab"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="25dp"
+        android:layout_marginEnd="23dp"
+        app:backgroundTint="@color/colorPrimary"
+        android:clickable="true"
+        android:src="@drawable/ic_add_white"
+        app:elevation="16dp"
+        app:fabSize="normal"/>
+
+  </RelativeLayout>
+</FrameLayout>
