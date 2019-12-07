@@ -135,6 +135,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
 
     //int object = R.raw.lion_chroma;
     String object;
+    String vimeoUrl;
     String object1;
 
     @BindView(R.id.gallery)
@@ -319,6 +320,31 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
 
         setupTabLayout();
 
+        // ADD VIMEO TEST
+        FloatingActionButton btnAddVimeo = (FloatingActionButton)findViewById(R.id.add_vimeo_fab);
+
+        btnAddVimeo.setOnClickListener(new Button.OnClickListener(){
+            @Override
+            public void onClick(View arg0) {
+                Frame frame = arFragment.getArSceneView().getArFrame();
+                android.graphics.Point pt = getScreenCenter();
+                List<HitResult> hits;
+                if (frame != null){
+                    hits = frame.hitTest(pt.x, pt.y);
+                    for (HitResult hit : hits){
+                        Trackable trackable = hit.getTrackable();
+                        if (trackable instanceof Plane &&
+                                ((Plane) trackable).isPoseInPolygon(hit.getHitPose())){
+//                            Toast.makeText(this, "HIT!!!!", Toast.LENGTH_SHORT).show();
+                            vimeoUrl = "https://player.vimeo.com/external/254487612.sd.mp4?s=4f03928350d2e957851399761889e6b56276bf8f&profile_id=165";
+                            changeObject1_vimeo(hit.createAnchor());
+                            break;
+                        }
+                    }
+                }
+            }});
+
+
         //My holos
         adapter = new ChromaKeyVideoActivity.MediaFileAdapter(this, mediaFiles);
         gallery.setAdapter(adapter);
@@ -450,6 +476,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
 //          }
 //      });
     }
+
 
 //    private ExternalTexture nextAvailableTexture() {
 //
@@ -628,6 +655,72 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
 //        MediaPlayer mediaPlayer1 = new MediaPlayer();
         // Create an Android MediaPlayer to capture the video on the external texture's surface.
 //        mediaPlayer1 = MediaPlayer.create(this, Uri.parse(object));
+        mediaPlayer1.setSurface(texture.getSurface());
+        mediaPlayer1.setLooping(true);
+
+        float videoWidth = mediaPlayer1.getVideoWidth();
+        float videoHeight = mediaPlayer1.getVideoHeight();
+        //Display Portrait Videos
+        if (videoWidth < videoHeight) {
+            MediaPlayer finalMediaPlayer = mediaPlayer1;
+            ModelRenderable.builder()
+                    .setSource(this, R.raw.chroma_key_video_2)
+                    .build()
+                    .thenAccept(
+                            renderable -> {
+                                renderable.getMaterial().setExternalTexture("videoTexture", texture);
+                                renderable.getMaterial().setFloat4("keyColor", CHROMA_KEY_COLOR);
+                                addNodeToScene(anchor, renderable, texture, finalMediaPlayer);
+                            })
+                    .exceptionally(
+                            throwable -> {
+                                Toast toast =
+                                        Toast.makeText(this, "Unable to load video renderable", Toast.LENGTH_LONG);
+                                toast.setGravity(Gravity.CENTER, 0, 0);
+                                toast.show();
+                                return null;
+                            });
+
+        }
+        //Display Landscape Videos
+        else {
+            MediaPlayer finalMediaPlayer1 = mediaPlayer1;
+            ModelRenderable.builder()
+                    .setSource(this, R.raw.chroma_key_video)
+                    .build()
+                    .thenAccept(
+                            renderable -> {
+                                renderable.getMaterial().setExternalTexture("videoTexture", texture);
+                                renderable.getMaterial().setFloat4("keyColor", CHROMA_KEY_COLOR);
+                                addNodeToScene(anchor, renderable, texture, finalMediaPlayer1);
+                            })
+                    .exceptionally(
+                            throwable -> {
+                                Toast toast =
+                                        Toast.makeText(this, "Unable to load video renderable", Toast.LENGTH_LONG);
+                                toast.setGravity(Gravity.CENTER, 0, 0);
+                                toast.show();
+                                return null;
+                            });
+
+
+        }
+    }
+
+//  Same as changeObject1 but streams video from online url
+    private void changeObject1_vimeo(Anchor anchor) {
+        ExternalTexture texture = new ExternalTexture();
+        MediaPlayer mediaPlayer1 = new MediaPlayer();
+        try {
+            mediaPlayer1.setDataSource(vimeoUrl);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            mediaPlayer1.prepare();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         mediaPlayer1.setSurface(texture.getSurface());
         mediaPlayer1.setLooping(true);
 
