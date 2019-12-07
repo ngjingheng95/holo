@@ -96,10 +96,11 @@ import butterknife.ButterKnife;
  */
 
 /*
-* gallery0 => My Holos
-* gallery1 => Featured
-* gallery2 => Characters
-* gallery3 => Animals
+* gallery => My Holos
+* gallery2 => Featured
+* gallery3 => Characters
+* gallery4 => Animals
+* gallery5 => Pixabay
 * */
 public class ChromaKeyVideoActivity extends AppCompatActivity {
     private static final String TAG = ChromaKeyVideoActivity.class.getSimpleName();
@@ -136,7 +137,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
     //int object = R.raw.lion_chroma;
     String object;
     String vimeoUrl;
-    String object1;
+//    String object1;
 
     @BindView(R.id.gallery)
     GridView gallery;
@@ -149,6 +150,11 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
 
     @BindView(R.id.gallery4)
     GridView gallery4;
+
+    @BindView(R.id.gallery5)
+    GridView gallery5;
+
+
     private List<File> mediaFiles = new ArrayList<>();
     private List<File> mediaFiles2 = new ArrayList<>();
     private List<File> mediaFiles3 = new ArrayList<>();
@@ -322,7 +328,6 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
 
         // ADD VIMEO TEST
         FloatingActionButton btnAddVimeo = (FloatingActionButton)findViewById(R.id.add_vimeo_fab);
-
         btnAddVimeo.setOnClickListener(new Button.OnClickListener(){
             @Override
             public void onClick(View arg0) {
@@ -1206,24 +1211,35 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
                 gallery2.setVisibility(View.GONE);
                 gallery3.setVisibility(View.GONE);
                 gallery4.setVisibility(View.GONE);
+                gallery5.setVisibility(View.GONE);
                 break;
             case 1:
                 gallery.setVisibility(View.GONE);
                 gallery2.setVisibility(View.VISIBLE);
                 gallery3.setVisibility(View.GONE);
                 gallery4.setVisibility(View.GONE);
+                gallery5.setVisibility(View.GONE);
                 break;
             case 2:
                 gallery.setVisibility(View.GONE);
                 gallery2.setVisibility(View.GONE);
                 gallery3.setVisibility(View.VISIBLE);
                 gallery4.setVisibility(View.GONE);
+                gallery5.setVisibility(View.GONE);
                 break;
             case 3:
                 gallery.setVisibility(View.GONE);
                 gallery2.setVisibility(View.GONE);
                 gallery3.setVisibility(View.GONE);
                 gallery4.setVisibility(View.VISIBLE);
+                gallery5.setVisibility(View.GONE);
+                break;
+            case 4:
+                gallery.setVisibility(View.GONE);
+                gallery2.setVisibility(View.GONE);
+                gallery3.setVisibility(View.GONE);
+                gallery4.setVisibility(View.GONE);
+                gallery5.setVisibility(View.VISIBLE);
                 break;
             default:
                 break;
@@ -1300,6 +1316,8 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
             return convertView;
         }
     }
+
+//    private class GridViewAdapter extends ArrayAdapter<GridItem>
 
     private String generateFilename() {
         String date =
