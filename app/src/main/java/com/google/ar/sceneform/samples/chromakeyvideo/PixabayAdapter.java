@@ -53,7 +53,7 @@ public class PixabayAdapter extends BaseAdapter {
         }
 
         final ViewHolder viewHolder = (ViewHolder)convertView.getTag();
-
+        // TODO: Make changes here
         viewHolder.nameTextView.setText(mContext.getString(book.getName()));
         Picasso.with(mContext).load(book.getImageUrl()).into(viewHolder.imageViewCoverArt);
 
