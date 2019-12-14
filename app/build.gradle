@@ -52,6 +52,7 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    //noinspection GradleCompatible
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support:cardview-v7:27.1.1'
@@ -74,6 +75,8 @@ dependencies {
     implementation 'org.jetbrains:annotations:15.0'
     // Provides ArFragment, and other Sceneform UX resources:
     implementation "com.google.ar.sceneform.ux:sceneform-ux:1.7.0"
+    // Image downloading and caching library for android
+    implementation 'com.squareup.picasso:picasso:2.5.2'
 }
 
 apply plugin: 'com.google.ar.sceneform.plugin'
