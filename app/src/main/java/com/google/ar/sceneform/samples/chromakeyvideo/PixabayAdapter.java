@@ -13,18 +13,16 @@ import com.squareup.picasso.Picasso;
 public class PixabayAdapter extends BaseAdapter {
 
     private final Context mContext;
-    //TODO: Change to Pixabay API query results
-    private final Book[] books;
+    private final String[] thumbnailUrl;
 
-    //TODO: Change Book to appropriate var name
-    public PixabayAdapter(Context context, Book[] books) {
+    public PixabayAdapter(Context context, String[] thumbnailUrl) {
         this.mContext = context;
-        this.books = books;
+        this.thumbnailUrl = thumbnailUrl;
     }
 
     @Override
     public int getCount() {
-        return books.length;
+        return thumbnailUrl.length;
     }
 
     // Return 0
@@ -41,21 +39,23 @@ public class PixabayAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View convertView, ViewGroup viewGroup) {
+        final String url = thumbnailUrl[i];
         if (convertView == null) {
             final LayoutInflater layoutInflater = LayoutInflater.from(mContext);
-            convertView = layoutInflater.inflate(R.layout.linearlayout_book, null);
+            convertView = layoutInflater.inflate(R.layout.pixabay_layout, null);
 
             final ImageView gridItemImage = (ImageView)convertView.findViewById(R.id.grid_item_image);
-            final TextView gridItemTitle = (TextView)convertView.findViewById(R.id.grid_item_title);
+            // To display top 3 tags
+//            final TextView gridItemTitle = (TextView)convertView.findViewById(R.id.grid_item_title);
 
-            final ViewHolder viewHolder = new ViewHolder(gridItemImage, gridItemTitle);
+//            final ViewHolder viewHolder = new ViewHolder(gridItemImage, gridItemTitle);
+            final ViewHolder viewHolder = new ViewHolder(gridItemImage);
             convertView.setTag(viewHolder);
         }
 
         final ViewHolder viewHolder = (ViewHolder)convertView.getTag();
-        // TODO: Make changes here
-        viewHolder.nameTextView.setText(mContext.getString(book.getName()));
-        Picasso.with(mContext).load(book.getImageUrl()).into(viewHolder.imageViewCoverArt);
+//        viewHolder.gridItemTitle.setText(mContext.getString(book.getName()));
+        Picasso.with(mContext).load("https://i.vimeocdn.com/video/529927645_295x166.jpg").into(viewHolder.gridItemImage);
 
         return convertView;
     }
@@ -63,13 +63,21 @@ public class PixabayAdapter extends BaseAdapter {
     // View Holder Pattern: implement a class to “hold” the subviews inside of your cells. This avoids memory-expensive calls to findViewById()
     private class ViewHolder {
         private final ImageView gridItemImage;
-        private final TextView gridItemTitle;
 
-        public ViewHolder(ImageView gridItemImage, TextView gridItemTitle) {
+        public ViewHolder(ImageView gridItemImage) {
             this.gridItemImage = gridItemImage;
-            this.gridItemTitle = gridItemTitle;
         }
     }
+
+//    private class ViewHolder {
+//        private final ImageView gridItemImage;
+//        private final TextView gridItemTitle;
+//
+//        public ViewHolder(ImageView gridItemImage, TextView gridItemTitle) {
+//            this.gridItemImage = gridItemImage;
+//            this.gridItemTitle = gridItemTitle;
+//        }
+//    }
 
 
 }
