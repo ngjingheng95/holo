@@ -106,8 +106,6 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
     private static final String TAG = ChromaKeyVideoActivity.class.getSimpleName();
     private static final double MIN_OPENGL_VERSION = 3.0;
 
-    private String[] thumbnailUrl = {"https://i.vimeocdn.com/video/529927645_295x166.jpg", "https://i.vimeocdn.com/video/681648203_295x166.jpg"};
-
     private WritingArFragment arFragment;
 
     private RelativeLayout placement_group;
@@ -156,7 +154,6 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
     @BindView(R.id.gallery5)
     GridView gallery5;
 
-
     private List<File> mediaFiles = new ArrayList<>();
     private List<File> mediaFiles2 = new ArrayList<>();
     private List<File> mediaFiles3 = new ArrayList<>();
@@ -181,8 +178,6 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_video);
 
-        final PixabayAdapter pixabayAdapter = new PixabayAdapter(this, thumbnailUrl);
-        gallery5.setAdapter(pixabayAdapter);
 
         //Featured
         File folder = new File(Commons2.MEDIA_DIR);
@@ -486,12 +481,18 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
 
 //          }
 //      });
+        PixabayAdapter pixabayAdapter = new PixabayAdapter(this);
+        Log.d("MyApp","Create Adapter Object");
+        gallery5.setAdapter(pixabayAdapter);
+        Log.d("MyApp","Set Adapter Done");
+
     }
 
 
 //    private ExternalTexture nextAvailableTexture() {
 //
 //    }
+
 
     public void changeObject(ExternalTexture texture, String object) {
         Toast.makeText(this, "changeObject called", Toast.LENGTH_SHORT).show();
