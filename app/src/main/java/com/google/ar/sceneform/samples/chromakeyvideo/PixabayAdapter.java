@@ -1,23 +1,33 @@
 package com.google.ar.sceneform.samples.chromakeyvideo;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
 public class PixabayAdapter extends BaseAdapter {
-
     private final Context mContext;
-    private final String[] thumbnailUrl;
+    String[] thumbnailUrl = {
+            "https://i.vimeocdn.com/video/529927645_295x166.jpg",
+            "https://i.vimeocdn.com/video/681648203_295x166.jpg",
+            "https://i.vimeocdn.com/video/529927645_295x166.jpg",
+            "https://i.vimeocdn.com/video/681648203_295x166.jpg",
+            "https://i.vimeocdn.com/video/529927645_295x166.jpg",
+            "https://i.vimeocdn.com/video/681648203_295x166.jpg",
+            "https://i.vimeocdn.com/video/529927645_295x166.jpg",
+            "https://i.vimeocdn.com/video/681648203_295x166.jpg",
+            "https://i.vimeocdn.com/video/529927645_295x166.jpg",
+            "https://i.vimeocdn.com/video/681648203_295x166.jpg"};
 
-    public PixabayAdapter(Context context, String[] thumbnailUrl) {
+
+    public PixabayAdapter(Context context) {
         this.mContext = context;
-        this.thumbnailUrl = thumbnailUrl;
+        Log.d("MyApp", "PixabayAdapter Constructor");
     }
 
     @Override
@@ -38,13 +48,20 @@ public class PixabayAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int i, View convertView, ViewGroup viewGroup) {
-        final String url = thumbnailUrl[i];
+    public View getView(int i, View convertView, ViewGroup parent) {
+        Log.d("MyApp","In getView()");
+        String url = thumbnailUrl[i];
         if (convertView == null) {
-            final LayoutInflater layoutInflater = LayoutInflater.from(mContext);
+            LayoutInflater layoutInflater = LayoutInflater.from(mContext);
             convertView = layoutInflater.inflate(R.layout.pixabay_layout, null);
 
             final ImageView gridItemImage = (ImageView)convertView.findViewById(R.id.grid_item_image);
+            if (gridItemImage != null){
+                Log.d("MyApp","NON NULL");
+            }
+            else{
+                Log.d("MyApp","NULL");
+            }
             // To display top 3 tags
 //            final TextView gridItemTitle = (TextView)convertView.findViewById(R.id.grid_item_title);
 
@@ -55,7 +72,7 @@ public class PixabayAdapter extends BaseAdapter {
 
         final ViewHolder viewHolder = (ViewHolder)convertView.getTag();
 //        viewHolder.gridItemTitle.setText(mContext.getString(book.getName()));
-        Picasso.with(mContext).load("https://i.vimeocdn.com/video/529927645_295x166.jpg").into(viewHolder.gridItemImage);
+        Picasso.with(mContext).load(url).into(viewHolder.gridItemImage);
 
         return convertView;
     }
@@ -63,7 +80,6 @@ public class PixabayAdapter extends BaseAdapter {
     // View Holder Pattern: implement a class to “hold” the subviews inside of your cells. This avoids memory-expensive calls to findViewById()
     private class ViewHolder {
         private final ImageView gridItemImage;
-
         public ViewHolder(ImageView gridItemImage) {
             this.gridItemImage = gridItemImage;
         }
