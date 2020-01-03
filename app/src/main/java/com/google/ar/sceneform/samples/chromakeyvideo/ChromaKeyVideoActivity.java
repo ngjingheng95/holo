@@ -89,6 +89,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * This is an example activity that shows how to display a video with chroma key filtering in
@@ -164,6 +167,10 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
     private ChromaKeyVideoActivity.MediaFileAdapter adapter4;
 
     private boolean mIsPlayerRelease = true;
+
+    private PixabayVideoRequestInfo pixabayVideoRequestInfo;
+    private List<PixabayVideoInfo> pixabayVideoInfo = new ArrayList<>();
+    private PixabayAdapter pixabayAdapter;
 
     @Override
     @SuppressWarnings({"AndroidApiChecker", "FutureReturnValueIgnored"})
@@ -327,6 +334,8 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
 
         setupTabLayout();
 
+
+
         // ADD VIMEO TEST
         FloatingActionButton btnAddVimeo = (FloatingActionButton)findViewById(R.id.add_vimeo_fab);
         btnAddVimeo.setOnClickListener(new Button.OnClickListener(){
@@ -481,11 +490,36 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
 
 //          }
 //      });
-        PixabayAdapter pixabayAdapter = new PixabayAdapter(this);
-        Log.d("MyApp","Create Adapter Object");
-        gallery5.setAdapter(pixabayAdapter);
-        Log.d("MyApp","Set Adapter Done");
 
+
+//      ==== PIXABAY TAB ====
+//        TODO: ADD API CALL TO PIXABAY TO GET THUMBNAILURL
+        String q = "green+screen";
+        boolean safesearch = true;
+        int page = 1;
+        int perPage = 200;
+        pixabayAdapter = new PixabayAdapter(this, pixabayVideoInfo);
+        gallery5.setAdapter(pixabayAdapter);
+        loadPixabayVideoRequestInfo(q, safesearch, page, perPage);
+//        pixabayVideoInfo = pixabayVideoRequestInfo.getHits();
+        gallery5.setOnItemClickListener((parent, view, position, id) -> {
+            Frame frame = arFragment.getArSceneView().getArFrame();
+            android.graphics.Point pt = getScreenCenter();
+            List<HitResult> hits;
+            if (frame != null){
+                hits = frame.hitTest(pt.x, pt.y);
+                for (HitResult hit : hits){
+                    Trackable trackable = hit.getTrackable();
+                    if (trackable instanceof Plane &&
+                            ((Plane) trackable).isPoseInPolygon(hit.getHitPose())){
+                        Toast.makeText(this, "HIT!!!!", Toast.LENGTH_SHORT).show();
+                        vimeoUrl = pixabayVideoInfo.get(position).getVideos().getSmall().getUrl();
+                        changeObject1_vimeo(hit.createAnchor());
+                        break;
+                    }
+                }
+            }
+        });
     }
 
 
@@ -493,6 +527,35 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
 //
 //    }
 
+    public void loadPixabayVideoRequestInfo(String q, boolean safesearch, int page, int perPage) {
+        Log.d("MyApp", "loadPixabayVideoRequestInfo");
+//        String q = query.concat("+green+screen");
+//
+        PixabayService.createPixabayService().getVideoResults(getString(R.string.pixabay_api_key), q, safesearch, page, perPage).enqueue(new Callback<PixabayVideoRequestInfo>() {
+            @Override
+            public void onResponse(Call<PixabayVideoRequestInfo> call, Response<PixabayVideoRequestInfo> response) {
+                Log.d("MyApp", "onResponse()");
+                addImagesToList(response.body());
+//                pixabayVideoRequestInfo = response.body();
+            }
+
+            @Override
+            public void onFailure(Call<PixabayVideoRequestInfo> call, Throwable t) {
+                Log.d("MyApp", "onFailure()");
+
+            }
+
+
+        });
+
+        Log.d("MyApp", "loadPixabayVideoRequestInfo END");
+    }
+
+    public void addImagesToList(PixabayVideoRequestInfo response){
+        int position = pixabayVideoInfo.size();
+        pixabayVideoInfo.addAll(response.getHits());
+        pixabayAdapter.notifyDataSetChanged();
+    }
 
     public void changeObject(ExternalTexture texture, String object) {
         Toast.makeText(this, "changeObject called", Toast.LENGTH_SHORT).show();
@@ -1210,6 +1273,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
         });
     }
 
+//  TODO: CHECK INTERNET CONNECTION WHEN PIXABAY TABBED IS SELECTED
     private void onTabTapped(int position) {
         Toast.makeText(this, "gallery: " + position, Toast.LENGTH_SHORT).show();
         switch (position) {

@@ -42,4 +42,5 @@
     <string name="flash_auto">Auto</string>
     <string name="flash_on">On</string>
     <string name="flash_off">Off</string>
+    <string name="pixabay_api_key">14544553-0e1b98624eb523a32fdc4f672</string>
 </resources>

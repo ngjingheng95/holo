@@ -77,6 +77,8 @@ dependencies {
     implementation "com.google.ar.sceneform.ux:sceneform-ux:1.7.0"
     // Image downloading and caching library for android
     implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.2.0'
 }
 
 apply plugin: 'com.google.ar.sceneform.plugin'

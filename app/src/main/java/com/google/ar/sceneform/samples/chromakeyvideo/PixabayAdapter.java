@@ -10,9 +10,14 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 public class PixabayAdapter extends BaseAdapter {
+    private final String THUMBNAIL_URL = "https://i.vimeocdn.com/video/";
+    private final String THUMBNAIL_SIZE = "_295x166.jpg";
     private final Context mContext;
-    String[] thumbnailUrl = {
+    private List<PixabayVideoInfo> pixabayVideoInfo;
+    String[] thumbnailUrl1 = {
             "https://i.vimeocdn.com/video/529927645_295x166.jpg",
             "https://i.vimeocdn.com/video/681648203_295x166.jpg",
             "https://i.vimeocdn.com/video/529927645_295x166.jpg",
@@ -25,14 +30,15 @@ public class PixabayAdapter extends BaseAdapter {
             "https://i.vimeocdn.com/video/681648203_295x166.jpg"};
 
 
-    public PixabayAdapter(Context context) {
+    public PixabayAdapter(Context context, List<PixabayVideoInfo> pixabayVideoInfo) {
         this.mContext = context;
+        this.pixabayVideoInfo = pixabayVideoInfo;
         Log.d("MyApp", "PixabayAdapter Constructor");
     }
 
     @Override
     public int getCount() {
-        return thumbnailUrl.length;
+        return pixabayVideoInfo.size();
     }
 
     // Return 0
@@ -50,7 +56,8 @@ public class PixabayAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View convertView, ViewGroup parent) {
         Log.d("MyApp","In getView()");
-        String url = thumbnailUrl[i];
+        String url = THUMBNAIL_URL + pixabayVideoInfo.get(i).getPictureId() + THUMBNAIL_SIZE;
+        Log.d("MyApp", url);
         if (convertView == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(mContext);
             convertView = layoutInflater.inflate(R.layout.pixabay_layout, null);
