@@ -47,6 +47,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -102,7 +103,7 @@ import retrofit2.Response;
 * gallery => My Holos
 * gallery2 => Featured
 * gallery3 => Characters
-* gallery4 => Animals
+* gallery4 => Animals (Baseline Implementation)
 * gallery5 => Pixabay
 * */
 public class ChromaKeyVideoActivity extends AppCompatActivity {
@@ -137,25 +138,30 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
     // The UI to record.
     //private FloatingActionButton recordButton;
 
-    //int object = R.raw.lion_chroma;
     String object;
     String vimeoUrl;
-//    String object1;
 
+    // My Holos Tab (Baseline Implementation)
+    // !! DON'T CHANGE !!
     @BindView(R.id.gallery)
     GridView gallery;
 
+    // Featured Tab
     @BindView(R.id.gallery2)
-    GridView gallery2;
+    DynamicGridView gallery2;
 
+    // Characters Tab
     @BindView(R.id.gallery3)
-    GridView gallery3;
+    DynamicGridView gallery3;
 
+    // Animals Tab (Baseline Implementation)
+    // !! DON'T CHANGE !!
     @BindView(R.id.gallery4)
     GridView gallery4;
 
+    // Pixabay Tab
     @BindView(R.id.gallery5)
-    GridView gallery5;
+    DynamicGridView gallery5;
 
     private List<File> mediaFiles = new ArrayList<>();
     private List<File> mediaFiles2 = new ArrayList<>();
@@ -359,7 +365,8 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
                 }
             }});
 
-
+//      ==== ORIGINAL - MY HOLOS ====
+//      ====    DON'T CHANGE     ====
         //My holos
         adapter = new ChromaKeyVideoActivity.MediaFileAdapter(this, mediaFiles);
         gallery.setAdapter(adapter);
@@ -378,18 +385,6 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
         //Featured
         adapter2 = new ChromaKeyVideoActivity.MediaFileAdapter(this, mediaFiles2);
         gallery2.setAdapter(adapter2);
-//        gallery2.setOnItemClickListener((parent, view, position, id) -> {
-//
-//
-//            File file = adapter2.getItem(position);
-//
-//            //playOrViewMedia(file); Commons.MEDIA_DIR + "/"+
-//
-//            object = file + "";
-//            changeObject(texture, object);
-//            // Create the Anchor.
-//            createAnchor(texture);
-//        });
         gallery2.setOnItemClickListener((parent, view, position, id) -> {
             Frame frame = arFragment.getArSceneView().getArFrame();
             android.graphics.Point pt = getScreenCenter();
@@ -414,29 +409,11 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
                     }
                 }
             }
-
-            //playOrViewMedia(file); Commons.MEDIA_DIR + "/"+
-
-
-
-            // Create the Anchor.
-//            createAnchor(texture);
         });
 
 //      ==== TEST 2 ====
         adapter3 = new ChromaKeyVideoActivity.MediaFileAdapter(this, mediaFiles3);
         gallery3.setAdapter(adapter3);
-//        gallery3.setOnItemClickListener((parent, view, position, id) -> {
-//            File file = adapter3.getItem(position);
-//
-//            //playOrViewMedia(file); Commons.MEDIA_DIR + "/"+
-//
-//            object = file + "";
-//            changeObject(texture, object);
-//            // Create the Anchor.
-//            createAnchor(texture);
-//        });
-
         gallery3.setOnItemClickListener((parent, view, position, id) -> {
             Frame frame = arFragment.getArSceneView().getArFrame();
             android.graphics.Point pt = getScreenCenter();
@@ -464,14 +441,10 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
                     Toast.makeText(this, "NOT HIT!!", Toast.LENGTH_SHORT).show();
                 }
             }
-
-            //playOrViewMedia(file); Commons.MEDIA_DIR + "/"+
-
-            // Create the Anchor.
-//            createAnchor(texture);
         });
 
-//      ==== ORIGINAL 1 ====
+//      ==== ORIGINAL 1 - ANIMALS ====
+//      ====     DON'T CHANGE!    ====
         adapter4 = new ChromaKeyVideoActivity.MediaFileAdapter(this, mediaFiles4);
         gallery4.setAdapter(adapter4);
         gallery4.setOnItemClickListener((parent, view, position, id) -> {
@@ -485,15 +458,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
             createAnchor(texture);
         });
 
-//      btnTry.setOnClickListener(new View.OnClickListener() {
-//          public void onClick(View v) {
-
-//          }
-//      });
-
-
 //      ==== PIXABAY TAB ====
-//        TODO: ADD API CALL TO PIXABAY TO GET THUMBNAILURL
         String q = "green+screen";
         boolean safesearch = true;
         int page = 1;
@@ -1273,7 +1238,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
         });
     }
 
-//  TODO: CHECK INTERNET CONNECTION WHEN PIXABAY TABBED IS SELECTED
+
     private void onTabTapped(int position) {
         Toast.makeText(this, "gallery: " + position, Toast.LENGTH_SHORT).show();
         switch (position) {

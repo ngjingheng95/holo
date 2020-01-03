@@ -11,5 +11,4 @@
         android:id="@+id/grid_item_image"
         android:scaleType="centerCrop"/>
 
-
 </RelativeLayout>
