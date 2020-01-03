@@ -187,7 +187,7 @@
                       android:verticalSpacing="1dp"
                       android:visibility="gone" />
 
-                  <GridView
+                  <com.google.ar.sceneform.samples.chromakeyvideo.DynamicGridView
                       android:id="@+id/gallery3"
                       android:layout_width="match_parent"
                       android:layout_height="700dp"
@@ -211,7 +211,7 @@
                       android:verticalSpacing="1dp"
                       android:visibility="gone" />
 
-                  <GridView
+                  <com.google.ar.sceneform.samples.chromakeyvideo.DynamicGridView
                       android:id="@+id/gallery5"
                       android:layout_width="match_parent"
                       android:layout_height="700dp"
