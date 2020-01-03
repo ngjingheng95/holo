@@ -141,14 +141,18 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
     String object;
     String vimeoUrl;
 
+    // My Holos Tab (Baseline Implementation)
+    // !! DON'T CHANGE !!
     @BindView(R.id.gallery)
     GridView gallery;
 
+    // Featured Tab
     @BindView(R.id.gallery2)
-    GridView gallery2;
+    DynamicGridView gallery2;
 
+    // Characters Tab
     @BindView(R.id.gallery3)
-    GridView gallery3;
+    DynamicGridView gallery3;
 
     // Animals Tab (Baseline Implementation)
     // !! DON'T CHANGE !!
@@ -380,6 +384,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
 //      ==== TEST 1 ====
         //Featured
         adapter2 = new ChromaKeyVideoActivity.MediaFileAdapter(this, mediaFiles2);
+        gallery2.setAdapter(adapter2);
         gallery2.setOnItemClickListener((parent, view, position, id) -> {
             Frame frame = arFragment.getArSceneView().getArFrame();
             android.graphics.Point pt = getScreenCenter();
