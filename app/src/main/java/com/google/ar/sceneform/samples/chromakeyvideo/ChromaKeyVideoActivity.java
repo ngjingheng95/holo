@@ -140,6 +140,9 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
 
     String object;
     String vimeoUrl;
+    boolean safesearch = true;
+    int page = 1;
+    int perPage = 200;
 
     // My Holos Tab (Baseline Implementation)
     // !! DON'T CHANGE !!
@@ -342,27 +345,14 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
 
 
 
-        // ADD VIMEO TEST
+        // Test Search View
         FloatingActionButton btnAddVimeo = (FloatingActionButton)findViewById(R.id.add_vimeo_fab);
         btnAddVimeo.setOnClickListener(new Button.OnClickListener(){
             @Override
             public void onClick(View arg0) {
-                Frame frame = arFragment.getArSceneView().getArFrame();
-                android.graphics.Point pt = getScreenCenter();
-                List<HitResult> hits;
-                if (frame != null){
-                    hits = frame.hitTest(pt.x, pt.y);
-                    for (HitResult hit : hits){
-                        Trackable trackable = hit.getTrackable();
-                        if (trackable instanceof Plane &&
-                                ((Plane) trackable).isPoseInPolygon(hit.getHitPose())){
-//                            Toast.makeText(this, "HIT!!!!", Toast.LENGTH_SHORT).show();
-                            vimeoUrl = "https://player.vimeo.com/external/254487612.sd.mp4?s=4f03928350d2e957851399761889e6b56276bf8f&profile_id=165";
-                            changeObject1_vimeo(hit.createAnchor());
-                            break;
-                        }
-                    }
-                }
+                String testQuery = "plane+green+screen";
+                pixabayVideoInfo.clear();
+                loadPixabayVideoRequestInfo(testQuery, safesearch, page, perPage);
             }});
 
 //      ==== ORIGINAL - MY HOLOS ====
@@ -460,9 +450,6 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
 
 //      ==== PIXABAY TAB ====
         String q = "green+screen";
-        boolean safesearch = true;
-        int page = 1;
-        int perPage = 200;
         pixabayAdapter = new PixabayAdapter(this, pixabayVideoInfo);
         gallery5.setAdapter(pixabayAdapter);
         loadPixabayVideoRequestInfo(q, safesearch, page, perPage);
