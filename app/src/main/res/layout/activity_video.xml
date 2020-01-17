@@ -202,7 +202,7 @@
                       android:visibility="gone"
                       tools:ignore="NotSibling" />
 
-                  <GridView
+                  <com.google.ar.sceneform.samples.chromakeyvideo.DynamicGridView
                       android:id="@+id/gallery4"
                       android:layout_width="match_parent"
                       android:layout_height="700dp"
