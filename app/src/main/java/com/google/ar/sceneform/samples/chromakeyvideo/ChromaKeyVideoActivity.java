@@ -40,11 +40,13 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.PixelCopy;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
@@ -94,11 +96,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * This is an example activity that shows how to display a video with chroma key filtering in
- * Sceneform.
- */
-
 /*
 * gallery => My Holos
 * gallery2 => Featured
@@ -140,6 +137,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
 
     String object;
     String vimeoUrl;
+    final String defaultQuery = "green+screen";
     boolean safesearch = true;
     int page = 1;
     int perPage = 200;
@@ -157,14 +155,20 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
     @BindView(R.id.gallery3)
     DynamicGridView gallery3;
 
-    // Animals Tab (Baseline Implementation)
-    // !! DON'T CHANGE !!
+    // Animals Tab
     @BindView(R.id.gallery4)
-    GridView gallery4;
+    DynamicGridView gallery4;
 
     // Pixabay Tab
     @BindView(R.id.gallery5)
     DynamicGridView gallery5;
+
+    @BindView(R.id.pixabaySearchQuery)
+    EditText pixabaySearchQuery;
+
+    @BindView(R.id.pixabaySearchButton)
+    Button pixabaySearchButton;
+
 
     private List<File> mediaFiles = new ArrayList<>();
     private List<File> mediaFiles2 = new ArrayList<>();
@@ -343,7 +347,43 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
 
         setupTabLayout();
 
+        // Pixabay Search
+        pixabaySearchButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if (pixabaySearchQuery.getText().toString().isEmpty()){
+                    pixabayVideoInfo.clear();
+                    loadPixabayVideoRequestInfo(defaultQuery, safesearch, page, perPage);
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Pixabay Search - " + pixabaySearchQuery.getText().toString().trim().replace(" +", "+") + "+" + defaultQuery, Toast.LENGTH_SHORT).show();
+                    String q = pixabaySearchQuery.getText().toString().trim().replace(" +", "+") + "+" + defaultQuery;
+                    pixabayVideoInfo.clear();
+                    loadPixabayVideoRequestInfo(q, safesearch, page, perPage);
+                }
+            }
+        });
 
+        pixabaySearchQuery.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    if (!pixabaySearchQuery.getText().toString().isEmpty()){
+                    // Perform action on key press
+                        Toast.makeText(getApplicationContext(), "Pixabay Search - " + pixabaySearchQuery.getText().toString().trim().replace(" +", "+") + "+" + defaultQuery, Toast.LENGTH_SHORT).show();
+                        String q = pixabaySearchQuery.getText().toString().trim().replace(" +", "+") + "+" + defaultQuery;
+                        pixabayVideoInfo.clear();
+                        loadPixabayVideoRequestInfo(q, safesearch, page, perPage);
+                        return true;
+                    }
+                    else {
+                        pixabayVideoInfo.clear();
+                        loadPixabayVideoRequestInfo(defaultQuery, safesearch, page, perPage);
+                    }
+                }
+                return false;
+            }
+        });
 
         // Test Search View
         FloatingActionButton btnAddVimeo = (FloatingActionButton)findViewById(R.id.add_vimeo_fab);
@@ -433,26 +473,57 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
             }
         });
 
-//      ==== ORIGINAL 1 - ANIMALS ====
-//      ====     DON'T CHANGE!    ====
+//      ==== ANIMALS TAB ====
         adapter4 = new ChromaKeyVideoActivity.MediaFileAdapter(this, mediaFiles4);
         gallery4.setAdapter(adapter4);
         gallery4.setOnItemClickListener((parent, view, position, id) -> {
-            File file = adapter4.getItem(position);
-
-            //playOrViewMedia(file); Commons.MEDIA_DIR + "/"+
-
-            object = file + "";
-            changeObject(texture, object);
-            // Create the Anchor.
-            createAnchor(texture);
+            Frame frame = arFragment.getArSceneView().getArFrame();
+            android.graphics.Point pt = getScreenCenter();
+            List<HitResult> hits;
+            //if the centre is on plane
+            boolean hitAllowed = false;
+            if (frame != null){
+                hits = frame.hitTest(pt.x, pt.y);
+                for (HitResult hit : hits){
+                    Trackable trackable = hit.getTrackable();
+                    if (trackable instanceof Plane &&
+                            ((Plane) trackable).isPoseInPolygon(hit.getHitPose())){
+                        hitAllowed = true;
+//                        MediaPlayer mp1 = new MediaPlayer();
+                        Toast.makeText(this, "HIT!!!! 3333", Toast.LENGTH_SHORT).show();
+                        File file = adapter4.getItem(position);
+                        object = file + "";
+//                        mp1 = MediaPlayer.create(this, Uri.parse(object));
+//                        changeObject1(texture2, hit.createAnchor(), mp1);
+                        changeObject1(hit.createAnchor());
+                        break;
+                    }
+                }
+                if (!hitAllowed){
+                    Toast.makeText(this, "NOT HIT!!", Toast.LENGTH_SHORT).show();
+                }
+            }
         });
 
+////      ==== ORIGINAL 1 - ANIMALS ====
+////      ====     DON'T CHANGE!    ====
+//        adapter4 = new ChromaKeyVideoActivity.MediaFileAdapter(this, mediaFiles4);
+//        gallery4.setAdapter(adapter4);
+//        gallery4.setOnItemClickListener((parent, view, position, id) -> {
+//            File file = adapter4.getItem(position);
+//
+//            //playOrViewMedia(file); Commons.MEDIA_DIR + "/"+
+//
+//            object = file + "";
+//            changeObject(texture, object);
+//            // Create the Anchor.
+//            createAnchor(texture);
+//        });
+
 //      ==== PIXABAY TAB ====
-        String q = "green+screen";
         pixabayAdapter = new PixabayAdapter(this, pixabayVideoInfo);
         gallery5.setAdapter(pixabayAdapter);
-        loadPixabayVideoRequestInfo(q, safesearch, page, perPage);
+        loadPixabayVideoRequestInfo(defaultQuery, safesearch, page, perPage);
 //        pixabayVideoInfo = pixabayVideoRequestInfo.getHits();
         gallery5.setOnItemClickListener((parent, view, position, id) -> {
             Frame frame = arFragment.getArSceneView().getArFrame();
@@ -1235,6 +1306,8 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
                 gallery3.setVisibility(View.GONE);
                 gallery4.setVisibility(View.GONE);
                 gallery5.setVisibility(View.GONE);
+                pixabaySearchQuery.setVisibility(View.GONE);
+                pixabaySearchButton.setVisibility(View.GONE);
                 break;
             case 1:
                 gallery.setVisibility(View.GONE);
@@ -1242,6 +1315,8 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
                 gallery3.setVisibility(View.GONE);
                 gallery4.setVisibility(View.GONE);
                 gallery5.setVisibility(View.GONE);
+                pixabaySearchQuery.setVisibility(View.GONE);
+                pixabaySearchButton.setVisibility(View.GONE);
                 break;
             case 2:
                 gallery.setVisibility(View.GONE);
@@ -1249,6 +1324,8 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
                 gallery3.setVisibility(View.VISIBLE);
                 gallery4.setVisibility(View.GONE);
                 gallery5.setVisibility(View.GONE);
+                pixabaySearchQuery.setVisibility(View.GONE);
+                pixabaySearchButton.setVisibility(View.GONE);
                 break;
             case 3:
                 gallery.setVisibility(View.GONE);
@@ -1256,6 +1333,8 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
                 gallery3.setVisibility(View.GONE);
                 gallery4.setVisibility(View.VISIBLE);
                 gallery5.setVisibility(View.GONE);
+                pixabaySearchQuery.setVisibility(View.GONE);
+                pixabaySearchButton.setVisibility(View.GONE);
                 break;
             case 4:
                 gallery.setVisibility(View.GONE);
@@ -1263,6 +1342,8 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
                 gallery3.setVisibility(View.GONE);
                 gallery4.setVisibility(View.GONE);
                 gallery5.setVisibility(View.VISIBLE);
+                pixabaySearchQuery.setVisibility(View.VISIBLE);
+                pixabaySearchButton.setVisibility(View.VISIBLE);
                 break;
             default:
                 break;

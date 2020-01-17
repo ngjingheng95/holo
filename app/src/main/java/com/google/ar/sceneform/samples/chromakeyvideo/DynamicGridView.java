@@ -2,7 +2,9 @@ package com.google.ar.sceneform.samples.chromakeyvideo;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.GridView;
+import android.widget.Toast;
 
 public class DynamicGridView extends GridView {
     public DynamicGridView(Context context) {
@@ -20,6 +22,10 @@ public class DynamicGridView extends GridView {
     @Override
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(MEASURED_SIZE_MASK, MeasureSpec.AT_MOST));
-        getLayoutParams().height = getMeasuredHeight();
+        Log.d("MyApp", "onMeasure: " + String.valueOf(getMeasuredHeight()));
+        if (getMeasuredHeight() != 0){
+            Log.d("MyApp", "111111111111111111111111111");
+            getLayoutParams().height = getMeasuredHeight();
+        }
     }
 }
