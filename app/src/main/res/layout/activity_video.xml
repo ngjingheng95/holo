@@ -158,7 +158,7 @@
               android:layout_below="@id/tabs"
               android:layout_marginTop="60dp">
 
-              <LinearLayout
+              <RelativeLayout
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"
                   android:layout_below="@id/tabs"
@@ -168,12 +168,13 @@
                       android:id="@+id/gallery"
                       android:layout_width="match_parent"
                       android:layout_height="700dp"
-                      android:layout_below="@id/tabs"
+                      android:layout_below="@+id/tabs"
                       android:gravity="center"
                       android:horizontalSpacing="1dp"
                       android:numColumns="4"
                       android:stretchMode="columnWidth"
-                      android:verticalSpacing="1dp" />
+                      android:verticalSpacing="1dp"
+                      tools:ignore="NotSibling" />
 
                   <com.google.ar.sceneform.samples.chromakeyvideo.DynamicGridView
                       android:id="@+id/gallery2"
@@ -185,7 +186,8 @@
                       android:numColumns="4"
                       android:stretchMode="columnWidth"
                       android:verticalSpacing="1dp"
-                      android:visibility="gone" />
+                      android:visibility="gone"
+                      tools:ignore="NotSibling" />
 
                   <com.google.ar.sceneform.samples.chromakeyvideo.DynamicGridView
                       android:id="@+id/gallery3"
@@ -197,7 +199,8 @@
                       android:numColumns="4"
                       android:stretchMode="columnWidth"
                       android:verticalSpacing="1dp"
-                      android:visibility="gone" />
+                      android:visibility="gone"
+                      tools:ignore="NotSibling" />
 
                   <GridView
                       android:id="@+id/gallery4"
@@ -209,13 +212,36 @@
                       android:numColumns="4"
                       android:stretchMode="columnWidth"
                       android:verticalSpacing="1dp"
-                      android:visibility="gone" />
+                      android:visibility="gone"
+                      tools:ignore="NotSibling" />
+
+                  <EditText
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:visibility="gone"
+                      android:layout_alignParentLeft="true"
+                      android:layout_toLeftOf="@+id/pixabaySearchButton"
+                      android:id="@+id/pixabaySearchQuery"
+                      android:hint="Search Pixabay"
+                      />
+
+                  <Button
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:visibility="gone"
+                      android:id="@+id/pixabaySearchButton"
+                      android:layout_alignParentRight="true"
+                      android:text="Search"
+                      android:layout_alignBottom="@+id/pixabaySearchQuery"
+                      android:layout_alignTop="@id/pixabaySearchQuery"
+                      />
+
 
                   <com.google.ar.sceneform.samples.chromakeyvideo.DynamicGridView
                       android:id="@+id/gallery5"
                       android:layout_width="match_parent"
                       android:layout_height="700dp"
-                      android:layout_below="@id/tabs"
+                      android:layout_below="@id/pixabaySearchQuery"
                       android:gravity="center"
                       android:horizontalSpacing="1dp"
                       android:numColumns="4"
@@ -223,7 +249,7 @@
                       android:verticalSpacing="1dp"
                       android:visibility="gone" />
 
-              </LinearLayout>
+              </RelativeLayout>
 
           </ScrollView>
       </android.support.v7.widget.CardView>
@@ -246,7 +272,7 @@
         android:id="@+id/add_vimeo_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="23dp"
         android:layout_marginBottom="100dp"
