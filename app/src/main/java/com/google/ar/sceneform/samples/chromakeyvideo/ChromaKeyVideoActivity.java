@@ -520,6 +520,8 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
 //            createAnchor(texture);
 //        });
 
+
+
 //      ==== PIXABAY TAB ====
         pixabayAdapter = new PixabayAdapter(this, pixabayVideoInfo);
         gallery5.setAdapter(pixabayAdapter);
@@ -555,6 +557,31 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
 //        String q = query.concat("+green+screen");
 //
         PixabayService.createPixabayService().getVideoResults(getString(R.string.pixabay_api_key), q, safesearch, page, perPage).enqueue(new Callback<PixabayVideoRequestInfo>() {
+            @Override
+            public void onResponse(Call<PixabayVideoRequestInfo> call, Response<PixabayVideoRequestInfo> response) {
+                Log.d("MyApp", "onResponse()");
+                addImagesToList(response.body());
+//                pixabayVideoRequestInfo = response.body();
+            }
+
+            @Override
+            public void onFailure(Call<PixabayVideoRequestInfo> call, Throwable t) {
+                Log.d("MyApp", "onFailure()");
+
+            }
+
+
+        });
+
+        Log.d("MyApp", "loadPixabayVideoRequestInfo END");
+    }
+
+    // Query Pixabay API with Categories
+    public void loadPixabayVideoRequestInfoCategory(String q, String category, boolean safesearch, int page, int perPage) {
+        Log.d("MyApp", "loadPixabayVideoRequestInfo");
+//        String q = query.concat("+green+screen");
+//
+        PixabayService.createPixabayService().getVideoResultsCategory(getString(R.string.pixabay_api_key), q, category, safesearch, page, perPage).enqueue(new Callback<PixabayVideoRequestInfo>() {
             @Override
             public void onResponse(Call<PixabayVideoRequestInfo> call, Response<PixabayVideoRequestInfo> response) {
                 Log.d("MyApp", "onResponse()");

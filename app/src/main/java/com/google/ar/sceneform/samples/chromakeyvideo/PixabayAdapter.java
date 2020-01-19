@@ -17,18 +17,6 @@ public class PixabayAdapter extends BaseAdapter {
     private final String THUMBNAIL_SIZE = "_295x166.jpg";
     private final Context mContext;
     private List<PixabayVideoInfo> pixabayVideoInfo;
-    String[] thumbnailUrl1 = {
-            "https://i.vimeocdn.com/video/529927645_295x166.jpg",
-            "https://i.vimeocdn.com/video/681648203_295x166.jpg",
-            "https://i.vimeocdn.com/video/529927645_295x166.jpg",
-            "https://i.vimeocdn.com/video/681648203_295x166.jpg",
-            "https://i.vimeocdn.com/video/529927645_295x166.jpg",
-            "https://i.vimeocdn.com/video/681648203_295x166.jpg",
-            "https://i.vimeocdn.com/video/529927645_295x166.jpg",
-            "https://i.vimeocdn.com/video/681648203_295x166.jpg",
-            "https://i.vimeocdn.com/video/529927645_295x166.jpg",
-            "https://i.vimeocdn.com/video/681648203_295x166.jpg"};
-
 
     public PixabayAdapter(Context context, List<PixabayVideoInfo> pixabayVideoInfo) {
         this.mContext = context;
