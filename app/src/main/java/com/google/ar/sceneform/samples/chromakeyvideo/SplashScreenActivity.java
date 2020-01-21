@@ -1,6 +1,7 @@
 package com.google.ar.sceneform.samples.chromakeyvideo;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -28,10 +29,11 @@ public class SplashScreenActivity extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
 
-//        Toast.makeText(this, "========================================================= SPLASH ONCREATE ", Toast.LENGTH_SHORT).show();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-        downloadRawAssets();
+
+        new loadAssetTask().execute();
+//        Toast.makeText(this, "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ LOADED ", Toast.LENGTH_SHORT).show();
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -41,11 +43,38 @@ public class SplashScreenActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        },4000);
+        },2500);
+
+//
+//        downloadRawAssets();
+//
+//        Handler handler = new Handler();
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                Intent intent=new Intent(SplashScreenActivity.this,ChromaKeyVideoActivity.class);
+//                startActivity(intent);
+//                finish();
+//            }
+//        },4000);
+
 //        Intent intent = new Intent(getApplicationContext(), ChromaKeyVideoActivity.class);
 //        startActivity(intent);
 //        finish();
 
+    }
+
+    private class loadAssetTask extends AsyncTask<Void, String, String>{
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            downloadRawAssets();
+            return "Done";
+        }
+
+        protected void onPostExecute(String result) {
+            Toast.makeText(SplashScreenActivity.this, result, Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void downloadRawAssets(){
@@ -61,7 +90,6 @@ public class SplashScreenActivity extends AppCompatActivity {
             try {
 //                saveToSDCard(R.raw.dance, "dance.mp4", "Featured");
 //                saveToSDCard(R.raw.lion_chroma, "lion_chroma.mp4", "Featured");
-                Toast.makeText(this, "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CHHROMA ONCREATE @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@", Toast.LENGTH_SHORT).show();
                 saveToSDCard(R.raw.spiderman, "spiderman.mp4", "Featured");
                 saveToSDCard(R.raw.ironman, "ironman.mp4", "Featured");
                 saveToSDCard(R.raw.robot2, "robot2.mp4", "Featured");
