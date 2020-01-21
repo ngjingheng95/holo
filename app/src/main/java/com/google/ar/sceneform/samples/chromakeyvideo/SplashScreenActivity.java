@@ -34,7 +34,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        //Hide status bar and navigation bar in splash screen
+        //Hides status bar and navigation bar in splash screen
         View decorView = getWindow().getDecorView();
         int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_FULLSCREEN;
@@ -43,6 +43,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
+        // Check if permission for WRITE_EXTERNAL_STORAGE is granted, and ask user for permission if not granted
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             // Permission is not granted
@@ -51,45 +52,11 @@ public class SplashScreenActivity extends AppCompatActivity {
         else{
             initApp();
         }
-//        else{
-////            new loadAssetTask().execute();
-//////        Toast.makeText(this, "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ LOADED ", Toast.LENGTH_SHORT).show();
-////
-////            Handler handler = new Handler();
-////            handler.postDelayed(new Runnable() {
-////                @Override
-////                public void run() {
-////                    Intent intent=new Intent(SplashScreenActivity.this,ChromaKeyVideoActivity.class);
-////                    startActivity(intent);
-////                    finish();
-////                }
-////            },2500);
-//        }
-
-
-
-//
-//        downloadRawAssets();
-//
-//        Handler handler = new Handler();
-//        handler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                Intent intent=new Intent(SplashScreenActivity.this,ChromaKeyVideoActivity.class);
-//                startActivity(intent);
-//                finish();
-//            }
-//        },4000);
-
-//        Intent intent = new Intent(getApplicationContext(), ChromaKeyVideoActivity.class);
-//        startActivity(intent);
-//        finish();
-
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        // if user clicks "ALLOW" in pop-up box to grant WRITE_EXTERNAL_STORAGE, then initialise app
         switch (requestCode) {
             case 1: {
                 // If request is cancelled, the result arrays are empty.
@@ -103,15 +70,13 @@ public class SplashScreenActivity extends AppCompatActivity {
                 }
                 return;
             }
-
-            // other 'case' lines to check for other
-            // permissions this app might request.
         }
     }
     public void initApp(){
+        // initialise app
+        // 1) Download raw assets
+        // 2) Intent to ChromaKeyVideoActivity when assets are loaded
         new loadAssetTask().execute();
-//        Toast.makeText(this, "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ LOADED ", Toast.LENGTH_SHORT).show();
-
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -124,7 +89,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private class loadAssetTask extends AsyncTask<Void, String, String>{
-
+        // Downloads raw asset asynchronously during splash screen
         @Override
         protected String doInBackground(Void... voids) {
             downloadRawAssets();
@@ -243,7 +208,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         InputStream inStream = this.getResources().openRawResource(id);
         File file = new File(Environment.getExternalStorageDirectory() + "/0/dev/" + folder, name);
         if (!(file.exists())) {
-            FileOutputStream fileOutputStream = new FileOutputStream(file);//存入SDCard
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
             byte[] buffer = new byte[10];
             ByteArrayOutputStream outStream = new ByteArrayOutputStream();
             int len = 0;
