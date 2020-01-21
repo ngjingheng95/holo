@@ -15,4 +15,12 @@ public interface PixabayApi {
                                              @Query("page") int page,
                                              @Query("per_page") int perPage);
 
+    @GET("videos/")
+    Call<PixabayVideoRequestInfo> getVideoResultsCategory(@Query("key") String key,
+                                                  @Query("q") String q,
+                                                  @Query("category") String category,
+                                                  @Query("safesearch") boolean safesearch,
+                                                  @Query("page") int page,
+                                                  @Query("per_page") int perPage);
+
 }
