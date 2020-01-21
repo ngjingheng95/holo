@@ -33,6 +33,15 @@
         android:id="@+id/splashscreen_layout_2"
         android:layout_below="@id/splashscreen_title">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/splashscreen_spinner"
+            android:id="@+id/splashscreen_loading_text"
+            android:layout_centerHorizontal="true"
+            android:text="Loading..."
+            android:layout_marginBottom="20dp"/>
+
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
