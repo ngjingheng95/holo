@@ -85,7 +85,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        },2500);
+        },1500);
     }
 
     private class loadAssetTask extends AsyncTask<Void, String, String>{

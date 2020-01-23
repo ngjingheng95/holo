@@ -221,7 +221,7 @@
                       android:layout_height="match_parent"
                       android:visibility="gone"
                       android:layout_toLeftOf="@+id/pixabaySearchButton"
-                      android:layout_alignParentLeft="true"
+                      android:layout_toRightOf="@id/pixabaySearchBackButton"
                       android:id="@+id/pixabaySearchQuery"
                       android:hint="Search Pixabay"
                       />
@@ -237,18 +237,29 @@
                       android:layout_alignTop="@id/pixabaySearchQuery"
                       />
 
-                  <com.google.ar.sceneform.samples.chromakeyvideo.GridViewItem
+                  <Button
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
-                      android:src="@drawable/back_button"
-                      android:layout_alignParentLeft="true"
-                      android:layout_toLeftOf="@+id/pixabaySearchQuery"
                       android:visibility="gone"
-                      android:layout_alignBottom="@+id/pixabaySearchQuery"
-                      android:layout_alignTop="@+id/pixabaySearchQuery"
                       android:id="@+id/pixabaySearchBackButton"
-                      android:onClick="onClickPixabayBackButton"/>
+                      android:onClick="onClickPixabayBackButton"
+                      android:layout_alignParentLeft="true"
+                      android:text="Back"
+                      android:layout_alignBottom="@+id/pixabaySearchQuery"
+                      android:layout_alignTop="@id/pixabaySearchQuery"
+                      />
 
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/pixabaySearchLoadingText"
+                      android:visibility="gone"
+                      android:text="Loading..."
+                      android:textStyle="bold"
+                      android:layout_alignBottom="@+id/pixabaySearchBackButton"
+                      android:layout_alignTop="@+id/pixabaySearchBackButton"
+                      android:layout_centerHorizontal="true"
+                      />
 
 
                   <com.google.ar.sceneform.samples.chromakeyvideo.DynamicGridView
@@ -263,15 +274,25 @@
                       android:verticalSpacing="1dp"
                       android:visibility="gone" />
 
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_below="@+id/pixabaySearchQuery"
+                      android:layout_marginTop="20dp"
+                      android:layout_marginBottom="20dp"
+                      android:layout_marginLeft="20dp"
+                      android:layout_alignParentLeft="true"
+                      android:text="Or Search by Categories..."
+                      android:id="@+id/infoText"/>
+
                   <com.google.ar.sceneform.samples.chromakeyvideo.DynamicGridView
                       android:id="@+id/pixabayCategories"
                       android:layout_width="match_parent"
                       android:layout_height="700dp"
-                      android:layout_below="@id/pixabaySearchQuery"
-                      android:layout_marginTop="20dp"
+                      android:layout_below="@id/infoText"
                       android:gravity="center"
                       android:horizontalSpacing="1dp"
-                      android:numColumns="3"
+                      android:numColumns="4"
                       android:stretchMode="columnWidth"
                       android:verticalSpacing="1dp"
                       android:visibility="gone"

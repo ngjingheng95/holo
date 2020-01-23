@@ -6,6 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -36,14 +39,14 @@ public class PixabayCategoryAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final String categoryName = pixabayCategoryList.get(position);
+        final String categoryName = pixabayCategoryList.get(position).toUpperCase();
 
         // view holder pattern
         if (convertView == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(mContext);
             convertView = layoutInflater.inflate(R.layout.item_pixabay_category, null);
 
-            final Button pixabayCategoryButton = (Button)convertView.findViewById(R.id.pixabay_category_button);
+            final TextView pixabayCategoryButton = (TextView) convertView.findViewById(R.id.pixabay_category_button);
 
             final ViewHolder viewHolder = new ViewHolder(pixabayCategoryButton);
             convertView.setTag(viewHolder);
@@ -55,9 +58,9 @@ public class PixabayCategoryAdapter extends BaseAdapter {
     }
 
     private class ViewHolder {
-        private final Button pixabayCategoryButton;
+        private final TextView pixabayCategoryButton;
 
-        public ViewHolder(Button pixabayCategoryButton) {
+        public ViewHolder(TextView pixabayCategoryButton) {
             this.pixabayCategoryButton = pixabayCategoryButton;
         }
     }

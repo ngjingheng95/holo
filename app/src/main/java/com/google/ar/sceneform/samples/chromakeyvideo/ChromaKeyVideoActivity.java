@@ -51,6 +51,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -146,6 +147,8 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
             "places", "animals", "industry", "food", "computer", "sports",
             "transportation", "travel", "buildings", "business", "music");
 
+    private boolean startup = false;
+
     // My Holos Tab (Baseline Implementation)
     // !! DON'T CHANGE !!
     @BindView(R.id.gallery)
@@ -178,8 +181,13 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
     Button pixabaySearchButton;
 
     @BindView(R.id.pixabaySearchBackButton)
-    ImageView pixabaySearchBackButton;
+    Button pixabaySearchBackButton;
 
+    @BindView(R.id.pixabaySearchLoadingText)
+    TextView pixabaySearchLoadingText;
+
+    @BindView(R.id.infoText)
+    TextView infoText;
 
     private List<File> mediaFiles = new ArrayList<>();
     private List<File> mediaFiles2 = new ArrayList<>();
@@ -202,6 +210,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
     // CompletableFuture requires api level 24
     // FutureReturnValueIgnored is not valid
     protected void onCreate(Bundle savedInstanceState) {
+        startup = true;
         super.onCreate(savedInstanceState);
 //        Toast.makeText(this, "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CHHROMA ONCREATE ", Toast.LENGTH_SHORT).show();
 
@@ -267,12 +276,14 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
                 if (pixabaySearchQuery.getText().toString().isEmpty()){
                     pixabayVideoInfo.clear();
                     loadPixabayVideoRequestInfo(defaultQuery, safesearch, page, perPage);
+                    showPixabayResultsTab();
                 }
                 else {
                     Toast.makeText(getApplicationContext(), "Pixabay Search - " + pixabaySearchQuery.getText().toString().trim().replace(" +", "+") + "+" + defaultQuery, Toast.LENGTH_SHORT).show();
                     String q = pixabaySearchQuery.getText().toString().trim().replace(" +", "+") + "+" + defaultQuery;
                     pixabayVideoInfo.clear();
                     loadPixabayVideoRequestInfo(q, safesearch, page, perPage);
+                    showPixabayResultsTab();
                 }
             }
         });
@@ -471,6 +482,8 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
             showPixabayResultsTab();
         });
 
+
+        startup = false;
     }
 
     public void onClickPixabayBackButton(View view){
@@ -479,6 +492,8 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
         pixabaySearchButton.setVisibility(View.VISIBLE);
         pixabayCategories.setVisibility(View.VISIBLE);
         pixabaySearchBackButton.setVisibility(View.GONE);
+        pixabaySearchLoadingText.setVisibility(View.GONE);
+        infoText.setVisibility(View.VISIBLE);
     }
 
     private void showPixabayResultsTab(){
@@ -487,13 +502,18 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
         pixabaySearchButton.setVisibility(View.GONE);
         pixabayCategories.setVisibility(View.GONE);
         pixabaySearchBackButton.setVisibility(View.VISIBLE);
+        infoText.setVisibility(View.GONE);
     }
 
-//    private ExternalTexture nextAvailableTexture() {
-//
-//    }
-
+//  Cases:
+//  - totalHits > 0 => Success
+//  - totalHits == 0 => No Results
+//  - totalHits == -1 => Failure
     public void loadPixabayVideoRequestInfo(String q, boolean safesearch, int page, int perPage) {
+        pixabaySearchLoadingText.setText("Loading...");
+        if (!startup){
+            pixabaySearchLoadingText.setVisibility(View.VISIBLE);
+        }
         Log.d("MyApp", "loadPixabayVideoRequestInfo");
 //        String q = query.concat("+green+screen");
 //
@@ -502,13 +522,19 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
             public void onResponse(Call<PixabayVideoRequestInfo> call, Response<PixabayVideoRequestInfo> response) {
                 Log.d("MyApp", "onResponse()");
                 addImagesToList(response.body());
+                if (response.body().getTotalHits() > 0){
+                    pixabaySearchLoadingText.setText("Done! " + response.body().getTotalHits() + " results found.");
+                }
+                else if (response.body().getTotalHits() == 0) {
+                    pixabaySearchLoadingText.setText("No results found.");
+                }
 //                pixabayVideoRequestInfo = response.body();
             }
 
             @Override
             public void onFailure(Call<PixabayVideoRequestInfo> call, Throwable t) {
                 Log.d("MyApp", "onFailure()");
-
+                pixabaySearchLoadingText.setText("Error!");
             }
 
 
@@ -519,6 +545,10 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
 
     // Query Pixabay API with Categories
     public void loadPixabayVideoRequestInfoCategory(String q, String category, boolean safesearch, int page, int perPage) {
+        pixabaySearchLoadingText.setText("Loading...");
+        if (!startup){
+            pixabaySearchLoadingText.setVisibility(View.VISIBLE);
+        }
         Log.d("MyApp", "loadPixabayVideoRequestInfo");
 //        String q = query.concat("+green+screen");
 //
@@ -527,13 +557,19 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
             public void onResponse(Call<PixabayVideoRequestInfo> call, Response<PixabayVideoRequestInfo> response) {
                 Log.d("MyApp", "onResponse()");
                 addImagesToList(response.body());
+                if (response.body().getTotalHits() > 0){
+                    pixabaySearchLoadingText.setText("Done! " + response.body().getTotalHits() + " results found.");
+                }
+                else if (response.body().getTotalHits() == 0) {
+                    pixabaySearchLoadingText.setText("No results found.");
+                }
 //                pixabayVideoRequestInfo = response.body();
             }
 
             @Override
             public void onFailure(Call<PixabayVideoRequestInfo> call, Throwable t) {
                 Log.d("MyApp", "onFailure()");
-
+                pixabaySearchLoadingText.setText("Error!");
             }
 
 
@@ -543,10 +579,10 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
     }
 
     public void addImagesToList(PixabayVideoRequestInfo response){
-        int position = pixabayVideoInfo.size();
         pixabayVideoInfo.addAll(response.getHits());
         pixabayAdapter.notifyDataSetChanged();
     }
+
 
     public void changeObject(ExternalTexture texture, String object) {
         Toast.makeText(this, "changeObject called", Toast.LENGTH_SHORT).show();
@@ -1260,7 +1296,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
 
-                onTabTapped(tab.getPosition());
+//                onTabTapped(tab.getPosition());
             }
         });
     }
@@ -1279,6 +1315,8 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
                 pixabaySearchButton.setVisibility(View.GONE);
                 pixabayCategories.setVisibility(View.GONE);
                 pixabaySearchBackButton.setVisibility(View.GONE);
+                pixabaySearchLoadingText.setVisibility(View.GONE);
+                infoText.setVisibility(View.GONE);
                 break;
             case 1:
                 gallery.setVisibility(View.GONE);
@@ -1290,6 +1328,8 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
                 pixabaySearchButton.setVisibility(View.GONE);
                 pixabayCategories.setVisibility(View.GONE);
                 pixabaySearchBackButton.setVisibility(View.GONE);
+                pixabaySearchLoadingText.setVisibility(View.GONE);
+                infoText.setVisibility(View.GONE);
                 break;
             case 2:
                 gallery.setVisibility(View.GONE);
@@ -1301,6 +1341,8 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
                 pixabaySearchButton.setVisibility(View.GONE);
                 pixabayCategories.setVisibility(View.GONE);
                 pixabaySearchBackButton.setVisibility(View.GONE);
+                pixabaySearchLoadingText.setVisibility(View.GONE);
+                infoText.setVisibility(View.GONE);
                 break;
             case 3:
                 gallery.setVisibility(View.GONE);
@@ -1312,6 +1354,8 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
                 pixabaySearchButton.setVisibility(View.GONE);
                 pixabayCategories.setVisibility(View.GONE);
                 pixabaySearchBackButton.setVisibility(View.GONE);
+                pixabaySearchLoadingText.setVisibility(View.GONE);
+                infoText.setVisibility(View.GONE);
                 break;
             case 4:
                 gallery.setVisibility(View.GONE);
@@ -1323,6 +1367,8 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
                 pixabaySearchButton.setVisibility(View.VISIBLE);
                 pixabayCategories.setVisibility(View.VISIBLE);
                 pixabaySearchBackButton.setVisibility(View.GONE);
+                pixabaySearchLoadingText.setVisibility(View.GONE);
+                infoText.setVisibility(View.VISIBLE);
                 break;
             default:
                 break;
