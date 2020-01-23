@@ -141,6 +141,10 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
     boolean safesearch = true;
     int page = 1;
     int perPage = 200;
+    List<String> pixabayCategoryList = Arrays.asList("fashion", "nature", "backgrounds", "science",
+            "education", "people", "feelings", "religion", "health",
+            "places", "animals", "industry", "food", "computer", "sports",
+            "transportation", "travel", "buildings", "business", "music");
 
     // My Holos Tab (Baseline Implementation)
     // !! DON'T CHANGE !!
@@ -163,11 +167,18 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
     @BindView(R.id.gallery5)
     DynamicGridView gallery5;
 
+    // Pixabay Categories Tab
+    @BindView(R.id.pixabayCategories)
+    DynamicGridView pixabayCategories;
+
     @BindView(R.id.pixabaySearchQuery)
     EditText pixabaySearchQuery;
 
     @BindView(R.id.pixabaySearchButton)
     Button pixabaySearchButton;
+
+    @BindView(R.id.pixabaySearchBackButton)
+    ImageView pixabaySearchBackButton;
 
 
     private List<File> mediaFiles = new ArrayList<>();
@@ -184,6 +195,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
     private PixabayVideoRequestInfo pixabayVideoRequestInfo;
     private List<PixabayVideoInfo> pixabayVideoInfo = new ArrayList<>();
     private PixabayAdapter pixabayAdapter;
+    private PixabayCategoryAdapter pixabayCategoryAdapter;
 
     @Override
     @SuppressWarnings({"AndroidApiChecker", "FutureReturnValueIgnored"})
@@ -198,110 +210,6 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_video);
-
-
-//        //Featured
-//        File folder = new File(Commons2.MEDIA_DIR);
-//        boolean success = true;
-//        if (!folder.exists()) {
-//            //Toast.makeText(MainActivity.this, "Directory Does Not Exist, Create It", Toast.LENGTH_SHORT).show();
-//            success = folder.mkdirs();
-//        }
-//        if (success) {
-//            try {
-////                saveToSDCard(R.raw.dance, "dance.mp4", "Featured");
-////                saveToSDCard(R.raw.lion_chroma, "lion_chroma.mp4", "Featured");
-//                Toast.makeText(this, "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CHHROMA ONCREATE @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@", Toast.LENGTH_SHORT).show();
-//                saveToSDCard(R.raw.spiderman, "spiderman.mp4", "Featured");
-//                saveToSDCard(R.raw.ironman, "ironman.mp4", "Featured");
-//                saveToSDCard(R.raw.robot2, "robot2.mp4", "Featured");
-//                saveToSDCard(R.raw.robot3, "robot3.mp4", "Featured");
-//                saveToSDCard(R.raw.robot4, "robot4.mp4", "Featured");
-//                saveToSDCard(R.raw.robot5, "robot5.mp4", "Featured");
-//                saveToSDCard(R.raw.batman, "batman.mp4", "Featured");
-//                saveToSDCard(R.raw.deadpool, "deadpool.mp4", "Featured");
-////                saveToSDCard(R.raw.hulk, "hulk.mp4", "Featured");
-//                saveToSDCard(R.raw.minions, "minions.mp4", "Featured");
-////                saveToSDCard(R.raw.people, "people.mp4", "Featured");
-////                saveToSDCard(R.raw.skeleton, "skeleton.mp4", "Featured");
-//                saveToSDCard(R.raw.chicken, "chicken.mp4", "Featured");
-//                saveToSDCard(R.raw.monkey, "monkey.mp4", "Featured");
-//                saveToSDCard(R.raw.cheetah, "cheetah.mp4", "Featured");
-//                saveToSDCard(R.raw.eagle, "eagle.mp4", "Featured");
-//                saveToSDCard(R.raw.elephants, "elephants.mp4", "Featured");
-////                saveToSDCard(R.raw.flamingo, "flamingo.mp4", "Featured");
-//                saveToSDCard(R.raw.giraffe, "giraffe.mp4", "Featured");
-////                saveToSDCard(R.raw.rabbit, "rabbit.mp4", "Featured");
-////                saveToSDCard(R.raw.stock, "stock.mp4", "Featured");
-//                saveToSDCard(R.raw.tiger, "tiger.mp4", "Featured");
-//                Log.d("YOYOYO", "FEATURED DONE");
-//            } catch (Throwable throwable) {
-//                throwable.printStackTrace();
-//            }
-//
-//        } else {
-//            Toast.makeText(ChromaKeyVideoActivity.this, "Failed - Error", Toast.LENGTH_SHORT).show();
-//        }
-//        //Characters
-//        File folder2 = new File(Commons3.MEDIA_DIR);
-//        boolean success2 = true;
-//        if (!folder2.exists()) {
-//            //Toast.makeText(MainActivity.this, "Directory Does Not Exist, Create It", Toast.LENGTH_SHORT).show();
-//            success2 = folder2.mkdirs();
-//        }
-//        if (success2) {
-//            try {
-////                saveToSDCard(R.raw.dance, "dance.mp4", "Characters");
-////                saveToSDCard(R.raw.lion_chroma, "lion_chroma.mp4", "Characters");
-//                saveToSDCard(R.raw.batman, "batman.mp4", "Characters");
-//                saveToSDCard(R.raw.deadpool, "deadpool.mp4", "Characters");
-//                saveToSDCard(R.raw.hulk, "hulk.mp4", "Characters");
-//                saveToSDCard(R.raw.ironman, "ironman.mp4", "Characters");
-//                saveToSDCard(R.raw.minions, "minions.mp4", "Characters");
-//                saveToSDCard(R.raw.people, "people.mp4", "Characters");
-//                saveToSDCard(R.raw.skeleton, "skeleton.mp4", "Characters");
-//                saveToSDCard(R.raw.spiderman, "spiderman.mp4", "Characters");
-////                saveToSDCard(R.raw.robot1, "robot1.mp4", "Characters");
-//                saveToSDCard(R.raw.robot2, "robot2.mp4", "Characters");
-//                saveToSDCard(R.raw.robot3, "robot3.mp4", "Characters");
-//                saveToSDCard(R.raw.robot4, "robot4.mp4", "Characters");
-//                saveToSDCard(R.raw.robot5, "robot5.mp4", "Characters");
-//                Log.d("YOYOYO", "CHARACTERS DONE");
-//            } catch (Throwable throwable) {
-//                throwable.printStackTrace();
-//            }
-//
-//        } else {
-//            Toast.makeText(ChromaKeyVideoActivity.this, "Failed - Error", Toast.LENGTH_SHORT).show();
-//        }
-//        //Animals
-//        File folder3 = new File(Commons4.MEDIA_DIR);
-//        boolean success3 = true;
-//        if (!folder3.exists()) {
-//            //Toast.makeText(ChromaKeyVideoActivity.this, "Directory Does Not Exist, Create It", Toast.LENGTH_SHORT).show();
-//            success3 = folder3.mkdirs();
-//        }
-//        if (success3) {
-//            try {
-//                saveToSDCard(R.raw.chicken, "chicken.mp4", "Animals");
-//                saveToSDCard(R.raw.monkey, "monkey.mp4", "Animals");
-//                saveToSDCard(R.raw.cheetah, "cheetah.mp4", "Animals");
-//                saveToSDCard(R.raw.eagle, "eagle.mp4", "Animals");
-//                saveToSDCard(R.raw.elephants, "elephants.mp4", "Animals");
-//                saveToSDCard(R.raw.flamingo, "flamingo.mp4", "Animals");
-//                saveToSDCard(R.raw.giraffe, "giraffe.mp4", "Animals");
-//                saveToSDCard(R.raw.rabbit, "rabbit.mp4", "Animals");
-//                saveToSDCard(R.raw.stock, "stock.mp4", "Animals");
-//                saveToSDCard(R.raw.tiger, "tiger.mp4", "Animals");
-//                Log.d("YOYOYO", "ANIMALS DONE");
-//                Toast.makeText(ChromaKeyVideoActivity.this, "ANIMALS DONE", Toast.LENGTH_SHORT).show();
-//            } catch (Throwable throwable) {
-//                throwable.printStackTrace();
-//            }
-//
-//        } else {
-//            Toast.makeText(ChromaKeyVideoActivity.this, "Failed - Error", Toast.LENGTH_SHORT).show();
-//        }
 
         arFragment = (WritingArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
         //Remove animation
@@ -379,11 +287,13 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
                         String q = pixabaySearchQuery.getText().toString().trim().replace(" +", "+") + "+" + defaultQuery;
                         pixabayVideoInfo.clear();
                         loadPixabayVideoRequestInfo(q, safesearch, page, perPage);
+                        showPixabayResultsTab();
                         return true;
                     }
                     else {
                         pixabayVideoInfo.clear();
                         loadPixabayVideoRequestInfo(defaultQuery, safesearch, page, perPage);
+                        showPixabayResultsTab();
                     }
                 }
                 return false;
@@ -398,6 +308,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
                 String testQuery = "plane+green+screen";
                 pixabayVideoInfo.clear();
                 loadPixabayVideoRequestInfo(testQuery, safesearch, page, perPage);
+                showPixabayResultsTab();
             }});
 
 //      ==== ORIGINAL - MY HOLOS ====
@@ -526,7 +437,6 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
 //        });
 
 
-
 //      ==== PIXABAY TAB ====
         pixabayAdapter = new PixabayAdapter(this, pixabayVideoInfo);
         gallery5.setAdapter(pixabayAdapter);
@@ -550,8 +460,34 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
                 }
             }
         });
+
+        // Pixabay Categories
+        pixabayCategoryAdapter = new PixabayCategoryAdapter(this, pixabayCategoryList);
+        pixabayCategories.setAdapter(pixabayCategoryAdapter);
+        pixabayCategories.setOnItemClickListener((parent, view, position, id) -> {
+            Toast.makeText(this, pixabayCategoryList.get(position), Toast.LENGTH_SHORT).show();
+            pixabayVideoInfo.clear();
+            loadPixabayVideoRequestInfoCategory(defaultQuery, pixabayCategoryList.get(position), safesearch, page, perPage);
+            showPixabayResultsTab();
+        });
+
     }
 
+    public void onClickPixabayBackButton(View view){
+        gallery5.setVisibility(View.GONE);
+        pixabaySearchQuery.setVisibility(View.VISIBLE);
+        pixabaySearchButton.setVisibility(View.VISIBLE);
+        pixabayCategories.setVisibility(View.VISIBLE);
+        pixabaySearchBackButton.setVisibility(View.GONE);
+    }
+
+    private void showPixabayResultsTab(){
+        gallery5.setVisibility(View.VISIBLE);
+        pixabaySearchQuery.setVisibility(View.GONE);
+        pixabaySearchButton.setVisibility(View.GONE);
+        pixabayCategories.setVisibility(View.GONE);
+        pixabaySearchBackButton.setVisibility(View.VISIBLE);
+    }
 
 //    private ExternalTexture nextAvailableTexture() {
 //
@@ -1341,6 +1277,8 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
                 gallery5.setVisibility(View.GONE);
                 pixabaySearchQuery.setVisibility(View.GONE);
                 pixabaySearchButton.setVisibility(View.GONE);
+                pixabayCategories.setVisibility(View.GONE);
+                pixabaySearchBackButton.setVisibility(View.GONE);
                 break;
             case 1:
                 gallery.setVisibility(View.GONE);
@@ -1350,6 +1288,8 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
                 gallery5.setVisibility(View.GONE);
                 pixabaySearchQuery.setVisibility(View.GONE);
                 pixabaySearchButton.setVisibility(View.GONE);
+                pixabayCategories.setVisibility(View.GONE);
+                pixabaySearchBackButton.setVisibility(View.GONE);
                 break;
             case 2:
                 gallery.setVisibility(View.GONE);
@@ -1359,6 +1299,8 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
                 gallery5.setVisibility(View.GONE);
                 pixabaySearchQuery.setVisibility(View.GONE);
                 pixabaySearchButton.setVisibility(View.GONE);
+                pixabayCategories.setVisibility(View.GONE);
+                pixabaySearchBackButton.setVisibility(View.GONE);
                 break;
             case 3:
                 gallery.setVisibility(View.GONE);
@@ -1368,15 +1310,19 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
                 gallery5.setVisibility(View.GONE);
                 pixabaySearchQuery.setVisibility(View.GONE);
                 pixabaySearchButton.setVisibility(View.GONE);
+                pixabayCategories.setVisibility(View.GONE);
+                pixabaySearchBackButton.setVisibility(View.GONE);
                 break;
             case 4:
                 gallery.setVisibility(View.GONE);
                 gallery2.setVisibility(View.GONE);
                 gallery3.setVisibility(View.GONE);
                 gallery4.setVisibility(View.GONE);
-                gallery5.setVisibility(View.VISIBLE);
+                gallery5.setVisibility(View.GONE);
                 pixabaySearchQuery.setVisibility(View.VISIBLE);
                 pixabaySearchButton.setVisibility(View.VISIBLE);
+                pixabayCategories.setVisibility(View.VISIBLE);
+                pixabaySearchBackButton.setVisibility(View.GONE);
                 break;
             default:
                 break;

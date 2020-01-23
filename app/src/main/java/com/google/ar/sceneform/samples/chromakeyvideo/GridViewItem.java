@@ -3,6 +3,7 @@ package com.google.ar.sceneform.samples.chromakeyvideo;
 import android.content.Context;
 import android.util.AttributeSet;
 
+// Makes Pixabay thumbnails loaded into ImageView to be square
 public class GridViewItem extends android.support.v7.widget.AppCompatImageView {
 
     public GridViewItem(Context context) {

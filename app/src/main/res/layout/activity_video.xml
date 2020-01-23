@@ -215,12 +215,13 @@
                       android:visibility="gone"
                       tools:ignore="NotSibling" />
 
+
                   <EditText
                       android:layout_width="match_parent"
                       android:layout_height="match_parent"
                       android:visibility="gone"
-                      android:layout_alignParentLeft="true"
                       android:layout_toLeftOf="@+id/pixabaySearchButton"
+                      android:layout_alignParentLeft="true"
                       android:id="@+id/pixabaySearchQuery"
                       android:hint="Search Pixabay"
                       />
@@ -236,18 +237,45 @@
                       android:layout_alignTop="@id/pixabaySearchQuery"
                       />
 
+                  <com.google.ar.sceneform.samples.chromakeyvideo.GridViewItem
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:src="@drawable/back_button"
+                      android:layout_alignParentLeft="true"
+                      android:layout_toLeftOf="@+id/pixabaySearchQuery"
+                      android:visibility="gone"
+                      android:layout_alignBottom="@+id/pixabaySearchQuery"
+                      android:layout_alignTop="@+id/pixabaySearchQuery"
+                      android:id="@+id/pixabaySearchBackButton"
+                      android:onClick="onClickPixabayBackButton"/>
+
+
 
                   <com.google.ar.sceneform.samples.chromakeyvideo.DynamicGridView
                       android:id="@+id/gallery5"
                       android:layout_width="match_parent"
                       android:layout_height="700dp"
-                      android:layout_below="@id/pixabaySearchQuery"
+                      android:layout_below="@id/pixabaySearchBackButton"
                       android:gravity="center"
                       android:horizontalSpacing="1dp"
                       android:numColumns="4"
                       android:stretchMode="columnWidth"
                       android:verticalSpacing="1dp"
                       android:visibility="gone" />
+
+                  <com.google.ar.sceneform.samples.chromakeyvideo.DynamicGridView
+                      android:id="@+id/pixabayCategories"
+                      android:layout_width="match_parent"
+                      android:layout_height="700dp"
+                      android:layout_below="@id/pixabaySearchQuery"
+                      android:layout_marginTop="20dp"
+                      android:gravity="center"
+                      android:horizontalSpacing="1dp"
+                      android:numColumns="3"
+                      android:stretchMode="columnWidth"
+                      android:verticalSpacing="1dp"
+                      android:visibility="gone"
+                      />
 
               </RelativeLayout>
 
