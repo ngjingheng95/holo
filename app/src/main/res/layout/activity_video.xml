@@ -283,6 +283,7 @@
                       android:layout_marginLeft="20dp"
                       android:layout_alignParentLeft="true"
                       android:text="Or Search by Categories..."
+                      android:visibility="gone"
                       android:id="@+id/infoText"/>
 
                   <com.google.ar.sceneform.samples.chromakeyvideo.DynamicGridView
