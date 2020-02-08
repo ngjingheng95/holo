@@ -324,23 +324,51 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
             }
         });
 
-//      ==== ORIGINAL - MY HOLOS ====
-//      ====    DON'T CHANGE     ====
-        //My holos
+////      ==== ORIGINAL - MY HOLOS ====
+////      ====    DON'T CHANGE     ====
+//        //My holos
+//        adapter = new ChromaKeyVideoActivity.MediaFileAdapter(this, mediaFiles);
+//        gallery.setAdapter(adapter);
+//        gallery.setOnItemClickListener((parent, view, position, id) -> {
+//            File file = adapter.getItem(position);
+//
+//            //playOrViewMedia(file); Commons.MEDIA_DIR + "/"+
+//            object = file + "";
+//            changeObject(texture, object);
+//
+//            // Create the Anchor.
+//            createAnchor(texture);
+//        });
+
+        //My Holos
         adapter = new ChromaKeyVideoActivity.MediaFileAdapter(this, mediaFiles);
         gallery.setAdapter(adapter);
         gallery.setOnItemClickListener((parent, view, position, id) -> {
-            File file = adapter.getItem(position);
-
-            //playOrViewMedia(file); Commons.MEDIA_DIR + "/"+
-            object = file + "";
-            changeObject(texture, object);
-
-            // Create the Anchor.
-            createAnchor(texture);
+            Frame frame = arFragment.getArSceneView().getArFrame();
+            android.graphics.Point pt = getScreenCenter();
+            List<HitResult> hits;
+            if (frame != null){
+                hits = frame.hitTest(pt.x, pt.y);
+                for (HitResult hit : hits){
+                    Trackable trackable = hit.getTrackable();
+                    if (trackable instanceof Plane &&
+                            ((Plane) trackable).isPoseInPolygon(hit.getHitPose())){
+                        Toast.makeText(this, "HIT!!!!", Toast.LENGTH_SHORT).show();
+//                        MediaPlayer mp1 = new MediaPlayer();
+                        File file = adapter.getItem(position);
+                        object = file + "";
+//                        File file1 = adapter2.getItem(position + 1);
+//                        object1 = file1 + "";
+//                        mp1 = MediaPlayer.create(this, Uri.parse(object));
+//                        changeObject1(texture, hit.createAnchor(), mp1);
+//                        changeObject1(texture, object1, hit.createAnchor(), mp2);
+                        changeObject1(hit.createAnchor());
+                        break;
+                    }
+                }
+            }
         });
 
-//      ==== TEST 1 ====
         //Featured
         adapter2 = new ChromaKeyVideoActivity.MediaFileAdapter(this, mediaFiles2);
         gallery2.setAdapter(adapter2);
