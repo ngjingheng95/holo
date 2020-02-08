@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.ar.sceneform.samples.chromakeyvideo.options.Commons;
 import com.google.ar.sceneform.samples.chromakeyvideo.options.Commons2;
 import com.google.ar.sceneform.samples.chromakeyvideo.options.Commons3;
 import com.google.ar.sceneform.samples.chromakeyvideo.options.Commons4;
@@ -81,7 +82,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent=new Intent(SplashScreenActivity.this,ChromaKeyVideoActivity.class);
+                Intent intent=new Intent(SplashScreenActivity.this,HoloHomepage.class);
                 startActivity(intent);
                 finish();
             }
@@ -102,6 +103,12 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     public void downloadRawAssets(){
+
+        File createHoloFolder = new File(Commons.MEDIA_DIR);
+        if (!createHoloFolder.exists()) {
+            createHoloFolder.mkdirs();
+        }
+
         //Featured
         File folder = new File(Commons2.MEDIA_DIR);
         boolean success = true;
