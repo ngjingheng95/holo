@@ -41,6 +41,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.ar.sceneform.samples.chromakeyvideo.R;
+import com.google.ar.sceneform.samples.chromakeyvideo.options.Commons;
 
 import java.io.File;
 import java.io.IOException;
@@ -580,7 +581,8 @@ public class VideoRecordingFragment extends Fragment
     }
 
     private String getVideoFilePath(Context context) {
-        final File dir = context.getExternalFilesDir(null);
+//        final File dir = context.getExternalFilesDir(null);
+        final File dir = new File(Commons.MEDIA_DIR);
         return (dir == null ? "" : (dir.getAbsolutePath() + "/"))
                 + System.currentTimeMillis() + ".mp4";
     }
