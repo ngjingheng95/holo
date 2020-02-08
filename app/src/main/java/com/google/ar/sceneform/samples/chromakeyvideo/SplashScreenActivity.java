@@ -104,6 +104,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     public void downloadRawAssets(){
 
+        // My Holos
         File createHoloFolder = new File(Commons.MEDIA_DIR);
         if (!createHoloFolder.exists()) {
             createHoloFolder.mkdirs();
