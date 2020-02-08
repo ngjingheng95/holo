@@ -75,6 +75,7 @@ import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.Color;
 import com.google.ar.sceneform.rendering.ExternalTexture;
 import com.google.ar.sceneform.rendering.ModelRenderable;
+import com.google.ar.sceneform.samples.chromakeyvideo.camera.CameraActivity;
 import com.google.ar.sceneform.samples.chromakeyvideo.options.Commons;
 import com.google.ar.sceneform.samples.chromakeyvideo.options.Commons2;
 import com.google.ar.sceneform.samples.chromakeyvideo.options.Commons3;
@@ -188,6 +189,9 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
 
     @BindView(R.id.infoText)
     TextView infoText;
+
+    @BindView(R.id.test_fab)
+    FloatingActionButton testFab;
 
     private List<File> mediaFiles = new ArrayList<>();
     private List<File> mediaFiles2 = new ArrayList<>();
@@ -311,16 +315,14 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
             }
         });
 
-        // Test Search View
-        FloatingActionButton btnAddVimeo = (FloatingActionButton)findViewById(R.id.add_vimeo_fab);
-        btnAddVimeo.setOnClickListener(new Button.OnClickListener(){
+        testFab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View arg0) {
-                String testQuery = "plane+green+screen";
-                pixabayVideoInfo.clear();
-                loadPixabayVideoRequestInfo(testQuery, safesearch, page, perPage);
-                showPixabayResultsTab();
-            }});
+            public void onClick(View v) {
+                Intent intent=new Intent(ChromaKeyVideoActivity.this, CameraActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
 //      ==== ORIGINAL - MY HOLOS ====
 //      ====    DON'T CHANGE     ====

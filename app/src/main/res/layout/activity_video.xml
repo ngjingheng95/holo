@@ -319,17 +319,18 @@
         app:fabSize="normal"/>
 
       <android.support.design.widget.FloatingActionButton
-        android:id="@+id/add_vimeo_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="23dp"
-        android:layout_marginBottom="100dp"
-        android:clickable="true"
-        android:src="@drawable/ic_add_white"
-        app:backgroundTint="@color/recordRed"
-        app:fabSize="normal"/>
+          android:id="@+id/test_fab"
+          android:layout_width="56dp"
+          android:layout_height="56dp"
+          android:layout_alignParentTop="true"
+          android:layout_alignParentEnd="true"
+          android:layout_marginBottom="25dp"
+          android:layout_marginEnd="23dp"
+          app:backgroundTint="@color/recordRed"
+          android:clickable="true"
+          app:elevation="16dp"
+          app:fabSize="mini"/>
+
 
 
   </RelativeLayout>
