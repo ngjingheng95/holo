@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import java.io.File;
 import java.util.List;
 
+// TODO: IMPLEMENT RECYCLERVIEW ADAPTER
 public class HomepageMyHolosAdapter extends BaseAdapter {
 
     private List<File> files;

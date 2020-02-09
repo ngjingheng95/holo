@@ -61,13 +61,24 @@
                 android:id="@+id/homepage_my_holos_bottom"
                 android:layout_below="@+id/homepage_my_holos_text">
 
-                <ScrollView
-                    android:layout_width="match_parent"
+                <com.github.rongi.rotate_layout.layout.RotateLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/homepage_my_holos_preview"
-                    android:layout_toLeftOf="@+id/btn_create_holo"/>
+                    app:angle="90">
 
+<!--                    <ListView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:id="@+id/homepage_my_holos_preview"-->
+<!--                        android:layout_toLeftOf="@+id/btn_create_holo"/>                    -->
 
+                    <ListView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/homepage_my_holos_preview"
+                        android:layout_toLeftOf="@+id/btn_create_holo"/>
+
+                </com.github.rongi.rotate_layout.layout.RotateLayout>
 
                 <Button
                     android:layout_width="wrap_content"
