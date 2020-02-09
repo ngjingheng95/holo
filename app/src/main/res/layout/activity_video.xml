@@ -164,7 +164,7 @@
                   android:layout_below="@id/tabs"
                   android:orientation="vertical">
 
-                  <GridView
+                  <com.google.ar.sceneform.samples.chromakeyvideo.DynamicGridView
                       android:id="@+id/gallery"
                       android:layout_width="match_parent"
                       android:layout_height="700dp"

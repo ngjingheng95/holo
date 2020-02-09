@@ -24,6 +24,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -209,6 +212,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         } else {
             Toast.makeText(SplashScreenActivity.this, "Failed - Error", Toast.LENGTH_SHORT).show();
         }
+        
     }
 
     public void saveToSDCard(int id, String name, String folder) throws Throwable {

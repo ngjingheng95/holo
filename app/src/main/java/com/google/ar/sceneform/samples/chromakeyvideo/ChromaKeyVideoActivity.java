@@ -1279,32 +1279,33 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
 
     }
 
-    public void saveToSDCard(int id, String name, String folder) throws Throwable {
-        InputStream inStream = this.getResources().openRawResource(id);
-        File file = new File(Environment.getExternalStorageDirectory() + "/0/dev/" + folder, name);
-        if (!(file.exists())) {
-            FileOutputStream fileOutputStream = new FileOutputStream(file);//存入SDCard
-            byte[] buffer = new byte[10];
-            ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-            int len = 0;
-            while((len = inStream.read(buffer)) != -1) {
-                outStream.write(buffer, 0, len);
-            }
-            byte[] bs = outStream.toByteArray();
-            fileOutputStream.write(bs);
-            outStream.close();
-            fileOutputStream.flush();
-            fileOutputStream.close();
-        }
-        else {
-            return;
-        }
-        inStream.close();
-    }
+//    public void saveToSDCard(int id, String name, String folder) throws Throwable {
+//        InputStream inStream = this.getResources().openRawResource(id);
+//        File file = new File(Environment.getExternalStorageDirectory() + "/0/dev/" + folder, name);
+//        if (!(file.exists())) {
+//            FileOutputStream fileOutputStream = new FileOutputStream(file);//存入SDCard
+//            byte[] buffer = new byte[10];
+//            ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+//            int len = 0;
+//            while((len = inStream.read(buffer)) != -1) {
+//                outStream.write(buffer, 0, len);
+//            }
+//            byte[] bs = outStream.toByteArray();
+//            fileOutputStream.write(bs);
+//            outStream.close();
+//            fileOutputStream.flush();
+//            fileOutputStream.close();
+//        }
+//        else {
+//            return;
+//        }
+//        inStream.close();
+//    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Toast.makeText(this, "ONDESTROY!!!!", Toast.LENGTH_SHORT).show();
 
         if (mediaPlayer != null) {
             mediaPlayer.release();
@@ -1435,7 +1436,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
         return true;
     }
 
-    private class MediaFileAdapter extends BaseAdapter {
+    public class MediaFileAdapter extends BaseAdapter {
 
         private List<File> files;
 
