@@ -15,6 +15,7 @@
  */
 package com.google.ar.sceneform.samples.chromakeyvideo;
 
+import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.ContentValues;
@@ -38,23 +39,30 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.PixelCopy;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.TranslateAnimation;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.fangxu.allangleexpandablebutton.AllAngleExpandableButton;
+import com.fangxu.allangleexpandablebutton.ButtonData;
+import com.fangxu.allangleexpandablebutton.ButtonEventListener;
 import com.google.ar.core.Anchor;
 import com.google.ar.core.Camera;
 import com.google.ar.core.Frame;
@@ -193,6 +201,24 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
     @BindView(R.id.test_fab)
     FloatingActionButton testFab;
 
+    @BindView(R.id.main_tab)
+    RelativeLayout mainTab;
+
+    @BindView(R.id.main_tab_group)
+    RelativeLayout mainTabGroup;
+
+    @BindView(R.id.buttons_tab)
+    LinearLayout buttonsTab;
+
+    @BindView(R.id.animals_tab)
+    RecyclerView animalsRecyclerView;
+
+    @BindView(R.id.characters_tab)
+    RecyclerView charactersRecyclerView;
+
+    @BindView(R.id.new_tab)
+    RecyclerView newRecyclerView;
+
     private List<File> mediaFiles = new ArrayList<>();
     private List<File> mediaFiles2 = new ArrayList<>();
     private List<File> mediaFiles3 = new ArrayList<>();
@@ -201,6 +227,12 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
     private ChromaKeyVideoActivity.MediaFileAdapter adapter2;
     private ChromaKeyVideoActivity.MediaFileAdapter adapter3;
     private ChromaKeyVideoActivity.MediaFileAdapter adapter4;
+    private RecyclerView.Adapter animalsAdapter;
+    private RecyclerView.LayoutManager animalsLayoutManager;
+    private RecyclerView.Adapter charactersAdapter;
+    private RecyclerView.LayoutManager charactersLayoutManager;
+    private RecyclerView.Adapter newAdapter;
+    private RecyclerView.LayoutManager newLayoutManager;
 
     private boolean mIsPlayerRelease = true;
 
@@ -247,6 +279,16 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
         //captureBtn.setOnClickListener(view -> takePhoto());
 
         FloatingActionButton btnCreateHolo = (FloatingActionButton)findViewById(R.id.create_holo);
+
+        mainTabGroup = (RelativeLayout) findViewById(R.id.main_tab_group);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+//            mainTabGroup.getLayoutTransition()
+//                    .enableTransitionType(LayoutTransition.CHANGING);
+//        }
+        animalsRecyclerView = (RecyclerView) findViewById(R.id.animals_tab);
+        charactersRecyclerView = (RecyclerView) findViewById(R.id.characters_tab);
+        newRecyclerView = (RecyclerView) findViewById(R.id.new_tab);
+//        animalsRecyclerView = (RecyclerView) findViewById(R.id.animals_tab);
 
         btnCreateHolo.setOnClickListener(new Button.OnClickListener(){
             @Override
@@ -315,14 +357,14 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
             }
         });
 
-        testFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(ChromaKeyVideoActivity.this, CameraActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+//        testFab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent=new Intent(ChromaKeyVideoActivity.this, CameraActivity.class);
+//                startActivity(intent);
+//                finish();
+//            }
+//        });
 
 ////      ==== ORIGINAL - MY HOLOS ====
 ////      ====    DON'T CHANGE     ====
@@ -512,8 +554,77 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
             showPixabayResultsTab();
         });
 
+        /***
+        *
+        * Horizontal LinearLayout Tabs
+        *
+         ***/
+
+        // New Tab
+        newRecyclerView.setHasFixedSize(true);
+        newLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false);
+        newRecyclerView.setLayoutManager(newLayoutManager);
+        newAdapter = new RecyclerViewAdapter(this, mediaFiles2);
+        newRecyclerView.setAdapter(newAdapter);
+
+        // Animals Tab
+        animalsRecyclerView.setHasFixedSize(true);
+        animalsLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false);
+        animalsRecyclerView.setLayoutManager(animalsLayoutManager);
+        animalsAdapter = new RecyclerViewAdapter(this, mediaFiles4);
+        animalsRecyclerView.setAdapter(animalsAdapter);
+
+        // Characters Tab
+        charactersRecyclerView.setHasFixedSize(true);
+        charactersLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false);
+        charactersRecyclerView.setLayoutManager(charactersLayoutManager);
+        charactersAdapter = new RecyclerViewAdapter(this, mediaFiles3);
+        charactersRecyclerView.setAdapter(charactersAdapter);
+
+
+
 
         startup = false;
+    }
+
+    public void onClickMainTabView(View view){
+        if (mainTabGroup.getVisibility() == View.GONE) {
+            mainTabGroup.setVisibility(View.VISIBLE);
+        }
+        else{
+            mainTabGroup.setVisibility(View.GONE);
+        }
+    }
+
+    public void onClickAnimalsView(View view){
+        buttonsTab.setVisibility(View.GONE);
+        animalsRecyclerView.setVisibility(View.VISIBLE);
+
+    }
+
+    public void onClickCharactersView(View view){
+        buttonsTab.setVisibility(View.GONE);
+        charactersRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    public void onClickNewView(View view){
+        buttonsTab.setVisibility(View.GONE);
+        newRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    public void onClickBackView(View view){
+        animalsRecyclerView.setVisibility(View.GONE);
+        charactersRecyclerView.setVisibility(View.GONE);
+        newRecyclerView.setVisibility(View.GONE);
+        buttonsTab.setVisibility(View.VISIBLE);
+    }
+
+    public void onClickCloseView(View view){
+        mainTabGroup.setVisibility(View.GONE);
+    }
+
+    public void onClickTest(View view){
+        Toast.makeText(this, "Clicked!!!", Toast.LENGTH_SHORT).show();
     }
 
     public void onClickPixabayBackButton(View view){
