@@ -1,39 +1,38 @@
 package com.google.ar.sceneform.samples.chromakeyvideo;
 
-
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.nio.file.Files;
 import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class RecyclerViewPixabayAdapter extends RecyclerView.Adapter<RecyclerViewPixabayAdapter.ViewHolder> {
 
-    private List<File> files;
     private Context mContext;
     private OnArObjectListener mOnArObjectListener;
     private String mTag;
 
+    private final String THUMBNAIL_URL = "https://i.vimeocdn.com/video/";
+    private final String THUMBNAIL_SIZE = "_295x166.jpg";
+    private List<PixabayVideoInfo> pixabayVideoInfo;
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public View layout;
-        public ImageView itemImage;
+        public ImageView gridItemImage;
         public OnArObjectListener onArObjectListener;
         public ViewHolder(View itemView, OnArObjectListener onArObjectListener) {
             super(itemView);
             layout = itemView;
-            itemImage = (ImageView) itemView.findViewById(R.id.item_image);
+            gridItemImage = (ImageView) itemView.findViewById(R.id.grid_item_image);
             this.onArObjectListener = onArObjectListener;
 
             itemView.setOnClickListener(this);
@@ -45,21 +44,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
     }
 
-    public void add(int position, File item) {
-        files.add(position, item);
-        notifyItemInserted(position);
-    }
 
-    public void remove(int position) {
-        files.remove(position);
-        notifyItemRemoved(position);
-    }
-
-
-
-    public RecyclerViewAdapter(Context mContext, List<File> filesList, OnArObjectListener mOnArObjectListener, String tag) {
+    public RecyclerViewPixabayAdapter(Context mContext, List<PixabayVideoInfo> pixabayVideoInfo, OnArObjectListener mOnArObjectListener, String tag) {
         this.mContext = mContext;
-        this.files = filesList;
+        this.pixabayVideoInfo = pixabayVideoInfo;
         this.mOnArObjectListener = mOnArObjectListener;
         this.mTag = tag;
     }
@@ -69,30 +57,26 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 //    It returns an object of type ViewHolder per visual entry in the recycler view.
     @NonNull
     @Override
-    public RecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
+    public RecyclerViewPixabayAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View v = inflater.inflate(R.layout.item_media, parent, false);
+        View v = inflater.inflate(R.layout.pixabay_layout, parent, false);
         ViewHolder vh = new ViewHolder(v, mOnArObjectListener);
         return vh;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final File file = files.get(position);
-        Glide.with(mContext).load(file).into(holder.itemImage);
-//        if(selectedPosition==position)
-//            holder.itemView.setBackgroundColor(Color.parseColor("#000000"));
-//        else
-//            holder.itemView.setBackgroundColor(Color.parseColor("#ffffff"));
+
+        String url = THUMBNAIL_URL + pixabayVideoInfo.get(position).getPictureId() + THUMBNAIL_SIZE;
+        Picasso.with(mContext).load(url).into(holder.gridItemImage);
+
     }
 
 
-
-//  return the total number of items
+    //  return the total number of items
     @Override
     public int getItemCount() {
-        return files.size();
+        return pixabayVideoInfo.size();
     }
 
 
@@ -100,11 +84,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         void onArObjectClick(int position, String tag);
     }
 
-    public File getItem(int position) {
-        return files.get(position);
+    public PixabayVideoInfo getItem(int position) {
+        return pixabayVideoInfo.get(position);
     }
 
-//    public void setSelectedPosition(int selectedPosition) {
-//        this.selectedPosition = selectedPosition;
-//    }
 }

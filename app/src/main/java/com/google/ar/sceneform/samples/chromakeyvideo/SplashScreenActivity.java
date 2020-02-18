@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -89,14 +90,16 @@ public class SplashScreenActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        },1500);
+        },1000);
     }
 
     private class loadAssetTask extends AsyncTask<Void, String, String>{
         // Downloads raw asset asynchronously during splash screen
         @Override
         protected String doInBackground(Void... voids) {
+            Log.d("yoyo", "doInBackground: start");
             downloadRawAssets();
+            Log.d("yoyo", "doInBackground: end");
             return "Done";
         }
 
@@ -124,6 +127,9 @@ public class SplashScreenActivity extends AppCompatActivity {
             try {
 //                saveToSDCard(R.raw.dance, "dance.mp4", "Featured");
 //                saveToSDCard(R.raw.lion_chroma, "lion_chroma.mp4", "Featured");
+                Log.d("yoyo", "downloadRawAssets: start Featured");
+                saveToSDCard(R.raw.dancingman, "dancingman.mp4", "Featured");
+                saveToSDCard(R.raw.thanosdance, "thanosdance.mp4", "Featured");
                 saveToSDCard(R.raw.spiderman, "spiderman.mp4", "Featured");
                 saveToSDCard(R.raw.ironman, "ironman.mp4", "Featured");
                 saveToSDCard(R.raw.robot2, "robot2.mp4", "Featured");
@@ -146,6 +152,8 @@ public class SplashScreenActivity extends AppCompatActivity {
 //                saveToSDCard(R.raw.rabbit, "rabbit.mp4", "Featured");
 //                saveToSDCard(R.raw.stock, "stock.mp4", "Featured");
                 saveToSDCard(R.raw.tiger, "tiger.mp4", "Featured");
+                Log.d("yoyo", "downloadRawAssets: end Featured");
+
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
             }
@@ -216,7 +224,6 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     public void saveToSDCard(int id, String name, String folder) throws Throwable {
-        updateLoadingText(name, folder);
         InputStream inStream = this.getResources().openRawResource(id);
         File file = new File(Environment.getExternalStorageDirectory() + "/0/dev/" + folder, name);
         if (!(file.exists())) {
@@ -239,7 +246,4 @@ public class SplashScreenActivity extends AppCompatActivity {
         inStream.close();
     }
 
-    private void updateLoadingText(String fileName, String dirName){
-        loadingText.setText("Loading... " + fileName + " into " + dirName);
-    }
 }

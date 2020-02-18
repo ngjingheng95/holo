@@ -340,18 +340,26 @@
           android:visibility="gone"
           android:animateLayoutChanges="true"
           android:id="@+id/main_tab_group">
-          <View
+          <RelativeLayout
               android:id="@+id/main_tab_fade"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:alpha=".35"
-              android:background="@android:color/black"/>
+              android:background="@android:color/black">
+<!--              <ImageView-->
+<!--                  android:layout_width="wrap_content"-->
+<!--                  android:layout_height="wrap_content"-->
+<!--                  android:layout_centerInParent="true"-->
+<!--                  android:src="@drawable/move_phone_icon"-->
+<!--                  android:id="@+id/move_phone_icon"/>-->
+          </RelativeLayout>
 
           <RelativeLayout
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_above="@id/main_tab"
               android:background="@color/ultraLightGrey"
+              android:id="@+id/main_tab_header_1"
               >
 
               <RelativeLayout
@@ -362,7 +370,9 @@
                   android:layout_alignParentLeft="true"
                   android:layout_marginVertical="10dp"
                   android:layout_marginHorizontal="15dp"
-                  android:id="@+id/back_button">
+                  android:layout_centerVertical="true"
+                  android:id="@+id/back_button"
+                  android:visibility="gone">
 
                   <ImageView
                       android:layout_width="20dp"
@@ -393,12 +403,59 @@
                   android:clickable="true"
                   android:onClick="onClickCloseView"/>
 
+              <RelativeLayout
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/pixabay_search_bar"
+                  android:visibility="gone"
+                  android:layout_marginHorizontal="50dp"
+                  android:layout_centerVertical="true"
+                  android:layout_toLeftOf="@id/close_button">
+
+
+
+                  <android.support.v7.widget.AppCompatEditText
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/pixabay_search_text"
+                      android:hint="Search Holos on Pixabay   "
+                      android:backgroundTint="@color/gray_bg"
+                      android:textColorHint="@color/gray_bg"
+                      android:textColor="@color/gray_overlay"
+                      />
+
+                  <RelativeLayout
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/pixabay_search_btn"
+                      android:layout_toRightOf="@id/pixabay_search_text"
+                      android:layout_centerVertical="true"
+                      android:layout_marginHorizontal="10dp">
+
+                      <ImageView
+                          android:layout_width="25dp"
+                          android:layout_height="25dp"
+                          android:src="@drawable/search_icon"
+                          android:layout_centerInParent="true"/>
+
+                  </RelativeLayout>
+
+
+
+
+
+              </RelativeLayout>
+
+
 
           </RelativeLayout>
 
+
+
+
           <RelativeLayout
               android:layout_width="match_parent"
-              android:layout_height="wrap_content"
+              android:layout_height="177dp"
               android:layout_alignParentBottom="true"
               android:background="#FFF"
               android:id="@+id/main_tab">
@@ -408,21 +465,46 @@
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:id="@+id/new_tab"
-                  android:visibility="gone"/>
+                  android:visibility="gone"
+                  android:scrollbars="horizontal"
+                  android:scrollbarSize="5dp"/>
 
               <!--       Animals Tab       -->
               <android.support.v7.widget.RecyclerView
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:id="@+id/animals_tab"
-                  android:visibility="gone"/>
+                  android:visibility="gone"
+                  android:scrollbars="horizontal"
+                  android:scrollbarSize="5dp"/>
 
               <!--       Characters Tab       -->
               <android.support.v7.widget.RecyclerView
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:id="@+id/characters_tab"
-                  android:visibility="gone"/>
+                  android:visibility="gone"
+                  android:scrollbars="horizontal"
+                  android:scrollbarSize="5dp"/>
+
+              <!--       My Holos Tab       -->
+              <android.support.v7.widget.RecyclerView
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/my_holos_tab"
+                  android:visibility="gone"
+                  android:scrollbars="horizontal"
+                  android:scrollbarSize="5dp"/>
+
+              <!--       Pixabay Tab       -->
+              <android.support.v7.widget.RecyclerView
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:scrollbars="horizontal"
+                  android:id="@+id/pixabay_tab"
+                  android:visibility="gone"
+                  android:scrollbarSize="5dp"/>
+
 
               <!--      Buttons Layout        -->
               <LinearLayout
@@ -550,7 +632,7 @@
                           android:padding="10dp"
                           android:layout_margin="3dp"
                           android:clickable="true"
-                          android:onClick="onClickTest"
+                          android:onClick="onClickMyHoloView"
                           android:elevation="2dp"
                           >
 
@@ -580,7 +662,7 @@
                           android:padding="10dp"
                           android:layout_margin="3dp"
                           android:clickable="true"
-                          android:onClick="onClickTest"
+                          android:onClick="onClickPixabayView"
                           android:elevation="2dp"
                           >
 

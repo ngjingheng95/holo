@@ -39,11 +39,13 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.PixelCopy;
 import android.view.View;
 import android.view.ViewGroup;
@@ -113,7 +115,7 @@ import retrofit2.Response;
 * gallery4 => Animals (Baseline Implementation)
 * gallery5 => Pixabay
 * */
-public class ChromaKeyVideoActivity extends AppCompatActivity {
+public class ChromaKeyVideoActivity extends AppCompatActivity implements RecyclerViewAdapter.OnArObjectListener, RecyclerViewPixabayAdapter.OnArObjectListener {
     private static final String TAG = ChromaKeyVideoActivity.class.getSimpleName();
     private static final double MIN_OPENGL_VERSION = 3.0;
 
@@ -145,6 +147,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
     // The UI to record.
     //private FloatingActionButton recordButton;
 
+    boolean enabled = true;
     String object;
     String vimeoUrl;
     final String defaultQuery = "green+screen";
@@ -219,6 +222,28 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
     @BindView(R.id.new_tab)
     RecyclerView newRecyclerView;
 
+    @BindView(R.id.my_holos_tab)
+    RecyclerView myHoloRecyclerView;
+
+    @BindView(R.id.pixabay_tab)
+    RecyclerView pixabayRecyclerView;
+
+
+    @BindView(R.id.back_button)
+    RelativeLayout backButton;
+
+    @BindView(R.id.pixabay_search_bar)
+    RelativeLayout pixabaySearchBar;
+
+    @BindView(R.id.pixabay_search_btn)
+    RelativeLayout pixabaySearchBtn;
+
+    @BindView(R.id.pixabay_search_text)
+    AppCompatEditText pixabaySearchText;
+
+//    @BindView(R.id.item_delete)
+//    ImageView itemDeleteBtn;
+
     private List<File> mediaFiles = new ArrayList<>();
     private List<File> mediaFiles2 = new ArrayList<>();
     private List<File> mediaFiles3 = new ArrayList<>();
@@ -233,6 +258,10 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager charactersLayoutManager;
     private RecyclerView.Adapter newAdapter;
     private RecyclerView.LayoutManager newLayoutManager;
+    private RecyclerView.Adapter myHoloAdapter;
+    private RecyclerView.LayoutManager myHoloLayoutManager;
+    private RecyclerView.Adapter pixabayRecyclerAdapter;
+    private RecyclerView.LayoutManager pixabayLayoutManager;
 
     private boolean mIsPlayerRelease = true;
 
@@ -285,10 +314,12 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
 //            mainTabGroup.getLayoutTransition()
 //                    .enableTransitionType(LayoutTransition.CHANGING);
 //        }
-        animalsRecyclerView = (RecyclerView) findViewById(R.id.animals_tab);
-        charactersRecyclerView = (RecyclerView) findViewById(R.id.characters_tab);
-        newRecyclerView = (RecyclerView) findViewById(R.id.new_tab);
 //        animalsRecyclerView = (RecyclerView) findViewById(R.id.animals_tab);
+//        charactersRecyclerView = (RecyclerView) findViewById(R.id.characters_tab);
+//        newRecyclerView = (RecyclerView) findViewById(R.id.new_tab);
+//        myHoloRecyclerView = (RecyclerView) findViewById(R.id.my_holos_tab);
+//        pixabayRecyclerView = (RecyclerView) findViewById(R.id.pixabay_tab_result);
+
 
         btnCreateHolo.setOnClickListener(new Button.OnClickListener(){
             @Override
@@ -382,6 +413,21 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
 //            createAnchor(texture);
 //        });
 
+//        arFragment.setOnTapArPlaneListener(
+//                (HitResult hitresult, Plane plane, MotionEvent motionevent) -> {
+//                    if (object == null){
+//                        return;
+//                    }
+//                    else {
+//                        changeObject1(hitresult.createAnchor());
+//                    }
+////                    object = adapter2.getItem(1) + "";
+////                    changeObject1(hitresult.createAnchor());
+//
+//                }
+//        );
+//        arFragment.setOnTapArPlaneListener(null);
+
         //My Holos
         adapter = new ChromaKeyVideoActivity.MediaFileAdapter(this, mediaFiles);
         gallery.setAdapter(adapter);
@@ -472,7 +518,39 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
             }
         });
 
-//      ==== ANIMALS TAB ====
+////      ==== ANIMALS TAB ====
+//        adapter4 = new ChromaKeyVideoActivity.MediaFileAdapter(this, mediaFiles4);
+//        gallery4.setAdapter(adapter4);
+//        gallery4.setOnItemClickListener((parent, view, position, id) -> {
+//            Frame frame = arFragment.getArSceneView().getArFrame();
+//            android.graphics.Point pt = getScreenCenter();
+//            List<HitResult> hits;
+//            //if the centre is on plane
+//            boolean hitAllowed = false;
+//            if (frame != null){
+//                hits = frame.hitTest(pt.x, pt.y);
+//                for (HitResult hit : hits){
+//                    Trackable trackable = hit.getTrackable();
+//                    if (trackable instanceof Plane &&
+//                            ((Plane) trackable).isPoseInPolygon(hit.getHitPose())){
+//                        hitAllowed = true;
+////                        MediaPlayer mp1 = new MediaPlayer();
+//                        Toast.makeText(this, "HIT!!!! 3333", Toast.LENGTH_SHORT).show();
+//                        File file = adapter4.getItem(position);
+//                        object = file + "";
+////                        mp1 = MediaPlayer.create(this, Uri.parse(object));
+////                        changeObject1(texture2, hit.createAnchor(), mp1);
+//                        changeObject1(hit.createAnchor());
+//                        break;
+//                    }
+//                }
+//                if (!hitAllowed){
+//                    Toast.makeText(this, "NOT HIT!!", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+
+        //      ==== ANIMALS TAB ====
         adapter4 = new ChromaKeyVideoActivity.MediaFileAdapter(this, mediaFiles4);
         gallery4.setAdapter(adapter4);
         gallery4.setOnItemClickListener((parent, view, position, id) -> {
@@ -503,6 +581,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
                 }
             }
         });
+
 
 ////      ==== ORIGINAL 1 - ANIMALS ====
 ////      ====     DON'T CHANGE!    ====
@@ -564,27 +643,82 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
         newRecyclerView.setHasFixedSize(true);
         newLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false);
         newRecyclerView.setLayoutManager(newLayoutManager);
-        newAdapter = new RecyclerViewAdapter(this, mediaFiles2);
+        newAdapter = new RecyclerViewAdapter(this, mediaFiles2, this, "new");
         newRecyclerView.setAdapter(newAdapter);
 
         // Animals Tab
         animalsRecyclerView.setHasFixedSize(true);
         animalsLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false);
         animalsRecyclerView.setLayoutManager(animalsLayoutManager);
-        animalsAdapter = new RecyclerViewAdapter(this, mediaFiles4);
+        animalsAdapter = new RecyclerViewAdapter(this, mediaFiles4, this, "animals");
         animalsRecyclerView.setAdapter(animalsAdapter);
 
         // Characters Tab
         charactersRecyclerView.setHasFixedSize(true);
         charactersLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false);
         charactersRecyclerView.setLayoutManager(charactersLayoutManager);
-        charactersAdapter = new RecyclerViewAdapter(this, mediaFiles3);
+        charactersAdapter = new RecyclerViewAdapter(this, mediaFiles3, this, "characters");
         charactersRecyclerView.setAdapter(charactersAdapter);
 
+        // My Holos Tab
+        myHoloRecyclerView.setHasFixedSize(true);
+        myHoloLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false);
+        myHoloRecyclerView.setLayoutManager(myHoloLayoutManager);
+        myHoloAdapter = new RecyclerViewAdapter(this, mediaFiles, this, "myHolo");
+        myHoloRecyclerView.setAdapter(myHoloAdapter);
+
+        // Pixabay Tab
+        loadPixabayResults(defaultQuery, safesearch, page, perPage);
+        pixabayRecyclerView.setHasFixedSize(true);
+        pixabayLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false);
+        pixabayRecyclerView.setLayoutManager(pixabayLayoutManager);
+        pixabayRecyclerAdapter = new RecyclerViewPixabayAdapter(this, pixabayVideoInfo, this, "pixabay");
+        pixabayRecyclerView.setAdapter(pixabayRecyclerAdapter);
+
+        // Pixabay Search
+        pixabaySearchBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if (pixabaySearchText.getText().toString().isEmpty()){
+                    loadPixabayVideoRequestInfo(defaultQuery, safesearch, page, perPage);
+                }
+                else {
+                    String q = pixabaySearchText.getText().toString().trim().replace(" +", "+") + "+" + defaultQuery;
+                    loadPixabayVideoRequestInfo1(q, safesearch, page, perPage);
+                }
+            }
+        });
+
+        pixabaySearchText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    if (!pixabaySearchText.getText().toString().isEmpty()){
+                        // Perform action on key press
+                        String q = pixabaySearchText.getText().toString().trim().replace(" +", "+") + "+" + defaultQuery;
+                        loadPixabayVideoRequestInfo1(q, safesearch, page, perPage);
+                        return true;
+                    }
+                    else {
+                        loadPixabayVideoRequestInfo1(defaultQuery, safesearch, page, perPage);
+                    }
+                }
+                return false;
+            }
+        });
+    }
 
 
+    @Override
+    public void onArObjectClick(int position, String tag) {
+//        Toast.makeText(this, "Clicked!!! " + position + " of " + tag, Toast.LENGTH_SHORT).show();
+        arFragment.getPlaneDiscoveryController().show();
+        enableArPlaneListener(position, tag);
 
-        startup = false;
+        Log.d("yoyo", "before disable");
+
+//        disableArPlaneListener();
+//        Log.d("yoyo", "after disable");
     }
 
     public void onClickMainTabView(View view){
@@ -599,32 +733,144 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
     public void onClickAnimalsView(View view){
         buttonsTab.setVisibility(View.GONE);
         animalsRecyclerView.setVisibility(View.VISIBLE);
-
+        backButton.setVisibility(View.VISIBLE);
     }
 
     public void onClickCharactersView(View view){
         buttonsTab.setVisibility(View.GONE);
         charactersRecyclerView.setVisibility(View.VISIBLE);
+        backButton.setVisibility(View.VISIBLE);
     }
 
     public void onClickNewView(View view){
         buttonsTab.setVisibility(View.GONE);
         newRecyclerView.setVisibility(View.VISIBLE);
+        backButton.setVisibility(View.VISIBLE);
+    }
+
+    public void onClickMyHoloView(View view){
+        buttonsTab.setVisibility(View.GONE);
+        myHoloRecyclerView.setVisibility(View.VISIBLE);
+        backButton.setVisibility(View.VISIBLE);
+    }
+
+    public void onClickPixabayView(View view){
+        buttonsTab.setVisibility(View.GONE);
+        pixabayRecyclerView.setVisibility(View.VISIBLE);
+        pixabaySearchBar.setVisibility(View.VISIBLE);
+        backButton.setVisibility(View.VISIBLE);
     }
 
     public void onClickBackView(View view){
         animalsRecyclerView.setVisibility(View.GONE);
         charactersRecyclerView.setVisibility(View.GONE);
         newRecyclerView.setVisibility(View.GONE);
+        myHoloRecyclerView.setVisibility(View.GONE);
+        pixabayRecyclerView.setVisibility(View.GONE);
+        pixabaySearchBar.setVisibility(View.GONE);
         buttonsTab.setVisibility(View.VISIBLE);
+        backButton.setVisibility(View.GONE);
     }
+
 
     public void onClickCloseView(View view){
         mainTabGroup.setVisibility(View.GONE);
     }
 
+//    public void onClickEditView(View view){
+//        if (itemDeleteBtn.getVisibility() == View.GONE) {
+//            itemDeleteBtn.setVisibility(View.VISIBLE);
+//        }
+//        else{
+//            itemDeleteBtn.setVisibility(View.GONE);
+//        }
+//    }
+
+
     public void onClickTest(View view){
         Toast.makeText(this, "Clicked!!!", Toast.LENGTH_SHORT).show();
+    }
+
+    public void onClickToggleArListener(View view){
+        if (enabled){
+            arFragment.setOnTapArPlaneListener(
+                    (HitResult hitresult, Plane plane, MotionEvent motionevent) -> {
+//                        if (object == null){
+//                            return;
+//                        }
+//                        else {
+//                            changeObject1(hitresult.createAnchor());
+//                        }
+                    object = adapter2.getItem(1) + "";
+                    changeObject1(hitresult.createAnchor());
+
+                    }
+            );
+            Toast.makeText(this, "ENABLED!!!!", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            arFragment.setOnTapArPlaneListener(null);
+            Toast.makeText(this, "DISABLED!!!!", Toast.LENGTH_SHORT).show();
+        }
+        enabled = !enabled;
+    }
+
+
+    public void enableArPlaneListener(int position, String tag){
+
+        switch(tag){
+            case "new":
+                RecyclerViewAdapter newAdapter1 = (RecyclerViewAdapter) newRecyclerView.getAdapter();
+                Toast.makeText(this, "Clicked!!! " + position + " of " + "new1", Toast.LENGTH_SHORT).show();
+                object = newAdapter1.getItem(position) + "";
+                break;
+            case "animals":
+                RecyclerViewAdapter animalsAdapter1 = (RecyclerViewAdapter) animalsRecyclerView.getAdapter();
+                object = animalsAdapter1.getItem(position) + "";
+                break;
+            case "characters":
+                RecyclerViewAdapter charactersAdapter1 = (RecyclerViewAdapter) charactersRecyclerView.getAdapter();
+                object = charactersAdapter1.getItem(position) + "";
+                break;
+            case "myHolo":
+                RecyclerViewAdapter myHoloAdapter1 = (RecyclerViewAdapter) myHoloRecyclerView.getAdapter();
+                object = myHoloAdapter1.getItem(position) + "";
+                break;
+            case "pixabay":
+                RecyclerViewPixabayAdapter pixabayRecyclerAdapter1 = (RecyclerViewPixabayAdapter) pixabayRecyclerView.getAdapter();
+                vimeoUrl = pixabayRecyclerAdapter1.getItem(position).getVideos().getSmall().getUrl();
+                break;
+
+        }
+
+
+
+        Log.d("yoyo", "enableArPlaneListener: before");
+        Log.d("yoyo", "enableArPlaneListener: " + object);
+
+        if (tag == "pixabay") {
+            arFragment.setOnTapArPlaneListener(
+                    (HitResult hitresult, Plane plane, MotionEvent motionevent) -> {
+                        changeObject1_vimeo(hitresult.createAnchor());
+                    }
+            );
+        }
+        else {
+            arFragment.setOnTapArPlaneListener(
+                    (HitResult hitresult, Plane plane, MotionEvent motionevent) -> {
+                        changeObject1(hitresult.createAnchor());
+                    }
+            );
+        }
+
+
+
+
+        Log.d("yoyo", "enableArPlaneListener: after");
+    }
+
+    public void disableArPlaneListener(){
+        arFragment.setOnTapArPlaneListener(null);
     }
 
     public void onClickPixabayBackButton(View view){
@@ -644,6 +890,43 @@ public class ChromaKeyVideoActivity extends AppCompatActivity {
         pixabayCategories.setVisibility(View.GONE);
         pixabaySearchBackButton.setVisibility(View.VISIBLE);
         infoText.setVisibility(View.GONE);
+    }
+
+    public void loadPixabayResults(String q, boolean safesearch, int page, int perPage){
+        pixabayVideoInfo.clear();
+        PixabayService.createPixabayService().getVideoResults(getString(R.string.pixabay_api_key), q, safesearch, page, perPage).enqueue(new Callback<PixabayVideoRequestInfo>() {
+            @Override
+            public void onResponse(Call<PixabayVideoRequestInfo> call, Response<PixabayVideoRequestInfo> response) {
+                pixabayVideoInfo.addAll(response.body().getHits());
+            }
+            @Override
+            public void onFailure(Call<PixabayVideoRequestInfo> call, Throwable t) {
+            }
+        });
+    }
+
+    //  Cases:
+//  - totalHits > 0 => Success
+//  - totalHits == 0 => No Results
+//  - totalHits == -1 => Failure
+    public void loadPixabayVideoRequestInfo1(String q, boolean safesearch, int page, int perPage) {
+        pixabayVideoInfo.clear();
+        PixabayService.createPixabayService().getVideoResults(getString(R.string.pixabay_api_key), q, safesearch, page, perPage).enqueue(new Callback<PixabayVideoRequestInfo>() {
+            @Override
+            public void onResponse(Call<PixabayVideoRequestInfo> call, Response<PixabayVideoRequestInfo> response) {
+                pixabayVideoInfo.addAll(response.body().getHits());
+                pixabayRecyclerAdapter.notifyDataSetChanged();
+                Toast.makeText(ChromaKeyVideoActivity.this, response.body().getTotalHits() + " results found.", Toast.LENGTH_SHORT).show();
+
+            }
+            @Override
+            public void onFailure(Call<PixabayVideoRequestInfo> call, Throwable t) {
+                Log.d("MyApp", "onFailure()");
+                Toast.makeText(ChromaKeyVideoActivity.this, "Error!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        Log.d("MyApp", "loadPixabayVideoRequestInfo1 END");
     }
 
 //  Cases:

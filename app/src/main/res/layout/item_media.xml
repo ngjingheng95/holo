@@ -32,6 +32,7 @@
         android:layout_width="175dp"
         android:layout_height="175dp"
         android:scaleType="centerCrop"
+        android:layout_margin="1dp"
         />
 
     <ImageView
@@ -43,6 +44,19 @@
         android:padding="4dp"
         android:src="@drawable/play"
         android:visibility="gone"/>
+
+<!--    <ImageView-->
+<!--        android:id="@+id/item_delete"-->
+<!--        android:layout_width="15dp"-->
+<!--        android:layout_height="15dp"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        android:padding="2dp"-->
+<!--        android:src="@drawable/play"-->
+<!--        android:visibility="gone"-->
+<!--        android:clickable="true"-->
+<!--        android:onClick="onClickTest"/>-->
+
 </RelativeLayout>
 
 <!--<android.support.constraint.ConstraintLayout-->
