@@ -28,10 +28,12 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="false"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".camera.CameraActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
-        <activity android:name=".HoloHomepage"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity
+            android:name=".camera.CameraActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".HoloHomepage"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <!--
              This tag indicates that this application requires ARCore. This results in the
             application only being visible in the Google Play Store on devices that support
@@ -40,6 +42,9 @@
         <meta-data
             android:name="com.google.ar.core"
             android:value="required" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
 
         <activity
             android:name=".SplashScreenActivity"

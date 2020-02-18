@@ -45,4 +45,6 @@
     <string name="pixabay_api_key">14544553-0e1b98624eb523a32fdc4f672</string>
     <string name="permission_request">Permission required for camera and audio recording.</string>
     <string name="camera_error">This device doesn\'t support Camera2 API.</string>
+    <string name="app_tagline">Augment your world!</string>
+
 </resources>

@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- THIS VERSION IS DEPRECATED! -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -6,82 +8,417 @@
     android:layout_height="match_parent"
     tools:context=".HoloHomepage"
     android:id="@+id/homepage_layout"
+    android:background="@color/gray_bg"
     >
+
+<!-- Pacifico Font -->
+    <ImageView
+        android:layout_width="250dp"
+        android:layout_height="100dp"
+        android:src="@drawable/arhologramtitle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:id="@+id/homepage_logo"
+        />
+
+    <TextView
+        android:id="@+id/homepage_tagline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/homepage_logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/montserrat"
+        android:text="Augment your world!"
+        android:textColor="#FFF" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/homepage_top"
-        android:background="@color/gray_bg">
+        android:layout_height="match_parent"
+        android:id="@+id/homepage_outer_layout"
+        android:layout_below="@+id/homepage_tagline"
+        android:background="@drawable/homepage_menu_bg"
+        android:padding="30dp">
 
-        <ImageView
-            android:layout_width="100dp"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/homepage_my_holos"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="My Holos:"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:fontFamily="@font/montserrat"
+                android:id="@+id/homepage_my_holos_text"
+                />
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/homepage_my_holos_bottom"
+                android:layout_below="@+id/homepage_my_holos_text">
+
+                <com.github.rongi.rotate_layout.layout.RotateLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:angle="90">
+
+<!--                    <ListView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:id="@+id/homepage_my_holos_preview"-->
+<!--                        android:layout_toLeftOf="@+id/btn_create_holo"/>                    -->
+
+                    <ListView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/homepage_my_holos_preview"
+                        android:layout_toLeftOf="@+id/btn_create_holo"/>
+
+                </com.github.rongi.rotate_layout.layout.RotateLayout>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="Create Holo"
+                    android:textAllCaps="false"
+                    android:textSize="12sp"
+                    android:id="@+id/btn_create_holo"/>
+
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/homepage_browse_holo"
+            android:layout_below="@+id/homepage_my_holos">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Browse Holos:"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:fontFamily="@font/montserrat"
+                android:id="@+id/homepage_browse_holos_text"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@id/homepage_browse_holos_text"
+                android:id="@+id/homepage_browse_holos_row_1"
+                android:layout_margin="5dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="@drawable/bg_browse_holos"
+                        android:padding="20dp"
+                        android:layout_marginRight="5dp"
+                        android:clickable="true"
+                        >
+
+                        <ImageView
+                            android:src="@drawable/tiger_icon"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center_horizontal"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Animals"
+                            android:textColor="#000"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="5dp"/>
+
+
+
+                    </LinearLayout>
+
+
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:background="@drawable/bg_browse_holos"
+                    android:padding="20dp"
+                    android:layout_marginLeft="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        >
+
+                        <ImageView
+                            android:src="@drawable/superhero_icon"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center_horizontal"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Characters"
+                            android:textColor="#000"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="5dp"/>
+
+                    </LinearLayout>
+
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@id/homepage_browse_holos_row_1"
+                android:id="@+id/homepage_browse_holos_row_2"
+                android:layout_margin="5dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="@drawable/bg_browse_holos"
+                        android:padding="20dp"
+                        android:layout_marginRight="5dp"
+                        >
+
+                        <ImageView
+                            android:src="@drawable/pixabay_logo"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center_horizontal"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Search Pixabay"
+                            android:textColor="#000"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="5dp"/>
+
+
+
+                    </LinearLayout>
+
+
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:background="@drawable/bg_browse_holos"
+                    android:padding="20dp"
+                    android:layout_marginLeft="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        >
+
+                        <ImageView
+                            android:src="@drawable/yt_logo_rgb_light"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center_horizontal"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Search Youtube"
+                            android:textColor="#000"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="5dp"/>
+
+                    </LinearLayout>
+
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:id="@+id/homepage_browse_holo_button_layout"-->
+<!--                android:layout_below="@id/homepage_browse_holos_text"-->
+<!--                android:orientation="vertical">-->
+<!--                -->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="0dp"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:id="@+id/homepage_browse_holo_row1"-->
+<!--                    >-->
+
+
+
+<!--                    <Button-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:id="@+id/homepage_browse_holo_animals"-->
+<!--                        android:text="Animals"-->
+<!--                        android:textAllCaps="false"-->
+<!--                        android:textSize="12sp" />-->
+
+<!--                    <Button-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:id="@+id/homepage_browse_holo_characters"-->
+<!--                        android:layout_toRightOf="@+id/homepage_browse_holo_animals"-->
+<!--                        android:layout_alignParentRight="true"-->
+<!--                        android:text="Characters"-->
+<!--                        android:textAllCaps="false"-->
+<!--                        android:textSize="12sp" />-->
+
+
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="0dp"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:id="@+id/homepage_browse_holo_row2"-->
+<!--                    >-->
+
+<!--                    <Button-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:id="@+id/homepage_browse_holo_pixabay"-->
+<!--                        android:text="Pixabay"-->
+<!--                        android:textAllCaps="false"-->
+<!--                        android:textSize="12sp"/>-->
+
+<!--                    <Button-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:id="@+id/homepage_browse_holo_youtube"-->
+<!--                        android:text="Youtube"-->
+<!--                        android:textAllCaps="false"-->
+<!--                        android:textSize="12sp"/>-->
+
+
+<!--                </LinearLayout>-->
+
+<!--            </LinearLayout>-->
+        </RelativeLayout>
+
+        <Button
+            android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:src="@drawable/ar_logo"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:id="@+id/homepage_logo"
+            android:text="Add Hologram"
+            android:textAllCaps="false"
+            android:id="@+id/btn_place_holo"
+            android:layout_below="@+id/homepage_browse_holo"
             />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/app_name"
-            android:id="@+id/homepage_appname"
-            android:layout_below="@+id/homepage_logo"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="20dp"
-            android:textColor="#FFF" />
+
+
+
 
     </RelativeLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/homepage_top"
-        android:id="@+id/homepage_scrollview">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:text="Place Holos"
-                android:id="@+id/btn_place_holo"/>
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:text="Create Holo"
-                android:id="@+id/btn_create_holo"
-                />
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:text="View Created Holos"
-                />
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:text="Featured Holos"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:text="Character Holos"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:text="Animal Holos"/>
 
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:text="View My Holos"/>
+
+
+
+
+<!--    <ScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_below="@+id/homepage_tagline"-->
+<!--        android:id="@+id/homepage_scrollview"-->
+<!--        android:background="@drawable/homepage_menu_bg">-->
+<!--        <RelativeLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content">-->
+
+<!--            <Button-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="150dp"-->
+<!--                android:text="Place Holos"-->
+<!--                android:id="@+id/btn_place_holo"/>-->
+
+<!--            <Button-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="150dp"-->
+<!--                android:text="Create Holo"-->
+<!--                android:id="@+id/btn_create_holo"-->
+<!--                android:layout_below="@+id/btn_place_holo"-->
+<!--                />-->
+
+<!--            <Button-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="150dp"-->
+<!--                android:text="View Created Holos"-->
+<!--                android:layout_below="@+id/btn_place_holo"-->
+<!--                />-->
+
+<!--            <Button-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="150dp"-->
+<!--                android:text="Featured Holos"/>-->
+<!--            <Button-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="150dp"-->
+<!--                android:text="Character Holos"/>-->
+<!--            <Button-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="150dp"-->
+<!--                android:text="Animal Holos"/>-->
+
+
+<!--            <Button-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="150dp"-->
+<!--                android:text="View My Holos"/>-->
 
 
     <!--        <RelativeLayout-->
@@ -106,7 +443,5 @@
     <!--        </RelativeLayout>-->
 
 
-        </LinearLayout>
+        </RelativeLayout>
 
-    </ScrollView>
-</RelativeLayout>

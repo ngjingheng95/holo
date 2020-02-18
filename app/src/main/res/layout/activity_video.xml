@@ -104,7 +104,7 @@
             android:id="@+id/placement_menu_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:alpha=".45"
+            android:alpha=".35"
             android:background="@android:color/black"/>
 
       <android.support.v7.widget.CardView
@@ -156,7 +156,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:layout_below="@id/tabs"
-              android:layout_marginTop="60dp">
+              android:layout_marginTop="100dp">
 
               <RelativeLayout
                   android:layout_width="match_parent"
@@ -164,7 +164,7 @@
                   android:layout_below="@id/tabs"
                   android:orientation="vertical">
 
-                  <GridView
+                  <com.google.ar.sceneform.samples.chromakeyvideo.DynamicGridView
                       android:id="@+id/gallery"
                       android:layout_width="match_parent"
                       android:layout_height="700dp"
@@ -318,6 +318,7 @@
         app:elevation="16dp"
         app:fabSize="normal"/>
 
+
       <android.support.design.widget.FloatingActionButton
           android:id="@+id/test_fab"
           android:layout_width="56dp"
@@ -328,8 +329,501 @@
           android:layout_marginEnd="23dp"
           app:backgroundTint="@color/recordRed"
           android:clickable="true"
+          android:onClick="onClickMainTabView"
           app:elevation="16dp"
           app:fabSize="mini"/>
+
+
+      <RelativeLayout
+          android:layout_height="match_parent"
+          android:layout_width="match_parent"
+          android:visibility="gone"
+          android:animateLayoutChanges="true"
+          android:id="@+id/main_tab_group">
+          <RelativeLayout
+              android:id="@+id/main_tab_fade"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:alpha=".35"
+              android:background="@android:color/black">
+<!--              <ImageView-->
+<!--                  android:layout_width="wrap_content"-->
+<!--                  android:layout_height="wrap_content"-->
+<!--                  android:layout_centerInParent="true"-->
+<!--                  android:src="@drawable/move_phone_icon"-->
+<!--                  android:id="@+id/move_phone_icon"/>-->
+          </RelativeLayout>
+
+          <RelativeLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_above="@id/main_tab"
+              android:background="@color/ultraLightGrey"
+              android:id="@+id/main_tab_header_1"
+              >
+
+              <RelativeLayout
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:clickable="true"
+                  android:onClick="onClickBackView"
+                  android:layout_alignParentLeft="true"
+                  android:layout_marginVertical="10dp"
+                  android:layout_marginHorizontal="15dp"
+                  android:layout_centerVertical="true"
+                  android:id="@+id/back_button"
+                  android:visibility="gone">
+
+                  <ImageView
+                      android:layout_width="20dp"
+                      android:layout_height="20dp"
+                      android:id="@+id/back_button_icon"
+                      android:src="@drawable/back_icon"
+                      android:layout_centerVertical="true"/>
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Back"
+                      android:layout_centerVertical="true"
+                      android:textColor="#000"
+                      android:layout_toRightOf="@+id/back_button_icon"
+                      />
+
+              </RelativeLayout>
+
+              <ImageView
+                  android:layout_width="20dp"
+                  android:layout_height="20dp"
+                  android:src="@drawable/close_icon"
+                  android:layout_alignParentRight="true"
+                  android:layout_marginVertical="10dp"
+                  android:layout_marginHorizontal="15dp"
+                  android:layout_centerVertical="true"
+                  android:id="@+id/close_button"
+                  android:clickable="true"
+                  android:onClick="onClickCloseView"/>
+
+              <RelativeLayout
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/pixabay_search_bar"
+                  android:visibility="gone"
+                  android:layout_marginHorizontal="50dp"
+                  android:layout_centerVertical="true"
+                  android:layout_toLeftOf="@id/close_button">
+
+
+
+                  <android.support.v7.widget.AppCompatEditText
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/pixabay_search_text"
+                      android:hint="Search Holos on Pixabay   "
+                      android:backgroundTint="@color/gray_bg"
+                      android:textColorHint="@color/gray_bg"
+                      android:textColor="@color/gray_overlay"
+                      />
+
+                  <RelativeLayout
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/pixabay_search_btn"
+                      android:layout_toRightOf="@id/pixabay_search_text"
+                      android:layout_centerVertical="true"
+                      android:layout_marginHorizontal="10dp">
+
+                      <ImageView
+                          android:layout_width="25dp"
+                          android:layout_height="25dp"
+                          android:src="@drawable/search_icon"
+                          android:layout_centerInParent="true"/>
+
+                  </RelativeLayout>
+
+
+
+
+
+              </RelativeLayout>
+
+
+
+          </RelativeLayout>
+
+
+
+
+          <RelativeLayout
+              android:layout_width="match_parent"
+              android:layout_height="177dp"
+              android:layout_alignParentBottom="true"
+              android:background="#FFF"
+              android:id="@+id/main_tab">
+
+              <!--       New Tab       -->
+              <android.support.v7.widget.RecyclerView
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/new_tab"
+                  android:visibility="gone"
+                  android:scrollbars="horizontal"
+                  android:scrollbarSize="5dp"/>
+
+              <!--       Animals Tab       -->
+              <android.support.v7.widget.RecyclerView
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/animals_tab"
+                  android:visibility="gone"
+                  android:scrollbars="horizontal"
+                  android:scrollbarSize="5dp"/>
+
+              <!--       Characters Tab       -->
+              <android.support.v7.widget.RecyclerView
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/characters_tab"
+                  android:visibility="gone"
+                  android:scrollbars="horizontal"
+                  android:scrollbarSize="5dp"/>
+
+              <!--       My Holos Tab       -->
+              <android.support.v7.widget.RecyclerView
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/my_holos_tab"
+                  android:visibility="gone"
+                  android:scrollbars="horizontal"
+                  android:scrollbarSize="5dp"/>
+
+              <!--       Pixabay Tab       -->
+              <android.support.v7.widget.RecyclerView
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:scrollbars="horizontal"
+                  android:id="@+id/pixabay_tab"
+                  android:visibility="gone"
+                  android:scrollbarSize="5dp"/>
+
+
+              <!--      Buttons Layout        -->
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:padding="10dp"
+                  android:visibility="visible"
+                  android:id="@+id/buttons_tab"
+                  >
+
+                  <LinearLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="0dp"
+                      android:layout_weight="1"
+                      android:orientation="horizontal"
+                      android:id="@+id/buttons_row_1">
+
+                      <LinearLayout
+                          android:layout_width="0dp"
+                          android:layout_weight="1"
+                          android:layout_height="wrap_content"
+                          android:orientation="vertical"
+                          android:background="@drawable/bg_browse_holos"
+                          android:padding="10dp"
+                          android:layout_margin="3dp"
+                          android:clickable="true"
+                          android:onClick="onClickNewView"
+                          android:elevation="2dp"
+                          >
+
+                          <ImageView
+                              android:src="@drawable/new_icon"
+                              android:layout_width="30dp"
+                              android:layout_height="30dp"
+                              android:layout_gravity="center_horizontal"/>
+
+                          <TextView
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:text="New!"
+                              android:textColor="#000"
+                              android:layout_gravity="center_horizontal"
+                              android:layout_marginTop="5dp"/>
+
+
+                      </LinearLayout>
+
+                      <LinearLayout
+                          android:layout_width="0dp"
+                          android:layout_weight="1"
+                          android:layout_height="wrap_content"
+                          android:orientation="vertical"
+                          android:background="@drawable/bg_browse_holos"
+                          android:padding="10dp"
+                          android:layout_margin="3dp"
+                          android:clickable="true"
+                          android:onClick="onClickAnimalsView"
+                          android:elevation="2dp"
+                          >
+
+                          <ImageView
+                              android:src="@drawable/tiger_icon"
+                              android:layout_width="30dp"
+                              android:layout_height="30dp"
+                              android:layout_gravity="center_horizontal"/>
+
+                          <TextView
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:text="Animals"
+                              android:textColor="#000"
+                              android:layout_gravity="center_horizontal"
+                              android:layout_marginTop="5dp"/>
+
+
+                      </LinearLayout>
+
+                      <LinearLayout
+                          android:layout_width="0dp"
+                          android:layout_weight="1"
+                          android:layout_height="wrap_content"
+                          android:orientation="vertical"
+                          android:background="@drawable/bg_browse_holos"
+                          android:padding="10dp"
+                          android:layout_margin="3dp"
+                          android:clickable="true"
+                          android:onClick="onClickCharactersView"
+                          android:elevation="2dp"
+                          >
+
+                          <ImageView
+                              android:src="@drawable/superhero_icon"
+                              android:layout_width="30dp"
+                              android:layout_height="30dp"
+                              android:layout_gravity="center_horizontal"/>
+
+                          <TextView
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:text="Characters"
+                              android:textColor="#000"
+                              android:layout_gravity="center_horizontal"
+                              android:layout_marginTop="5dp"/>
+
+
+                      </LinearLayout>
+
+
+                  </LinearLayout>
+
+                  <LinearLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="0dp"
+                      android:layout_weight="1"
+                      android:orientation="horizontal"
+                      android:id="@+id/buttons_row_2">
+
+                      <LinearLayout
+                          android:layout_width="0dp"
+                          android:layout_weight="1"
+                          android:layout_height="wrap_content"
+                          android:orientation="vertical"
+                          android:background="@drawable/bg_browse_holos"
+                          android:padding="10dp"
+                          android:layout_margin="3dp"
+                          android:clickable="true"
+                          android:onClick="onClickMyHoloView"
+                          android:elevation="2dp"
+                          >
+
+                          <ImageView
+                              android:src="@drawable/idea_icon"
+                              android:layout_width="30dp"
+                              android:layout_height="30dp"
+                              android:layout_gravity="center_horizontal"/>
+
+                          <TextView
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:text="My Holos"
+                              android:textColor="#000"
+                              android:layout_gravity="center_horizontal"
+                              android:layout_marginTop="5dp"/>
+
+
+                      </LinearLayout>
+
+                      <LinearLayout
+                          android:layout_width="0dp"
+                          android:layout_weight="1"
+                          android:layout_height="wrap_content"
+                          android:orientation="vertical"
+                          android:background="@drawable/bg_browse_holos"
+                          android:padding="10dp"
+                          android:layout_margin="3dp"
+                          android:clickable="true"
+                          android:onClick="onClickPixabayView"
+                          android:elevation="2dp"
+                          >
+
+                          <ImageView
+                              android:src="@drawable/pixabay_logo"
+                              android:layout_width="30dp"
+                              android:layout_height="30dp"
+                              android:layout_gravity="center_horizontal"/>
+
+                          <TextView
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:text="Search Pixabay"
+                              android:textColor="#000"
+                              android:layout_gravity="center_horizontal"
+                              android:layout_marginTop="5dp"/>
+
+
+                      </LinearLayout>
+
+                      <LinearLayout
+                          android:layout_width="0dp"
+                          android:layout_weight="1"
+                          android:layout_height="wrap_content"
+                          android:orientation="vertical"
+                          android:background="@drawable/bg_browse_holos"
+                          android:padding="10dp"
+                          android:layout_margin="3dp"
+                          android:clickable="true"
+                          android:onClick="onClickTest"
+                          android:elevation="2dp"
+                          >
+
+                          <ImageView
+                              android:src="@drawable/yt_logo_rgb_light2"
+                              android:layout_width="30dp"
+                              android:layout_height="30dp"
+                              android:layout_gravity="center_horizontal"/>
+
+                          <TextView
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:text="Search Youtube"
+                              android:textColor="#000"
+                              android:layout_gravity="center_horizontal"
+                              android:layout_marginTop="5dp"/>
+
+
+                      </LinearLayout>
+
+
+                  </LinearLayout>
+
+              </LinearLayout>
+          </RelativeLayout>
+
+      </RelativeLayout>
+
+
+
+<!--      <LinearLayout-->
+<!--          android:layout_width="match_parent"-->
+<!--          android:layout_height="wrap_content"-->
+<!--          android:layout_alignParentBottom="true"-->
+<!--          android:background="#FFF"-->
+<!--          android:padding="20dp">-->
+<!--          -->
+<!--          <LinearLayout-->
+<!--              android:layout_width="match_parent"-->
+<!--              android:layout_height="0dp"-->
+<!--              android:layout_weight="1"-->
+<!--              android:orientation="horizontal">-->
+<!--    -->
+<!--              <LinearLayout-->
+<!--                  android:layout_width="0dp"-->
+<!--                  android:layout_weight="1"-->
+<!--                  android:layout_height="wrap_content"-->
+<!--                  android:id="@+id/btn_animals"-->
+<!--                  android:orientation="vertical"-->
+<!--                  android:background="@drawable/bg_browse_holos"-->
+<!--                  android:padding="15dp"-->
+<!--                  android:layout_margin="3dp"-->
+<!--                  android:clickable="true"-->
+<!--                  >-->
+<!--    -->
+<!--                  <ImageView-->
+<!--                      android:src="@drawable/tiger_icon"-->
+<!--                      android:layout_width="30dp"-->
+<!--                      android:layout_height="30dp"-->
+<!--                      android:layout_gravity="center_horizontal"/>-->
+<!--    -->
+<!--                  <TextView-->
+<!--                      android:layout_width="wrap_content"-->
+<!--                      android:layout_height="wrap_content"-->
+<!--                      android:text="Animals"-->
+<!--                      android:textColor="#000"-->
+<!--                      android:layout_gravity="center_horizontal"-->
+<!--                      android:layout_marginTop="5dp"/>-->
+<!--    -->
+<!--              </LinearLayout>-->
+<!--    -->
+<!--              <LinearLayout-->
+<!--                  android:layout_width="0dp"-->
+<!--                  android:layout_weight="1"-->
+<!--                  android:layout_height="wrap_content"-->
+<!--                  android:id="@+id/btn_characters"-->
+<!--                  android:orientation="vertical"-->
+<!--                  android:background="@drawable/bg_browse_holos"-->
+<!--                  android:padding="15dp"-->
+<!--                  android:layout_margin="3dp"-->
+<!--                  android:clickable="true"-->
+<!--                  >-->
+<!--    -->
+<!--                  <ImageView-->
+<!--                      android:src="@drawable/tiger_icon"-->
+<!--                      android:layout_width="30dp"-->
+<!--                      android:layout_height="30dp"-->
+<!--                      android:layout_gravity="center_horizontal"/>-->
+<!--    -->
+<!--                  <TextView-->
+<!--                      android:layout_width="wrap_content"-->
+<!--                      android:layout_height="wrap_content"-->
+<!--                      android:text="Animals"-->
+<!--                      android:textColor="#000"-->
+<!--                      android:layout_gravity="center_horizontal"-->
+<!--                      android:layout_marginTop="5dp"/>-->
+<!--    -->
+<!--              </LinearLayout>-->
+<!--    -->
+<!--              <LinearLayout-->
+<!--                  android:layout_width="0dp"-->
+<!--                  android:layout_weight="1"-->
+<!--                  android:layout_height="wrap_content"-->
+<!--                  android:id="@+id/btn_"-->
+<!--                  android:orientation="vertical"-->
+<!--                  android:background="@drawable/bg_browse_holos"-->
+<!--                  android:padding="15dp"-->
+<!--                  android:layout_margin="3dp"-->
+<!--                  android:clickable="true"-->
+<!--                  >-->
+<!--    -->
+<!--                  <ImageView-->
+<!--                      android:src="@drawable/tiger_icon"-->
+<!--                      android:layout_width="30dp"-->
+<!--                      android:layout_height="30dp"-->
+<!--                      android:layout_gravity="center_horizontal"/>-->
+<!--    -->
+<!--                  <TextView-->
+<!--                      android:layout_width="wrap_content"-->
+<!--                      android:layout_height="wrap_content"-->
+<!--                      android:text="Animals"-->
+<!--                      android:textColor="#000"-->
+<!--                      android:layout_gravity="center_horizontal"-->
+<!--                      android:layout_marginTop="5dp"/>-->
+<!--    -->
+<!--              </LinearLayout>-->
+<!--    -->
+<!--    -->
+<!--          </LinearLayout>-->
+
+<!--      </LinearLayout>-->
 
 
 
