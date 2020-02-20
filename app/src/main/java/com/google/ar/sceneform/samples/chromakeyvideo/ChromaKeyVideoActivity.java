@@ -852,6 +852,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
             arFragment.setOnTapArPlaneListener(
                     (HitResult hitresult, Plane plane, MotionEvent motionevent) -> {
                         changeObject1_vimeo(hitresult.createAnchor());
+                        disableArPlaneListener();
                     }
             );
         }
@@ -859,6 +860,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
             arFragment.setOnTapArPlaneListener(
                     (HitResult hitresult, Plane plane, MotionEvent motionevent) -> {
                         changeObject1(hitresult.createAnchor());
+                        disableArPlaneListener();
                     }
             );
         }
