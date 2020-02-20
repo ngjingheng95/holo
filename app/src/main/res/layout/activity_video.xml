@@ -505,6 +505,42 @@
                   android:visibility="gone"
                   android:scrollbarSize="5dp"/>
 
+              <!--       No Internet View       -->
+              <RelativeLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:id="@+id/no_internet_view"
+                  android:clickable="true"
+                  android:onClick="onClickInternetCheck"
+                  android:visibility="gone">
+
+                  <RelativeLayout
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_centerInParent="true">
+
+                      <TextView
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:text="Oops no internet detected. Tap here to try again after connecting."
+                          android:fontFamily="@font/montserrat"
+                          android:textSize="15sp"
+                          android:id="@+id/no_internet_text"
+                          android:textColor="@color/recordRed"
+                          android:layout_centerVertical="true"/>
+
+                      <ImageView
+                          android:layout_width="25dp"
+                          android:layout_height="25dp"
+                          android:layout_toRightOf="@id/no_internet_text"
+                          android:layout_marginHorizontal="10dp"
+                          android:layout_centerVertical="true"
+                          android:src="@drawable/no_wifi_icon"/>
+
+                  </RelativeLayout>
+
+              </RelativeLayout>
+
 
               <!--      Buttons Layout        -->
               <LinearLayout
@@ -692,7 +728,7 @@
                           android:padding="10dp"
                           android:layout_margin="3dp"
                           android:clickable="true"
-                          android:onClick="onClickTest"
+                          android:onClick="onClickComingSoon"
                           android:elevation="2dp"
                           >
 

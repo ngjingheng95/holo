@@ -20,6 +20,7 @@ public class RecyclerViewPixabayAdapter extends RecyclerView.Adapter<RecyclerVie
     private Context mContext;
     private OnArObjectListener mOnArObjectListener;
     private String mTag;
+    private int selectedPos = RecyclerView.NO_POSITION;
 
     private final String THUMBNAIL_URL = "https://i.vimeocdn.com/video/";
     private final String THUMBNAIL_SIZE = "_295x166.jpg";
@@ -40,6 +41,11 @@ public class RecyclerViewPixabayAdapter extends RecyclerView.Adapter<RecyclerVie
 
         @Override
         public void onClick(View v) {
+
+            if (getAdapterPosition() == RecyclerView.NO_POSITION) return;
+            notifyItemChanged(selectedPos);
+            selectedPos = getAdapterPosition();
+            notifyItemChanged(selectedPos);
             onArObjectListener.onArObjectClick(getAdapterPosition(), mTag);
         }
     }
@@ -69,6 +75,7 @@ public class RecyclerViewPixabayAdapter extends RecyclerView.Adapter<RecyclerVie
 
         String url = THUMBNAIL_URL + pixabayVideoInfo.get(position).getPictureId() + THUMBNAIL_SIZE;
         Picasso.with(mContext).load(url).into(holder.gridItemImage);
+        holder.itemView.setBackgroundColor(selectedPos == position ? Color.BLUE : Color.TRANSPARENT);
 
     }
 
@@ -86,6 +93,12 @@ public class RecyclerViewPixabayAdapter extends RecyclerView.Adapter<RecyclerVie
 
     public PixabayVideoInfo getItem(int position) {
         return pixabayVideoInfo.get(position);
+    }
+
+    public void clearHighlight() {
+        notifyItemChanged(selectedPos);
+        selectedPos = RecyclerView.NO_POSITION;
+        notifyItemChanged(selectedPos);
     }
 
 }

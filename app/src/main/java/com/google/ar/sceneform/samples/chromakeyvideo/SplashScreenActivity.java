@@ -104,7 +104,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         }
 
         protected void onPostExecute(String result) {
-            Toast.makeText(SplashScreenActivity.this, result, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(SplashScreenActivity.this, result, Toast.LENGTH_SHORT).show();
         }
     }
 
