@@ -8,25 +8,27 @@
     android:id="@+id/splashscreen_layout_1"
     >
 
-    <ImageView
-        android:layout_width="250dp"
-        android:layout_height="100dp"
-        android:background="@drawable/arhologramtitle"
-        android:layout_marginTop="100dp"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/splashscreen_logo"
-        />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/splashscreen_logo"
         android:text="@string/app_tagline"
         android:fontFamily="@font/montserrat"
         android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:textStyle="bold"
         android:id="@+id/splashscreen_title"
         />
+
+    <ImageView
+        android:id="@+id/splashscreen_logo"
+        android:layout_width="300dp"
+        android:layout_height="120dp"
+        android:layout_above="@id/splashscreen_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/arholo_full" />
+
+
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -37,17 +39,17 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/splashscreen_spinner"
             android:id="@+id/splashscreen_loading_text"
             android:layout_centerHorizontal="true"
             android:text="Loading..."
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="10dp"/>
 
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
+            android:layout_below="@id/splashscreen_loading_text"
             android:id="@+id/splashscreen_spinner"/>
 
     </RelativeLayout>

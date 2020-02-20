@@ -14,7 +14,7 @@
    limitations under the License.
 -->
 <resources>
-    <string name="app_name">AR Hologram</string>
+    <string name="app_name">ARHolo</string>
     <string name="permissions_denied_title">Permissions Denied</string>
     <string name="permissions_denied_message">Some REQUIRED_PERMISSIONS have been denied and ignored. All REQUIRED_PERMISSIONS must be accepted before continuing.\n\nAccept all REQUIRED_PERMISSIONS to continue.</string>
     <string name="permissions_denied_button">Continue</string>

@@ -120,40 +120,18 @@ public class SplashScreenActivity extends AppCompatActivity {
         File folder = new File(Commons2.MEDIA_DIR);
         boolean success = true;
         if (!folder.exists()) {
-            //Toast.makeText(MainActivity.this, "Directory Does Not Exist, Create It", Toast.LENGTH_SHORT).show();
             success = folder.mkdirs();
         }
         if (success) {
             try {
-//                saveToSDCard(R.raw.dance, "dance.mp4", "Featured");
-//                saveToSDCard(R.raw.lion_chroma, "lion_chroma.mp4", "Featured");
-                Log.d("yoyo", "downloadRawAssets: start Featured");
                 saveToSDCard(R.raw.dancingman, "dancingman.mp4", "Featured");
                 saveToSDCard(R.raw.thanosdance, "thanosdance.mp4", "Featured");
                 saveToSDCard(R.raw.spiderman, "spiderman.mp4", "Featured");
                 saveToSDCard(R.raw.ironman, "ironman.mp4", "Featured");
-                saveToSDCard(R.raw.robot2, "robot2.mp4", "Featured");
-                saveToSDCard(R.raw.robot3, "robot3.mp4", "Featured");
-                saveToSDCard(R.raw.robot4, "robot4.mp4", "Featured");
-                saveToSDCard(R.raw.robot5, "robot5.mp4", "Featured");
-                saveToSDCard(R.raw.batman, "batman.mp4", "Featured");
-                saveToSDCard(R.raw.deadpool, "deadpool.mp4", "Featured");
-//                saveToSDCard(R.raw.hulk, "hulk.mp4", "Featured");
                 saveToSDCard(R.raw.minions, "minions.mp4", "Featured");
-//                saveToSDCard(R.raw.people, "people.mp4", "Featured");
-//                saveToSDCard(R.raw.skeleton, "skeleton.mp4", "Featured");
                 saveToSDCard(R.raw.chicken, "chicken.mp4", "Featured");
                 saveToSDCard(R.raw.monkey, "monkey.mp4", "Featured");
-                saveToSDCard(R.raw.cheetah, "cheetah.mp4", "Featured");
-                saveToSDCard(R.raw.eagle, "eagle.mp4", "Featured");
-                saveToSDCard(R.raw.elephants, "elephants.mp4", "Featured");
-//                saveToSDCard(R.raw.flamingo, "flamingo.mp4", "Featured");
-                saveToSDCard(R.raw.giraffe, "giraffe.mp4", "Featured");
-//                saveToSDCard(R.raw.rabbit, "rabbit.mp4", "Featured");
-//                saveToSDCard(R.raw.stock, "stock.mp4", "Featured");
                 saveToSDCard(R.raw.tiger, "tiger.mp4", "Featured");
-                Log.d("yoyo", "downloadRawAssets: end Featured");
-
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
             }
@@ -171,17 +149,15 @@ public class SplashScreenActivity extends AppCompatActivity {
         }
         if (success2) {
             try {
-//                saveToSDCard(R.raw.dance, "dance.mp4", "Characters");
-//                saveToSDCard(R.raw.lion_chroma, "lion_chroma.mp4", "Characters");
+                saveToSDCard(R.raw.dancingman, "dancingman.mp4", "Characters");
+                saveToSDCard(R.raw.thanosdance, "thanosdance.mp4", "Characters");
                 saveToSDCard(R.raw.batman, "batman.mp4", "Characters");
                 saveToSDCard(R.raw.deadpool, "deadpool.mp4", "Characters");
-                saveToSDCard(R.raw.hulk, "hulk.mp4", "Characters");
                 saveToSDCard(R.raw.ironman, "ironman.mp4", "Characters");
                 saveToSDCard(R.raw.minions, "minions.mp4", "Characters");
                 saveToSDCard(R.raw.people, "people.mp4", "Characters");
                 saveToSDCard(R.raw.skeleton, "skeleton.mp4", "Characters");
                 saveToSDCard(R.raw.spiderman, "spiderman.mp4", "Characters");
-//                saveToSDCard(R.raw.robot1, "robot1.mp4", "Characters");
                 saveToSDCard(R.raw.robot2, "robot2.mp4", "Characters");
                 saveToSDCard(R.raw.robot3, "robot3.mp4", "Characters");
                 saveToSDCard(R.raw.robot4, "robot4.mp4", "Characters");
@@ -197,7 +173,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         File folder3 = new File(Commons4.MEDIA_DIR);
         boolean success3 = true;
         if (!folder3.exists()) {
-            //Toast.makeText(ChromaKeyVideoActivity.this, "Directory Does Not Exist, Create It", Toast.LENGTH_SHORT).show();
             success3 = folder3.mkdirs();
         }
         if (success3) {
@@ -206,13 +181,11 @@ public class SplashScreenActivity extends AppCompatActivity {
                 saveToSDCard(R.raw.monkey, "monkey.mp4", "Animals");
                 saveToSDCard(R.raw.cheetah, "cheetah.mp4", "Animals");
                 saveToSDCard(R.raw.eagle, "eagle.mp4", "Animals");
-                saveToSDCard(R.raw.elephants, "elephants.mp4", "Animals");
                 saveToSDCard(R.raw.flamingo, "flamingo.mp4", "Animals");
                 saveToSDCard(R.raw.giraffe, "giraffe.mp4", "Animals");
                 saveToSDCard(R.raw.rabbit, "rabbit.mp4", "Animals");
                 saveToSDCard(R.raw.stock, "stock.mp4", "Animals");
                 saveToSDCard(R.raw.tiger, "tiger.mp4", "Animals");
-//                Toast.makeText(SplashScreenActivity.this, "ANIMALS DONE", Toast.LENGTH_SHORT).show();
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
             }

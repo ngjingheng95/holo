@@ -30,50 +30,16 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       >
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/create_holo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleType="center"
-        android:layout_alignBottom="@+id/playback_play_pause"
-        android:layout_marginBottom="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_toLeftOf="@+id/playback_play_pause"
-        android:clickable="true"
-        android:src="@drawable/create_ar"
-        app:backgroundTint="@color/ultraLightGrey"
-        app:fabSize="normal"/>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/playback_play_pause"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/capture_video"
-        android:layout_marginBottom="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_toLeftOf="@+id/capture_video"
-        android:clickable="true"
-        android:src="@drawable/ic_pause_white"
-        android:tint="@color/darkGrey"
-        app:backgroundTint="@color/ultraLightGrey"
-        android:visibility="invisible"
-        app:fabSize="mini"/>
-
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/capture_photo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/capture_video"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_toRightOf="@+id/capture_video"
-        android:clickable="true"
-        android:src="@drawable/ic_photo_camera_24dp"
-        android:tint="@color/darkGrey"
-        app:backgroundTint="@color/ultraLightGrey"
-        app:fabSize="mini"
-        android:visibility="invisible"/>
+      <ImageView
+          android:layout_width="30dp"
+          android:layout_height="30dp"
+          android:layout_alignParentTop="true"
+          android:layout_alignParentLeft="true"
+          android:layout_margin="20dp"
+          android:clickable="true"
+          android:onClick="onClickBackBtn1"
+          android:src="@drawable/left_arrow_white"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/capture_video"
@@ -92,7 +58,8 @@
         app:fabSize="normal"/>
 
   </RelativeLayout>
-  <RelativeLayout
+
+    <RelativeLayout
       android:id="@+id/placement_group"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
@@ -100,238 +67,20 @@
       android:clipToPadding="false"
       android:elevation="12dp">
 
-        <View
-            android:id="@+id/placement_menu_background"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:alpha=".35"
-            android:background="@android:color/black"/>
-
-      <android.support.v7.widget.CardView
-          android:id="@+id/placement_menu"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_alignParentEnd="false"
-          android:layout_marginTop="500dp"
-          android:paddingTop="16dp"
-          android:paddingBottom="16dp"
-          android:translationX="16dp"
-          app:cardCornerRadius="8dp">
-
-          <android.support.design.widget.TabLayout
-              android:id="@+id/tabs"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              app:tabGravity="fill"
-              app:tabMode="fixed">
-
-              <android.support.design.widget.TabItem
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="My Holos" />
-
-              <android.support.design.widget.TabItem
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="Featured" />
-
-              <android.support.design.widget.TabItem
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="Characters" />
-
-              <android.support.design.widget.TabItem
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="Animals" />
-
-              <android.support.design.widget.TabItem
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="Pixabay" />
-
-          </android.support.design.widget.TabLayout>
-
-          <ScrollView
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:layout_below="@id/tabs"
-              android:layout_marginTop="100dp">
-
-              <RelativeLayout
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-                  android:layout_below="@id/tabs"
-                  android:orientation="vertical">
-
-                  <com.google.ar.sceneform.samples.chromakeyvideo.DynamicGridView
-                      android:id="@+id/gallery"
-                      android:layout_width="match_parent"
-                      android:layout_height="700dp"
-                      android:layout_below="@+id/tabs"
-                      android:gravity="center"
-                      android:horizontalSpacing="1dp"
-                      android:numColumns="4"
-                      android:stretchMode="columnWidth"
-                      android:verticalSpacing="1dp"
-                      tools:ignore="NotSibling" />
-
-                  <com.google.ar.sceneform.samples.chromakeyvideo.DynamicGridView
-                      android:id="@+id/gallery2"
-                      android:layout_width="match_parent"
-                      android:layout_height="700dp"
-                      android:layout_below="@id/tabs"
-                      android:gravity="center"
-                      android:horizontalSpacing="1dp"
-                      android:numColumns="4"
-                      android:stretchMode="columnWidth"
-                      android:verticalSpacing="1dp"
-                      android:visibility="gone"
-                      tools:ignore="NotSibling" />
-
-                  <com.google.ar.sceneform.samples.chromakeyvideo.DynamicGridView
-                      android:id="@+id/gallery3"
-                      android:layout_width="match_parent"
-                      android:layout_height="700dp"
-                      android:layout_below="@id/tabs"
-                      android:gravity="center"
-                      android:horizontalSpacing="1dp"
-                      android:numColumns="4"
-                      android:stretchMode="columnWidth"
-                      android:verticalSpacing="1dp"
-                      android:visibility="gone"
-                      tools:ignore="NotSibling" />
-
-                  <com.google.ar.sceneform.samples.chromakeyvideo.DynamicGridView
-                      android:id="@+id/gallery4"
-                      android:layout_width="match_parent"
-                      android:layout_height="700dp"
-                      android:layout_below="@id/tabs"
-                      android:gravity="center"
-                      android:horizontalSpacing="1dp"
-                      android:numColumns="4"
-                      android:stretchMode="columnWidth"
-                      android:verticalSpacing="1dp"
-                      android:visibility="gone"
-                      tools:ignore="NotSibling" />
-
-
-                  <EditText
-                      android:layout_width="match_parent"
-                      android:layout_height="match_parent"
-                      android:visibility="gone"
-                      android:layout_toLeftOf="@+id/pixabaySearchButton"
-                      android:layout_toRightOf="@id/pixabaySearchBackButton"
-                      android:id="@+id/pixabaySearchQuery"
-                      android:hint="Search Pixabay"
-                      />
-
-                  <Button
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:visibility="gone"
-                      android:id="@+id/pixabaySearchButton"
-                      android:layout_alignParentRight="true"
-                      android:text="Search"
-                      android:layout_alignBottom="@+id/pixabaySearchQuery"
-                      android:layout_alignTop="@id/pixabaySearchQuery"
-                      />
-
-                  <Button
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:visibility="gone"
-                      android:id="@+id/pixabaySearchBackButton"
-                      android:onClick="onClickPixabayBackButton"
-                      android:layout_alignParentLeft="true"
-                      android:text="Back"
-                      android:layout_alignBottom="@+id/pixabaySearchQuery"
-                      android:layout_alignTop="@id/pixabaySearchQuery"
-                      />
-
-                  <TextView
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:id="@+id/pixabaySearchLoadingText"
-                      android:visibility="gone"
-                      android:text="Loading..."
-                      android:textStyle="bold"
-                      android:layout_alignBottom="@+id/pixabaySearchBackButton"
-                      android:layout_alignTop="@+id/pixabaySearchBackButton"
-                      android:layout_centerHorizontal="true"
-                      />
-
-
-                  <com.google.ar.sceneform.samples.chromakeyvideo.DynamicGridView
-                      android:id="@+id/gallery5"
-                      android:layout_width="match_parent"
-                      android:layout_height="700dp"
-                      android:layout_below="@id/pixabaySearchBackButton"
-                      android:gravity="center"
-                      android:horizontalSpacing="1dp"
-                      android:numColumns="4"
-                      android:stretchMode="columnWidth"
-                      android:verticalSpacing="1dp"
-                      android:visibility="gone" />
-
-                  <TextView
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:layout_below="@+id/pixabaySearchQuery"
-                      android:layout_marginTop="20dp"
-                      android:layout_marginBottom="20dp"
-                      android:layout_marginLeft="20dp"
-                      android:layout_alignParentLeft="true"
-                      android:text="Or Search by Categories..."
-                      android:visibility="gone"
-                      android:id="@+id/infoText"/>
-
-                  <com.google.ar.sceneform.samples.chromakeyvideo.DynamicGridView
-                      android:id="@+id/pixabayCategories"
-                      android:layout_width="match_parent"
-                      android:layout_height="700dp"
-                      android:layout_below="@id/infoText"
-                      android:gravity="center"
-                      android:horizontalSpacing="1dp"
-                      android:numColumns="4"
-                      android:stretchMode="columnWidth"
-                      android:verticalSpacing="1dp"
-                      android:visibility="gone"
-                      />
-
-              </RelativeLayout>
-
-          </ScrollView>
-      </android.support.v7.widget.CardView>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/placement_fab"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="25dp"
-        android:layout_marginEnd="23dp"
-        app:backgroundTint="@color/colorPrimary"
-        android:clickable="true"
-        android:src="@drawable/ic_add_white"
-        app:elevation="16dp"
-        app:fabSize="normal"/>
-
-
       <android.support.design.widget.FloatingActionButton
-          android:id="@+id/test_fab"
+          android:id="@+id/add_holo_fab"
           android:layout_width="56dp"
           android:layout_height="56dp"
-          android:layout_alignParentTop="true"
+          android:layout_alignParentBottom="true"
           android:layout_alignParentEnd="true"
           android:layout_marginBottom="25dp"
           android:layout_marginEnd="23dp"
-          app:backgroundTint="@color/recordRed"
+          app:backgroundTint="@color/colorPrimary"
+          android:src="@drawable/ic_add_white"
           android:clickable="true"
           android:onClick="onClickMainTabView"
           app:elevation="16dp"
-          app:fabSize="mini"/>
+          app:fabSize="normal"/>
 
 
       <RelativeLayout
@@ -346,12 +95,6 @@
               android:layout_height="match_parent"
               android:alpha=".35"
               android:background="@android:color/black">
-<!--              <ImageView-->
-<!--                  android:layout_width="wrap_content"-->
-<!--                  android:layout_height="wrap_content"-->
-<!--                  android:layout_centerInParent="true"-->
-<!--                  android:src="@drawable/move_phone_icon"-->
-<!--                  android:id="@+id/move_phone_icon"/>-->
           </RelativeLayout>
 
           <RelativeLayout
@@ -390,6 +133,7 @@
                       />
 
               </RelativeLayout>
+
 
               <ImageView
                   android:layout_width="20dp"
@@ -756,112 +500,6 @@
           </RelativeLayout>
 
       </RelativeLayout>
-
-
-
-<!--      <LinearLayout-->
-<!--          android:layout_width="match_parent"-->
-<!--          android:layout_height="wrap_content"-->
-<!--          android:layout_alignParentBottom="true"-->
-<!--          android:background="#FFF"-->
-<!--          android:padding="20dp">-->
-<!--          -->
-<!--          <LinearLayout-->
-<!--              android:layout_width="match_parent"-->
-<!--              android:layout_height="0dp"-->
-<!--              android:layout_weight="1"-->
-<!--              android:orientation="horizontal">-->
-<!--    -->
-<!--              <LinearLayout-->
-<!--                  android:layout_width="0dp"-->
-<!--                  android:layout_weight="1"-->
-<!--                  android:layout_height="wrap_content"-->
-<!--                  android:id="@+id/btn_animals"-->
-<!--                  android:orientation="vertical"-->
-<!--                  android:background="@drawable/bg_browse_holos"-->
-<!--                  android:padding="15dp"-->
-<!--                  android:layout_margin="3dp"-->
-<!--                  android:clickable="true"-->
-<!--                  >-->
-<!--    -->
-<!--                  <ImageView-->
-<!--                      android:src="@drawable/tiger_icon"-->
-<!--                      android:layout_width="30dp"-->
-<!--                      android:layout_height="30dp"-->
-<!--                      android:layout_gravity="center_horizontal"/>-->
-<!--    -->
-<!--                  <TextView-->
-<!--                      android:layout_width="wrap_content"-->
-<!--                      android:layout_height="wrap_content"-->
-<!--                      android:text="Animals"-->
-<!--                      android:textColor="#000"-->
-<!--                      android:layout_gravity="center_horizontal"-->
-<!--                      android:layout_marginTop="5dp"/>-->
-<!--    -->
-<!--              </LinearLayout>-->
-<!--    -->
-<!--              <LinearLayout-->
-<!--                  android:layout_width="0dp"-->
-<!--                  android:layout_weight="1"-->
-<!--                  android:layout_height="wrap_content"-->
-<!--                  android:id="@+id/btn_characters"-->
-<!--                  android:orientation="vertical"-->
-<!--                  android:background="@drawable/bg_browse_holos"-->
-<!--                  android:padding="15dp"-->
-<!--                  android:layout_margin="3dp"-->
-<!--                  android:clickable="true"-->
-<!--                  >-->
-<!--    -->
-<!--                  <ImageView-->
-<!--                      android:src="@drawable/tiger_icon"-->
-<!--                      android:layout_width="30dp"-->
-<!--                      android:layout_height="30dp"-->
-<!--                      android:layout_gravity="center_horizontal"/>-->
-<!--    -->
-<!--                  <TextView-->
-<!--                      android:layout_width="wrap_content"-->
-<!--                      android:layout_height="wrap_content"-->
-<!--                      android:text="Animals"-->
-<!--                      android:textColor="#000"-->
-<!--                      android:layout_gravity="center_horizontal"-->
-<!--                      android:layout_marginTop="5dp"/>-->
-<!--    -->
-<!--              </LinearLayout>-->
-<!--    -->
-<!--              <LinearLayout-->
-<!--                  android:layout_width="0dp"-->
-<!--                  android:layout_weight="1"-->
-<!--                  android:layout_height="wrap_content"-->
-<!--                  android:id="@+id/btn_"-->
-<!--                  android:orientation="vertical"-->
-<!--                  android:background="@drawable/bg_browse_holos"-->
-<!--                  android:padding="15dp"-->
-<!--                  android:layout_margin="3dp"-->
-<!--                  android:clickable="true"-->
-<!--                  >-->
-<!--    -->
-<!--                  <ImageView-->
-<!--                      android:src="@drawable/tiger_icon"-->
-<!--                      android:layout_width="30dp"-->
-<!--                      android:layout_height="30dp"-->
-<!--                      android:layout_gravity="center_horizontal"/>-->
-<!--    -->
-<!--                  <TextView-->
-<!--                      android:layout_width="wrap_content"-->
-<!--                      android:layout_height="wrap_content"-->
-<!--                      android:text="Animals"-->
-<!--                      android:textColor="#000"-->
-<!--                      android:layout_gravity="center_horizontal"-->
-<!--                      android:layout_marginTop="5dp"/>-->
-<!--    -->
-<!--              </LinearLayout>-->
-<!--    -->
-<!--    -->
-<!--          </LinearLayout>-->
-
-<!--      </LinearLayout>-->
-
-
 
   </RelativeLayout>
 </FrameLayout>

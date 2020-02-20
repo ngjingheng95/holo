@@ -16,4 +16,18 @@
     <color name="alpha_overlay">#a0000000</color>
     <color name="gray_bg">#444440</color>
 
+    <color name="theme_blue">#1C1B4D</color>
+    <color name="theme_pink">#B80E65</color>
+    <color name="theme_sky">#1791B1</color>
+
+    <color name="aerospace_grey">#807A7A</color>
+    <color name="aerospace_white">#E2E1E6</color>
+    <color name="aerospace_blue">#2286A9</color>
+
+    <color name="brick_black">#121B22</color>
+    <color name="brick_blue">#204254</color>
+    <color name="brick_orange">#B94A3E</color>
+
+
+
 </resources>
