@@ -21,6 +21,7 @@ import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
+    private int selectedPos = RecyclerView.NO_POSITION;
     private List<File> files;
     private Context mContext;
     private OnArObjectListener mOnArObjectListener;
@@ -41,7 +42,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         @Override
         public void onClick(View v) {
+            if (getAdapterPosition() == RecyclerView.NO_POSITION) return;
+
+            // Updating old as well as new positions
+            notifyItemChanged(selectedPos);
+            selectedPos = getAdapterPosition();
+            notifyItemChanged(selectedPos);
             onArObjectListener.onArObjectClick(getAdapterPosition(), mTag);
+
         }
     }
 
@@ -81,6 +89,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final File file = files.get(position);
         Glide.with(mContext).load(file).into(holder.itemImage);
+        holder.itemView.setBackgroundColor(selectedPos == position ? Color.BLUE : Color.TRANSPARENT);
 //        if(selectedPosition==position)
 //            holder.itemView.setBackgroundColor(Color.parseColor("#000000"));
 //        else
@@ -104,7 +113,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return files.get(position);
     }
 
-//    public void setSelectedPosition(int selectedPosition) {
-//        this.selectedPosition = selectedPosition;
-//    }
+    public void setSelectedPos(int selectedPos) {
+        this.selectedPos = selectedPos;
+    }
+
+    public void clearHighlight() {
+        notifyItemChanged(selectedPos);
+        selectedPos = RecyclerView.NO_POSITION;
+        notifyItemChanged(selectedPos);
+    }
 }
