@@ -126,12 +126,9 @@ public class SplashScreenActivity extends AppCompatActivity {
             try {
                 saveToSDCard(R.raw.dancingman, "dancingman.mp4", "Featured");
                 saveToSDCard(R.raw.thanosdance, "thanosdance.mp4", "Featured");
-                saveToSDCard(R.raw.spiderman, "spiderman.mp4", "Featured");
+                saveToSDCard(R.raw.peppapig2, "peppapig2.mp4", "Featured");
                 saveToSDCard(R.raw.ironman, "ironman.mp4", "Featured");
-                saveToSDCard(R.raw.minions, "minions.mp4", "Featured");
-                saveToSDCard(R.raw.chicken, "chicken.mp4", "Featured");
-                saveToSDCard(R.raw.monkey, "monkey.mp4", "Featured");
-                saveToSDCard(R.raw.tiger, "tiger.mp4", "Featured");
+                saveToSDCard(R.raw.alien, "alien.mp4", "Featured");
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
             }
@@ -151,17 +148,13 @@ public class SplashScreenActivity extends AppCompatActivity {
             try {
                 saveToSDCard(R.raw.dancingman, "dancingman.mp4", "Characters");
                 saveToSDCard(R.raw.thanosdance, "thanosdance.mp4", "Characters");
-                saveToSDCard(R.raw.batman, "batman.mp4", "Characters");
-                saveToSDCard(R.raw.deadpool, "deadpool.mp4", "Characters");
                 saveToSDCard(R.raw.ironman, "ironman.mp4", "Characters");
-                saveToSDCard(R.raw.minions, "minions.mp4", "Characters");
-                saveToSDCard(R.raw.people, "people.mp4", "Characters");
                 saveToSDCard(R.raw.skeleton, "skeleton.mp4", "Characters");
+                saveToSDCard(R.raw.alien, "alien.mp4", "Characters");
+                saveToSDCard(R.raw.peppapig1, "peppapig1.mp4", "Characters");
+                saveToSDCard(R.raw.peppapig2, "peppapig2.mp4", "Characters");
                 saveToSDCard(R.raw.spiderman, "spiderman.mp4", "Characters");
-                saveToSDCard(R.raw.robot2, "robot2.mp4", "Characters");
-                saveToSDCard(R.raw.robot3, "robot3.mp4", "Characters");
-                saveToSDCard(R.raw.robot4, "robot4.mp4", "Characters");
-                saveToSDCard(R.raw.robot5, "robot5.mp4", "Characters");
+
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
             }
@@ -177,15 +170,18 @@ public class SplashScreenActivity extends AppCompatActivity {
         }
         if (success3) {
             try {
-                saveToSDCard(R.raw.chicken, "chicken.mp4", "Animals");
                 saveToSDCard(R.raw.monkey, "monkey.mp4", "Animals");
-                saveToSDCard(R.raw.cheetah, "cheetah.mp4", "Animals");
                 saveToSDCard(R.raw.eagle, "eagle.mp4", "Animals");
                 saveToSDCard(R.raw.flamingo, "flamingo.mp4", "Animals");
                 saveToSDCard(R.raw.giraffe, "giraffe.mp4", "Animals");
                 saveToSDCard(R.raw.rabbit, "rabbit.mp4", "Animals");
                 saveToSDCard(R.raw.stock, "stock.mp4", "Animals");
+                saveToSDCard(R.raw.pigeon, "pigeon.mp4", "Animals");
                 saveToSDCard(R.raw.tiger, "tiger.mp4", "Animals");
+                saveToSDCard(R.raw.shark, "shark.mp4", "Animals");
+                saveToSDCard(R.raw.snake, "snake.mp4", "Animals");
+                saveToSDCard(R.raw.trex1, "trex1.mp4", "Animals");
+                saveToSDCard(R.raw.trex2, "trex2.mp4", "Animals");
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
             }
