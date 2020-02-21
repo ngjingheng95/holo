@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.google.ar.sceneform.samples.chromakeyvideo">
+    package="com.arholo.ar.sceneform.samples.chromakeyvideo">
     <!-- Always needed for AR. -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -30,10 +30,10 @@
         android:usesCleartextTraffic="false"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".camera.CameraActivity"
+            android:name="com.arholo.ar.sceneform.samples.chromakeyvideo.camera.CameraActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".HoloHomepage"
+            android:name="com.arholo.ar.sceneform.samples.chromakeyvideo.HoloHomepage"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
@@ -50,7 +50,7 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity
-            android:name=".SplashScreenActivity"
+            android:name="com.arholo.ar.sceneform.samples.chromakeyvideo.SplashScreenActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:configChanges="orientation"
             android:screenOrientation="portrait">
@@ -63,7 +63,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ChromaKeyVideoActivity"
+            android:name="com.arholo.ar.sceneform.samples.chromakeyvideo.ChromaKeyVideoActivity"
             android:configChanges="orientation|screenSize"
             android:exported="true"
             android:label="@string/app_name"

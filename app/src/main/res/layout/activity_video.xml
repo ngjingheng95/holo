@@ -18,11 +18,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ChromaKeyVideoActivity">
+    tools:context="com.arholo.ar.sceneform.samples.chromakeyvideo.ChromaKeyVideoActivity">
 
   <fragment
       android:id="@+id/ux_fragment"
-      class="com.google.ar.sceneform.samples.chromakeyvideo.WritingArFragment"
+      class="com.arholo.ar.sceneform.samples.chromakeyvideo.WritingArFragment"
       android:layout_width="match_parent"
       android:layout_height="match_parent" />
   <RelativeLayout
