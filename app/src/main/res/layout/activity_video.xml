@@ -57,6 +57,17 @@
         app:backgroundTint="@color/ultraLightGrey"
         app:fabSize="normal"/>
 
+      <Button
+          android:id="@+id/place_holo_help"
+          android:layout_width="48dp"
+          android:layout_height="48dp"
+          android:layout_marginTop="18dp"
+          android:layout_marginRight="18dp"
+          android:layout_alignParentTop="true"
+          android:layout_alignParentRight="true"
+          android:background="@drawable/help_logo"
+          android:backgroundTint="@color/white_overlay"/>
+
   </RelativeLayout>
 
     <RelativeLayout

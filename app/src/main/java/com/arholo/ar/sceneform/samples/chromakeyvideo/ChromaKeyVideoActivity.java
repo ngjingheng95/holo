@@ -17,6 +17,8 @@ package com.arholo.ar.sceneform.samples.chromakeyvideo;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -42,6 +44,8 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -207,7 +211,16 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
 
         ButterKnife.bind(this);
 
+        // Tutorial
 
+        Button HELP = (Button)findViewById(R.id.place_holo_help);
+
+        HELP.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                MyCustomAlertDialog();
+            }
+        });
 
         /***
         *
@@ -824,6 +837,34 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
             values.put(MediaStore.Video.Media.DATA, videoPath);
             getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
         }
+    }
+
+    // Tutorial
+    public void MyCustomAlertDialog(){
+        final Dialog MyDialog = new Dialog(ChromaKeyVideoActivity.this);
+        MyDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        MyDialog.setContentView(R.layout.customdialog);
+        MyDialog.setTitle("My Custom Dialog");
+
+        Button hello = (Button)MyDialog.findViewById(R.id.hello);
+        Button close = (Button)MyDialog.findViewById(R.id.close);
+
+        hello.setEnabled(true);
+        close.setEnabled(true);
+
+        hello.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Toast.makeText(getApplicationContext(), "Test3", Toast.LENGTH_LONG).show();
+            }
+        });
+        close.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                MyDialog.cancel();
+            }
+        });
+        MyDialog.show();
     }
 
 }
