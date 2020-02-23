@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HoloHomepage"
+    tools:context="com.arholo.ar.sceneform.samples.chromakeyvideo.HoloHomepage"
     android:id="@+id/homepage_layout"
     android:background="@color/gray_bg"
     >
@@ -15,7 +15,7 @@
         android:layout_height="100dp"
         android:src="@drawable/arholo_full"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:id="@+id/homepage_logo"
         />
 
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/homepage_logo"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="30dp"
         android:fontFamily="@font/montserrat"
         android:text="Augment your world!"
         android:textColor="@color/ultraLightGrey" />

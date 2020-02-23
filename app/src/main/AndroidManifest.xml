@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.google.ar.sceneform.samples.chromakeyvideo">
+    package="com.arholo.ar.sceneform.samples.chromakeyvideo">
     <!-- Always needed for AR. -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -23,18 +23,20 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/arholo_cube"
+        android:icon="@drawable/holologo"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="false"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".camera.CameraActivity"
+            android:name="com.arholo.ar.sceneform.samples.chromakeyvideo.camera.CameraActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".HoloHomepage"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
+            android:name="com.arholo.ar.sceneform.samples.chromakeyvideo.HoloHomepage"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
         <!--
              This tag indicates that this application requires ARCore. This results in the
             application only being visible in the Google Play Store on devices that support
@@ -48,8 +50,10 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity
-            android:name=".SplashScreenActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:name="com.arholo.ar.sceneform.samples.chromakeyvideo.SplashScreenActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
 
             <!-- android:theme="@style/SplashTheme" -->
             <intent-filter>
@@ -59,18 +63,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ChromaKeyVideoActivity"
+            android:name="com.arholo.ar.sceneform.samples.chromakeyvideo.ChromaKeyVideoActivity"
             android:configChanges="orientation|screenSize"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity
-            android:name=".CreateARActivity"
-            android:label="@string/title_activity_create_ar"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".PhotographerActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

@@ -4,7 +4,7 @@
 <!--    android:layout_width="match_parent"-->
 <!--    android:layout_height="match_parent">-->
 
-<!--    <com.google.ar.sceneform.samples.chromakeyvideo.GridViewItem-->
+<!--    <GridViewItem-->
 <!--        android:id="@+id/item_image"-->
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="match_parent"-->
@@ -27,7 +27,7 @@
     android:layout_height="wrap_content"
     android:elevation="5dp">
 
-    <com.google.ar.sceneform.samples.chromakeyvideo.GridViewItem
+    <com.arholo.ar.sceneform.samples.chromakeyvideo.GridViewItem
         android:id="@+id/item_image"
         android:layout_width="175dp"
         android:layout_height="175dp"
@@ -67,7 +67,7 @@
 <!--    android:layout_marginStart="1dp"-->
 <!--    android:layout_marginEnd="1dp">-->
 
-<!--    <com.google.ar.sceneform.samples.chromakeyvideo.GridViewItem-->
+<!--    <GridViewItem-->
 <!--        android:id="@+id/item_image"-->
 <!--        android:layout_width="0dp"-->
 <!--        android:layout_height="0dp"-->

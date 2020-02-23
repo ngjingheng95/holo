@@ -5,7 +5,7 @@
      android:layout_height="wrap_content">
 
 
-    <com.google.ar.sceneform.samples.chromakeyvideo.GridViewItem
+    <com.arholo.ar.sceneform.samples.chromakeyvideo.GridViewItem
         android:layout_width="175dp"
         android:layout_height="175dp"
         android:id="@+id/grid_item_image"

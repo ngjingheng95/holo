@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.ar.sceneform.samples.chromakeyvideo.camera.AutoFitTextureView
+    <com.arholo.ar.sceneform.samples.chromakeyvideo.camera.AutoFitTextureView
         android:id="@+id/texture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -32,6 +32,17 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
         android:background="@null"/>
+
+    <Button
+        android:id="@+id/create_holo_help"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginRight="18dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/help_logo"
+        android:backgroundTint="@color/white_overlay"/>
 
 <!--    </FrameLayout>-->
 
