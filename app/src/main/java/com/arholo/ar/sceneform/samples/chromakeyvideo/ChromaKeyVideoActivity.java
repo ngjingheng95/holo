@@ -17,8 +17,10 @@ package com.arholo.ar.sceneform.samples.chromakeyvideo;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.SurfaceTexture;
 import android.media.CamcorderProfile;
@@ -42,8 +44,12 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arholo.ar.sceneform.samples.chromakeyvideo.options.Commons;
@@ -54,12 +60,14 @@ import com.google.ar.core.Anchor;
 import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
 import com.google.ar.sceneform.AnchorNode;
+import com.google.ar.sceneform.HitTestResult;
 import com.google.ar.sceneform.Node;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.Color;
 import com.google.ar.sceneform.rendering.ExternalTexture;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.arholo.ar.sceneform.samples.chromakeyvideo.R;
+import com.google.ar.sceneform.ux.TransformableNode;
 
 import java.io.File;
 import java.io.IOException;
@@ -74,7 +82,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ChromaKeyVideoActivity extends AppCompatActivity implements RecyclerViewAdapter.OnArObjectListener, RecyclerViewPixabayAdapter.OnArObjectListener {
-    private static final String TAG = ChromaKeyVideoActivity.class.getSimpleName();
+    private static final String TAG = "yoyo";
     private static final double MIN_OPENGL_VERSION = 3.0;
 
     private WritingArFragment arFragment;
@@ -88,6 +96,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
 
     // The color to filter out of the video.
     private static final Color CHROMA_KEY_COLOR = new Color(0.1843f, 1.0f, 0.098f);
+    public static final float INITIAL_THRESHOLD = (float) 0.675;
 
     // Controls the height of the video in world space.
     private static final float VIDEO_HEIGHT_METERS = 0.85f;
@@ -146,6 +155,9 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
     @BindView(R.id.no_internet_view)
     RelativeLayout noInternetView;
 
+    @BindView(R.id.delete_holo_btn)
+    ImageView deleteHolo;
+
     private List<File> mediaFiles = new ArrayList<>();
     private List<File> mediaFiles2 = new ArrayList<>();
     private List<File> mediaFiles3 = new ArrayList<>();
@@ -160,6 +172,17 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
     private RecyclerView.LayoutManager myHoloLayoutManager;
     private RecyclerViewPixabayAdapter pixabayRecyclerAdapter;
     private RecyclerView.LayoutManager pixabayLayoutManager;
+
+    private List<AnchorNode> anchorNodeList = new ArrayList<>();
+    private List<TransformableNode> videoNodeList = new ArrayList<>();
+    private List<MediaPlayer> mediaPlayerList = new ArrayList<>();
+    private int numArObjects = 0;
+
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog deleteAlert;
+
+    private AlertDialog.Builder helpDialogBuilder;
+    private AlertDialog helpAlert;
 
     private boolean mIsPlayerRelease = true;
 
@@ -183,6 +206,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
         arFragment.getArSceneView().getPlaneRenderer().setEnabled(true);
         arFragment.getPlaneDiscoveryController().hide();
         arFragment.getPlaneDiscoveryController().setInstructionView(null);
+        arFragment.getArSceneView().getScene().setOnTouchListener(this::handleOnTouch);
 
         // Initialize the VideoRecorder.
         videoRecorder = new VideoRecorder();
@@ -272,11 +296,13 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
             }
         });
 
-        pixabaySearchText.setOnKeyListener(new View.OnKeyListener() {
+        pixabaySearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    pixabaySearchText.clearFocus();
+                    InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    in.hideSoftInputFromWindow(pixabaySearchText.getWindowToken(), 0);
                     if(!internetCheck()){
                         showNoInternetView();
                     }
@@ -286,20 +312,72 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
                             // Perform action on key press
                             String q = pixabaySearchText.getText().toString().trim().replace(" +", "+") + "+" + defaultQuery;
                             loadPixabayVideoRequestInfo1(q, safesearch, page, perPage);
-                            return true;
+
                         } else {
                             loadPixabayVideoRequestInfo1(defaultQuery, safesearch, page, perPage);
                         }
+                        return true;
                     }
-
                 }
                 return false;
             }
         });
+
+        // Initialise 'Clear All' Dialog
+        dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setTitle("Remove All Objects");
+        dialogBuilder.setMessage("Are you sure you want to clear the entire scene?");
+        dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+                if(deleteHolo.getVisibility() == View.VISIBLE) {
+                    disableDeleteHolo();
+                }
+                deleteAllHolo();
+                Toast.makeText(ChromaKeyVideoActivity.this, "Cleared all objects!", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
+        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing
+                dialog.dismiss();
+            }
+        });
+        deleteAlert = dialogBuilder.create();
+
+        // Initialise 'Help' Dialog
+        helpDialogBuilder = new AlertDialog.Builder(this);
+        helpDialogBuilder.setTitle("How to use?");
+        helpDialogBuilder.setMessage("1. Tap on the Blue Button below and choose the holo you want to place. \n2. Look around as ARHolo tries to detect a plane. \n3. Tap on the plane (white dots) to insert your holo!\n\nTo remove holos:\n- Tap on the holo and tap on the trash can on the right to remove.\n- You can also tap on the broom to clear all holos!");
+        helpDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        helpAlert = helpDialogBuilder.create();
+    }
+
+    // To disable "Delete Holo Button" when touch user deselects by tapping surrounding
+    private boolean handleOnTouch(HitTestResult hitTestResult, MotionEvent motionEvent) {
+        Log.d(TAG, "handleOnTouch: start");
+        arFragment.onPeekTouch(hitTestResult, motionEvent);
+
+
+        if (hitTestResult.getNode() == null) {
+            Log.d(TAG,"handleOnTouch hitTestResult.getNode() != null");
+            disableDeleteHolo();
+            return true;
+
+        }
+        return false;
+
     }
 
     public void showNoInternetView(){
-
         noInternetView.setVisibility(View.VISIBLE);
         pixabayRecyclerView.setVisibility(View.GONE);
 
@@ -409,6 +487,26 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
 
     public void onClickComingSoon(View view){
         Toast.makeText(this, "Feature Coming Soon!", Toast.LENGTH_SHORT).show();
+    }
+
+    public void onClickDeleteAll(View view){
+        deleteAlert.show();
+    }
+
+    public void onClickHelpDialog(View view){
+        helpAlert.show();
+    }
+
+    public void deleteAllHolo(){
+        Log.d(TAG, "deleteAllHolo: start");
+        Log.d(TAG, "numArObject -> " + numArObjects);
+        while(numArObjects > 0){
+            mediaPlayerList.get(0).stop();
+            mediaPlayerList.get(0).release();
+            anchorNodeList.get(0).removeChild((Node)videoNodeList.get(0));
+            removeObjectFromList(anchorNodeList.get(0), videoNodeList.get(0), mediaPlayerList.get(0));
+        }
+        Log.d(TAG, "numArObject -> " + numArObjects);
     }
 
     public void enableArPlaneListener(int position, String tag){
@@ -542,6 +640,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
                             renderable -> {
                                 renderable.getMaterial().setExternalTexture("videoTexture", texture);
                                 renderable.getMaterial().setFloat4("keyColor", CHROMA_KEY_COLOR);
+                                renderable.getMaterial().setFloat("threshold", INITIAL_THRESHOLD);
                                 addNodeToScene(anchor, renderable, texture, finalMediaPlayer);
                             })
                     .exceptionally(
@@ -564,6 +663,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
                             renderable -> {
                                 renderable.getMaterial().setExternalTexture("videoTexture", texture);
                                 renderable.getMaterial().setFloat4("keyColor", CHROMA_KEY_COLOR);
+                                renderable.getMaterial().setFloat("threshold", INITIAL_THRESHOLD);
                                 addNodeToScene(anchor, renderable, texture, finalMediaPlayer1);
                             })
                     .exceptionally(
@@ -579,7 +679,6 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
         }
     }
 
-//   takes in mediaplayer as param
     public void changeObject1(Anchor anchor) {
 //        Toast.makeText(this, "changeObject1 called", Toast.LENGTH_SHORT).show();
 //        MediaPlayer mediaPlayer1 = new MediaPlayer();
@@ -601,6 +700,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
                             renderable -> {
                                 renderable.getMaterial().setExternalTexture("videoTexture", texture);
                                 renderable.getMaterial().setFloat4("keyColor", CHROMA_KEY_COLOR);
+                                renderable.getMaterial().setFloat("threshold", INITIAL_THRESHOLD);
                                 addNodeToScene(anchor, renderable, texture, finalMediaPlayer);
                             })
                     .exceptionally(
@@ -623,6 +723,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
                             renderable -> {
                                 renderable.getMaterial().setExternalTexture("videoTexture", texture);
                                 renderable.getMaterial().setFloat4("keyColor", CHROMA_KEY_COLOR);
+                                renderable.getMaterial().setFloat("threshold", INITIAL_THRESHOLD);
                                 addNodeToScene(anchor, renderable, texture, finalMediaPlayer1);
                             })
                     .exceptionally(
@@ -640,7 +741,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
 
     private void addNodeToScene(Anchor anchor, ModelRenderable renderable, ExternalTexture texture, MediaPlayer mediaPlayer) {
         AnchorNode anchorNode = new AnchorNode(anchor);
-        DoubleTapTransformableNode videoNode = new DoubleTapTransformableNode(arFragment.getTransformationSystem());
+        TransformableNode videoNode = new TransformableNode(arFragment.getTransformationSystem());
         videoNode.setParent(anchorNode);
 
         float videoWidth = mediaPlayer.getVideoWidth();
@@ -649,6 +750,8 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
         videoNode.setLocalScale(
                 new Vector3(
                         VIDEO_HEIGHT_METERS * (videoWidth / videoHeight), VIDEO_HEIGHT_METERS, 1.0f));
+
+
 
         if (!mediaPlayer.isPlaying()) {
             mediaPlayer.start();
@@ -666,23 +769,63 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
         } else {
             videoNode.setRenderable(renderable);
         }
-        mIsPlayerRelease = false;
 
-        //double tap to remove node
-        videoNode.setOnDoubleTapListener((DoubleTapTransformableNode.OnDoubleTapListener)(new DoubleTapTransformableNode.OnDoubleTapListener() {
-            public final void onDoubleTap() {
-                if (!mIsPlayerRelease) {
-                    mediaPlayer.stop();
-                    mediaPlayer.release();
-                    mIsPlayerRelease = true;
-                }
-//                anchor = null;
-                anchorNode.removeChild((Node)videoNode);
-            }
-        }));
+        videoNode.setOnTouchListener(new Node.OnTouchListener() {
+                                         @Override
+                                         public boolean onTouch(HitTestResult hitTestResult, MotionEvent motionEvent) {
+                                             videoNode.select();
+                                             if (!mediaPlayer.isPlaying()) {
+                                                 mediaPlayer.start();
+                                             }
+                                             enableDeleteHolo(anchorNode, videoNode, mediaPlayer);
+                                             return true;
+                                         }
+                                     });
+
+
         arFragment.getArSceneView().getScene().addChild(anchorNode);
+        addObjectToList(anchorNode, videoNode, mediaPlayer);
         videoNode.select();
+        enableDeleteHolo(anchorNode, videoNode, mediaPlayer);
     }
+
+    public void addObjectToList(AnchorNode anchorNode1, TransformableNode videoNode1, MediaPlayer mediaPlayer1){
+        Log.d(TAG, "addObjectToList: start");
+        anchorNodeList.add(anchorNode1);
+        videoNodeList.add(videoNode1);
+        mediaPlayerList.add(mediaPlayer1);
+        numArObjects++;
+        Log.d(TAG, "numArObjects -> " + numArObjects);
+    }
+
+    public void removeObjectFromList(AnchorNode anchorNode1, TransformableNode videoNode1, MediaPlayer mediaPlayer1){
+        Log.d(TAG, "removeObjectFromList: start");
+        anchorNodeList.remove(anchorNode1);
+        videoNodeList.remove(videoNode1);
+        mediaPlayerList.remove(mediaPlayer1);
+        numArObjects--;
+        Log.d(TAG, "numArObjects -> " + numArObjects);
+    }
+
+    public void enableDeleteHolo(AnchorNode anchorNode1, TransformableNode videoNode1, MediaPlayer mediaPlayer1) {
+        deleteHolo.setVisibility(View.VISIBLE);
+        deleteHolo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    mediaPlayer1.stop();
+                    mediaPlayer1.release();
+//                anchor = null;
+                anchorNode1.removeChild((Node)videoNode1);
+                removeObjectFromList(anchorNode1, videoNode1,mediaPlayer1);
+                deleteHolo.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    public void disableDeleteHolo(){
+        deleteHolo.setVisibility(View.GONE);
+    }
+
 
     @Override
     protected void onResume() {
@@ -749,11 +892,13 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
     @Override
     public void onDestroy() {
         super.onDestroy();
+        deleteAllHolo();
+        disableDeleteHolo();
 
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
-            mediaPlayer = null;
-        }
+//        if (mediaPlayer != null) {
+//            mediaPlayer.release();
+//            mediaPlayer = null;
+//        }
     }
 
     /**
@@ -790,6 +935,10 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
         if (videoRecorder.isRecording()) {
             toggleRecording(null);
         }
+        if(deleteHolo.getVisibility() == View.VISIBLE) {
+            disableDeleteHolo();
+        }
+        deleteAllHolo();
         super.onPause();
 
     }
@@ -824,6 +973,58 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
             values.put(MediaStore.Video.Media.DATA, videoPath);
             getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
         }
+    }
+
+    @Deprecated
+    private void addNodeToScene_old(Anchor anchor, ModelRenderable renderable, ExternalTexture texture, MediaPlayer mediaPlayer) {
+        AnchorNode anchorNode = new AnchorNode(anchor);
+        DoubleTapTransformableNode videoNode = new DoubleTapTransformableNode(arFragment.getTransformationSystem());
+        videoNode.setParent(anchorNode);
+
+        float videoWidth = mediaPlayer.getVideoWidth();
+        float videoHeight = mediaPlayer.getVideoHeight();
+        //all same size
+        videoNode.setLocalScale(
+                new Vector3(
+                        VIDEO_HEIGHT_METERS * (videoWidth / videoHeight), VIDEO_HEIGHT_METERS, 1.0f));
+
+
+
+        if (!mediaPlayer.isPlaying()) {
+            mediaPlayer.start();
+
+            // Wait to set the renderable until the first frame of the  video becomes available.
+            // This prevents the renderable from briefly appearing as a black quad before the video
+            // plays.
+            texture
+                    .getSurfaceTexture()
+                    .setOnFrameAvailableListener(
+                            (SurfaceTexture surfaceTexture) -> {
+                                videoNode.setRenderable(renderable);
+                                texture.getSurfaceTexture().setOnFrameAvailableListener(null);
+                            });
+        } else {
+            videoNode.setRenderable(renderable);
+        }
+        mIsPlayerRelease = false;
+
+//      Dynamic changing of chromakey threshold
+//        renderable.getMaterial().setFloat("threshold", (float) 0.3);
+
+        //double tap to remove node
+        videoNode.setOnDoubleTapListener((DoubleTapTransformableNode.OnDoubleTapListener)(new DoubleTapTransformableNode.OnDoubleTapListener() {
+            public final void onDoubleTap() {
+                if (!mIsPlayerRelease) {
+                    mediaPlayer.stop();
+                    mediaPlayer.release();
+                    mIsPlayerRelease = true;
+                }
+//                anchor = null;
+                anchorNode.removeChild((Node)videoNode);
+            }
+        }));
+        arFragment.getArSceneView().getScene().addChild(anchorNode);
+        videoNode.select();
     }
 
 }

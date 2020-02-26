@@ -32,14 +32,60 @@
       >
 
       <ImageView
-          android:layout_width="30dp"
-          android:layout_height="30dp"
+          android:layout_width="45dp"
+          android:layout_height="45dp"
           android:layout_alignParentTop="true"
           android:layout_alignParentLeft="true"
-          android:layout_margin="20dp"
+          android:layout_margin="30dp"
           android:clickable="true"
           android:onClick="onClickBackBtn1"
-          android:src="@drawable/left_arrow_white"/>
+          android:src="@drawable/back_icon_main"/>
+
+
+      <RelativeLayout
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentTop="true"
+          android:layout_alignParentRight="true"
+          android:layout_marginHorizontal="20dp"
+          android:layout_marginVertical="20dp"
+          android:padding="10dp">
+
+          <ImageView
+              android:layout_width="45dp"
+              android:layout_height="45dp"
+              android:layout_marginBottom="40dp"
+              android:clickable="true"
+              android:onClick="onClickHelpDialog"
+              android:id="@+id/help_button"
+              android:src="@drawable/help_icon"
+              android:layout_centerHorizontal="true"/>
+
+
+          <ImageView
+              android:layout_width="45dp"
+              android:layout_height="45dp"
+              android:layout_marginBottom="40dp"
+              android:clickable="true"
+              android:onClick="onClickDeleteAll"
+              android:id="@+id/delete_all_btn"
+              android:layout_below="@id/help_button"
+              android:src="@drawable/broom_icon1"
+              android:layout_centerHorizontal="true"/>
+
+          <ImageView
+              android:layout_width="45dp"
+              android:layout_height="45dp"
+              android:clickable="true"
+              android:layout_below="@id/delete_all_btn"
+              android:visibility="gone"
+              android:id="@+id/delete_holo_btn"
+              android:src="@drawable/trash_icon"
+              android:layout_centerHorizontal="true"/>
+
+        </RelativeLayout>
+
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/capture_video"
@@ -73,8 +119,8 @@
           android:layout_height="56dp"
           android:layout_alignParentBottom="true"
           android:layout_alignParentEnd="true"
-          android:layout_marginBottom="25dp"
-          android:layout_marginEnd="23dp"
+          android:layout_marginBottom="230dp"
+          android:layout_marginEnd="30dp"
           app:backgroundTint="@color/colorPrimary"
           android:src="@drawable/ic_add_white"
           android:clickable="true"
@@ -144,8 +190,9 @@
                   android:layout_marginHorizontal="15dp"
                   android:layout_centerVertical="true"
                   android:id="@+id/close_button"
-                  android:clickable="true"
-                  android:onClick="onClickCloseView"/>
+                  android:clickable="false"
+                  android:visibility="invisible"
+                  />
 
               <RelativeLayout
                   android:layout_width="wrap_content"
@@ -154,18 +201,19 @@
                   android:visibility="gone"
                   android:layout_marginHorizontal="50dp"
                   android:layout_centerVertical="true"
-                  android:layout_toLeftOf="@id/close_button">
-
+                  android:layout_alignParentRight="true">
 
 
                   <android.support.v7.widget.AppCompatEditText
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:id="@+id/pixabay_search_text"
-                      android:hint="Search Holos on Pixabay   "
+                      android:hint="Search Holos on Pixabay...      "
                       android:backgroundTint="@color/gray_bg"
                       android:textColorHint="@color/gray_bg"
                       android:textColor="@color/gray_overlay"
+                      android:imeOptions="actionSearch"
+                      android:inputType="text"
                       />
 
                   <RelativeLayout
@@ -455,7 +503,7 @@
                           <TextView
                               android:layout_width="wrap_content"
                               android:layout_height="wrap_content"
-                              android:text="Search Pixabay"
+                              android:text="Pixabay"
                               android:textColor="#000"
                               android:layout_gravity="center_horizontal"
                               android:layout_marginTop="5dp"/>
@@ -485,7 +533,7 @@
                           <TextView
                               android:layout_width="wrap_content"
                               android:layout_height="wrap_content"
-                              android:text="Search Youtube"
+                              android:text="Youtube"
                               android:textColor="#000"
                               android:layout_gravity="center_horizontal"
                               android:layout_marginTop="5dp"/>

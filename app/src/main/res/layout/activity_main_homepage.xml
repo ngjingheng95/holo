@@ -19,6 +19,17 @@
         android:id="@+id/homepage_logo"
         />
 
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/hamburger_icon_small"
+        android:id="@+id/homepage_menu"
+        android:onClick="showMenu"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="20dp"
+        android:background="@null"
+        />
+
     <TextView
         android:id="@+id/homepage_tagline"
         android:layout_width="wrap_content"
@@ -39,6 +50,36 @@
         android:padding="30dp"
         android:orientation="vertical">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:elevation="3dp"
+            android:background="@drawable/bg_browse_holos"
+            android:clickable="true"
+            android:id="@+id/btn_place_holo"
+            android:layout_marginBottom="10dp"
+            android:onClick="onClickPlaceAr">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerInParent="true"
+                android:id="@+id/plus_sign_2"
+                android:src="@drawable/add_holo_icon"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/plus_sign_2"
+                android:layout_centerHorizontal="true"
+                android:layout_marginVertical="8dp"
+                android:text="Place Holos"
+                android:textColor="@color/gray_bg"
+                android:textSize="12dp"
+                android:fontFamily="@font/montserrat"/>
+        </RelativeLayout>
+
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -48,7 +89,6 @@
             android:background="@drawable/bg_browse_holos"
             android:clickable="true"
             android:onClick="onClickCreateAr"
-            android:layout_marginBottom="10dp"
             android:id="@+id/btn_create_holo">
 
             <ImageView
@@ -72,35 +112,7 @@
         </RelativeLayout>
 
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:elevation="3dp"
-            android:background="@drawable/bg_browse_holos"
-            android:clickable="true"
-            android:id="@+id/btn_place_holo"
-            android:onClick="onClickPlaceAr">
 
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_centerInParent="true"
-                android:id="@+id/plus_sign_2"
-                android:src="@drawable/add_holo_icon"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/plus_sign_2"
-                android:layout_centerHorizontal="true"
-                android:layout_marginVertical="8dp"
-                android:text="Place Holos"
-                android:textColor="@color/gray_bg"
-                android:textSize="12dp"
-                android:fontFamily="@font/montserrat"/>
-
-        </RelativeLayout>
 
     </LinearLayout>
 </RelativeLayout>

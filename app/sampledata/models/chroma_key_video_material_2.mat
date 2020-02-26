@@ -26,6 +26,11 @@ material {
             // The color to filter out of the video.
             "type" : "float4",
             "name" : "keyColor"
+        },
+        {
+            // The color to filter out of the video.
+            "type" : "float",
+            "name" : "threshold"
         }
     ],
     "requires" : [
@@ -60,8 +65,9 @@ fragment {
 
         vec3 color = texture(materialParams_videoTexture, uv).rgb;
         vec3 keyColor = materialParams.keyColor.rgb;
+        float threshold = materialParams.threshold;
 
-        float threshold = 0.675;
+        //float threshold = 0.675;
         float slope = 0.2;
 
         float distance = abs(length(abs(keyColor - color)));
