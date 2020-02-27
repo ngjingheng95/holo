@@ -11,24 +11,27 @@
         android:layout_alignParentTop="true"
         />
 
-    <ImageView
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_margin="30dp"
-        android:clickable="true"
-        android:onClick="onClickBackBtn"
-        android:src="@drawable/back_icon_main"/>
+
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
         android:layout_marginHorizontal="20dp"
         android:layout_marginVertical="20dp"
         android:padding="10dp">
+
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="40dp"
+            android:clickable="true"
+            android:id="@+id/go_back_button1"
+            android:onClick="onClickBackBtn"
+            android:src="@drawable/back_icon_main"/>
 
         <ImageView
             android:layout_width="45dp"
@@ -37,6 +40,7 @@
             android:onClick="onClickCameraHelpDialog"
             android:id="@+id/help_button"
             android:src="@drawable/help_icon"
+            android:layout_below="@id/go_back_button1"
             android:layout_centerHorizontal="true"/>
 
     </RelativeLayout>

@@ -22,7 +22,7 @@ public class CameraActivity extends AppCompatActivity {
 
         // Initialise 'Help' Dialog
         cameraHelpDialogBuilder = new AlertDialog.Builder(this);
-        cameraHelpDialogBuilder.setTitle("How to use?");
+        cameraHelpDialogBuilder.setTitle("Create a Holo");
         cameraHelpDialogBuilder.setMessage("1. Stand in front of a green screen\n2. Ensure that the green screen covers your whole screen\n3. Tap on the red dot to start recording\n4. Tap on the white square once you are done to end recording.\n5. You can now add your creation into the surroundings!");
         cameraHelpDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 

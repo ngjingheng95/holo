@@ -57,9 +57,13 @@ import com.arholo.ar.sceneform.samples.chromakeyvideo.options.Commons2;
 import com.arholo.ar.sceneform.samples.chromakeyvideo.options.Commons3;
 import com.arholo.ar.sceneform.samples.chromakeyvideo.options.Commons4;
 import com.google.ar.core.Anchor;
+import com.google.ar.core.Frame;
 import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
+import com.google.ar.core.TrackingState;
 import com.google.ar.sceneform.AnchorNode;
+import com.google.ar.sceneform.ArSceneView;
+import com.google.ar.sceneform.FrameTime;
 import com.google.ar.sceneform.HitTestResult;
 import com.google.ar.sceneform.Node;
 import com.google.ar.sceneform.math.Vector3;
@@ -158,6 +162,18 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
     @BindView(R.id.delete_holo_btn)
     ImageView deleteHolo;
 
+    @BindView(R.id.delete_all_btn)
+    ImageView deleteAllBtn;
+
+    @BindView(R.id.toggle_arplane_btn)
+    ImageView toggleArPlane;
+
+    @BindView(R.id.searching_for_plane1)
+    TextView searchingForPlane1;
+
+    @BindView(R.id.searching_for_plane2)
+    TextView searchingForPlane2;
+
     private List<File> mediaFiles = new ArrayList<>();
     private List<File> mediaFiles2 = new ArrayList<>();
     private List<File> mediaFiles3 = new ArrayList<>();
@@ -184,7 +200,20 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
     private AlertDialog.Builder helpDialogBuilder;
     private AlertDialog helpAlert;
 
+    private AlertDialog.Builder planeDialogBuilder;
+    private AlertDialog planeAlert;
+
+    private AlertDialog.Builder planeDialogBuilder1;
+    private AlertDialog planeAlert1;
+
+    private AlertDialog.Builder broomDialogBuilder;
+    private AlertDialog broomAlert;
+
     private boolean mIsPlayerRelease = true;
+    private boolean enablePlane;
+
+    private boolean searched;
+    private boolean planeDialogShown;
 
     private List<PixabayVideoInfo> pixabayVideoInfo = new ArrayList<>();
 
@@ -194,7 +223,6 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
     // FutureReturnValueIgnored is not valid
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (!checkIsSupportedDeviceOrFinish(this)) {
             return;
         }
@@ -203,7 +231,9 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
 
         arFragment = (WritingArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
         //Animation that ask you to place the screen at a surface
-        arFragment.getArSceneView().getPlaneRenderer().setEnabled(true);
+        enablePlane = true;
+        planeDialogShown = false;
+        arFragment.getArSceneView().getPlaneRenderer().setEnabled(enablePlane);
         arFragment.getPlaneDiscoveryController().hide();
         arFragment.getPlaneDiscoveryController().setInstructionView(null);
         arFragment.getArSceneView().getScene().setOnTouchListener(this::handleOnTouch);
@@ -350,8 +380,8 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
 
         // Initialise 'Help' Dialog
         helpDialogBuilder = new AlertDialog.Builder(this);
-        helpDialogBuilder.setTitle("How to use?");
-        helpDialogBuilder.setMessage("1. Tap on the Blue Button below and choose the holo you want to place. \n2. Look around as ARHolo tries to detect a plane. \n3. Tap on the plane (white dots) to insert your holo!\n\nTo remove holos:\n- Tap on the holo and tap on the trash can on the right to remove.\n- You can also tap on the broom to clear all holos!");
+        helpDialogBuilder.setTitle("Place Holos");
+        helpDialogBuilder.setMessage("1. Tap on the Blue Button on the right to choose the holo you want to place. \n2. Look around as ARHolo tries to detect a plane. \n3. Tap on the plane (white dots) to insert your holo\n4. Add as many holos as you want!\n\nTo remove holos:\n- Tap on the holo and tap on the trash can on the right to remove.\n- You can also tap on the broom to clear all holos!");
         helpDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
@@ -359,6 +389,67 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
             }
         });
         helpAlert = helpDialogBuilder.create();
+
+        // Initialise 'Plane' initial Dialog
+        planeDialogBuilder = new AlertDialog.Builder(this);
+        planeDialogBuilder.setTitle("Show/Hide AR Plane");
+        planeDialogBuilder.setMessage("This button shows/hides the AR plane (white dots that appear when ARHolo detects a surface).\n\nTap \"OK\" to hide AR Plane now. You can show the plane again by tapping on the button.");
+        planeDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+                toggleArPlane();
+                dialog.dismiss();
+            }
+        });
+        planeDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing
+                dialog.dismiss();
+            }
+        });
+        planeAlert = planeDialogBuilder.create();
+
+        // Initialise 'Plane' Dialog
+        planeDialogBuilder1 = new AlertDialog.Builder(this);
+        planeDialogBuilder1.setTitle("Show/Hide AR Plane");
+        planeDialogBuilder1.setMessage("This button shows/hides the AR plane (white dots that appear when ARHolo detects a surface).");
+        planeDialogBuilder1.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        planeAlert1 = planeDialogBuilder1.create();
+
+        // Initialise 'Broom' Dialog
+        broomDialogBuilder = new AlertDialog.Builder(this);
+        broomDialogBuilder.setTitle("Clear All Holos");
+        broomDialogBuilder.setMessage("This button clears all holos added on the screen.");
+        broomDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        broomAlert = broomDialogBuilder.create();
+
+        deleteAllBtn.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                broomAlert.show();
+                return true;
+            }
+        });
+
+        toggleArPlane.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                planeAlert1.show();
+                return true;
+            }
+        });
     }
 
     // To disable "Delete Holo Button" when touch user deselects by tapping surrounding
@@ -403,8 +494,47 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
 
     @Override
     public void onArObjectClick(int position, String tag) {
+        enableSearchingForPlane();
         enableArPlaneListener(position, tag);
     }
+
+    public void enableSearchingForPlane(){
+        searched = false;
+        if(!enablePlane){
+            toggleArPlane();
+        }
+        searchingForPlane1.setVisibility(View.VISIBLE);
+        arFragment.getArSceneView().getScene().addOnUpdateListener(this::onUpdateFrame);
+    }
+
+    public void onUpdateFrame(FrameTime frameTime){
+        Frame frame = arFragment.getArSceneView().getArFrame();
+        if (frame == null) {
+            return;
+        }
+        if (frame.getCamera().getTrackingState() != TrackingState.TRACKING) {
+            return;
+        }
+
+        for (Plane plane : frame.getUpdatedTrackables(Plane.class)) {
+            if (searched == false && plane.getTrackingState() == TrackingState.TRACKING) {
+
+                searchingForPlane1.setVisibility(View.GONE);
+
+                searchingForPlane2.setVisibility(View.VISIBLE);
+                searchingForPlane2.postDelayed(new Runnable() {
+                    public void run() {
+                        searchingForPlane2.setVisibility(View.GONE);
+                    }
+                }, 6000);
+                searched = true;
+                Log.d(TAG, "onUpdateFrame: tracked");
+            }
+        }
+        arFragment.onUpdate(frameTime);
+
+    }
+
 
     public void onClickMainTabView(View view){
         isRotate = FabAnimator.rotateFab(view, !isRotate);
@@ -495,6 +625,26 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
 
     public void onClickHelpDialog(View view){
         helpAlert.show();
+    }
+
+    public void onClickPlaneDialog(View view){
+        planeAlert1.show();
+    }
+
+    public void onClickToggleArPlane(View view){
+        if (!planeDialogShown){
+            planeAlert.show();
+            planeDialogShown = true;
+        }
+        else{
+            toggleArPlane();
+        }
+    }
+
+    public void toggleArPlane(){
+        enablePlane = !enablePlane;
+        arFragment.getArSceneView().getPlaneRenderer().setEnabled(enablePlane);
+        toggleArPlane.setImageResource(enablePlane ? R.drawable.ar_plane : R.drawable.ar_plane_disabled);
     }
 
     public void deleteAllHolo(){
@@ -960,8 +1110,16 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
         boolean recording = videoRecorder.onToggleRecord();
         if (recording) {
             captureBtn.setImageResource(R.drawable.round_stop);
+            if(enablePlane){
+                toggleArPlane();
+                toggleArPlane.setClickable(false);
+            }
         } else {
             captureBtn.setImageResource(R.drawable.round_videocam);
+            if(!enablePlane){
+                toggleArPlane();
+                toggleArPlane.setClickable(true);
+            }
             String videoPath = videoRecorder.getVideoPath().getAbsolutePath();
             Toast.makeText(this, "Video saved: " + videoPath, Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Video saved: " + videoPath);
