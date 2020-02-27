@@ -22,6 +22,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
 import android.media.CamcorderProfile;
 import android.media.MediaPlayer;
@@ -44,6 +45,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
@@ -231,6 +233,25 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
         }
 
         setContentView(R.layout.activity_video);
+
+        getWindow().getDecorView().getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+
+                Rect rect = new Rect();
+                getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
+                int screenHeight = getWindow().getDecorView().getRootView().getHeight();
+
+                int keyboardHeight = screenHeight - rect.bottom;
+
+                if (keyboardHeight > screenHeight * 0.15) {
+                    setToImmersiveMode();
+                }
+            }
+        });
+
+
+
 
         arFragment = (WritingArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
         //Animation that ask you to place the screen at a surface
@@ -1093,6 +1114,17 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
             return false;
         }
         return true;
+    }
+
+    private void setToImmersiveMode() {
+        // set to immersive
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 
     @Override
