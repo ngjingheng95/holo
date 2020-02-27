@@ -174,6 +174,9 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
     @BindView(R.id.searching_for_plane2)
     TextView searchingForPlane2;
 
+    @BindView(R.id.searching_for_plane3)
+    TextView searchingForPlane3;
+
     private List<File> mediaFiles = new ArrayList<>();
     private List<File> mediaFiles2 = new ArrayList<>();
     private List<File> mediaFiles3 = new ArrayList<>();
@@ -689,6 +692,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
             arFragment.setOnTapArPlaneListener(
                     (HitResult hitresult, Plane plane, MotionEvent motionevent) -> {
                         changeObject1_vimeo(hitresult.createAnchor());
+                        showResizePrompt(6000);
                         disableArPlaneListener(tag);
                     }
             );
@@ -697,6 +701,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
             arFragment.setOnTapArPlaneListener(
                     (HitResult hitresult, Plane plane, MotionEvent motionevent) -> {
                         changeObject1(hitresult.createAnchor());
+                        showResizePrompt(6000);
                         disableArPlaneListener(tag);
                     }
             );
@@ -923,6 +928,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
         videoNode.setOnTouchListener(new Node.OnTouchListener() {
                                          @Override
                                          public boolean onTouch(HitTestResult hitTestResult, MotionEvent motionEvent) {
+                                             showResizePrompt(6000);
                                              videoNode.select();
                                              if (!mediaPlayer.isPlaying()) {
                                                  mediaPlayer.start();
@@ -937,6 +943,15 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
         addObjectToList(anchorNode, videoNode, mediaPlayer);
         videoNode.select();
         enableDeleteHolo(anchorNode, videoNode, mediaPlayer);
+    }
+
+    public void showResizePrompt(int delayMillis){
+        searchingForPlane3.setVisibility(View.VISIBLE);
+        searchingForPlane3.postDelayed(new Runnable() {
+            public void run() {
+                searchingForPlane3.setVisibility(View.GONE);
+            }
+        }, delayMillis);
     }
 
     public void addObjectToList(AnchorNode anchorNode1, TransformableNode videoNode1, MediaPlayer mediaPlayer1){

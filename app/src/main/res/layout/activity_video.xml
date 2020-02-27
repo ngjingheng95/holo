@@ -41,25 +41,16 @@
           android:padding="10dp">
 
           <ImageView
-              android:layout_width="45dp"
-              android:layout_height="45dp"
+              android:layout_width="40dp"
+              android:layout_height="40dp"
               android:layout_alignParentTop="true"
               android:layout_alignParentLeft="true"
               android:clickable="true"
-              android:layout_marginBottom="40dp"
               android:onClick="onClickBackBtn1"
               android:id="@+id/go_back_button"
               android:src="@drawable/back_icon_main"/>
 
-          <ImageView
-              android:layout_width="45dp"
-              android:layout_height="45dp"
-              android:clickable="true"
-              android:onClick="onClickHelpDialog"
-              android:id="@+id/help_button"
-              android:src="@drawable/help_icon"
-              android:layout_below="@id/go_back_button"
-              android:layout_centerHorizontal="true"/>
+
 
       </RelativeLayout>
 
@@ -90,21 +81,32 @@
               app:fabSize="normal"/>
 
           <ImageView
-              android:layout_width="45dp"
-              android:layout_height="45dp"
+              android:layout_width="40dp"
+              android:layout_height="40dp"
               android:clickable="true"
-              android:onClick="onClickToggleArPlane"
-              android:longClickable="true"
-              android:id="@+id/toggle_arplane_btn"
-              android:layout_marginBottom="40dp"
-              android:src="@drawable/ar_plane"
+              android:onClick="onClickHelpDialog"
+              android:id="@+id/help_button"
+              android:src="@drawable/help_icon"
+              android:layout_marginBottom="35dp"
               android:layout_below="@id/add_holo_fab"
               android:layout_centerHorizontal="true"/>
 
           <ImageView
-              android:layout_width="45dp"
-              android:layout_height="45dp"
-              android:layout_marginBottom="40dp"
+              android:layout_width="40dp"
+              android:layout_height="40dp"
+              android:clickable="true"
+              android:onClick="onClickToggleArPlane"
+              android:longClickable="true"
+              android:id="@+id/toggle_arplane_btn"
+              android:layout_marginBottom="35dp"
+              android:src="@drawable/ar_plane"
+              android:layout_below="@id/help_button"
+              android:layout_centerHorizontal="true"/>
+
+          <ImageView
+              android:layout_width="40dp"
+              android:layout_height="40dp"
+              android:layout_marginBottom="35dp"
               android:clickable="true"
               android:onClick="onClickDeleteAll"
               android:id="@+id/delete_all_btn"
@@ -114,8 +116,8 @@
               android:longClickable="true"/>
 
           <ImageView
-              android:layout_width="45dp"
-              android:layout_height="45dp"
+              android:layout_width="40dp"
+              android:layout_height="40dp"
               android:clickable="true"
               android:layout_below="@id/delete_all_btn"
               android:visibility="gone"
@@ -182,6 +184,21 @@
             android:layout_marginBottom="250dp"
             android:visibility="gone"
             android:id="@+id/searching_for_plane2"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#66000000"
+            android:padding="10dp"
+            android:text="Drag to move / Pinch to resize / Tap on Trash Can button to delete"
+            android:textSize="12sp"
+            android:textAlignment="center"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="250dp"
+            android:visibility="gone"
+            android:id="@+id/searching_for_plane3"
             />
 
 
