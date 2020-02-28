@@ -27,6 +27,7 @@ import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
 import android.media.CamcorderProfile;
 import android.media.MediaPlayer;
+import android.media.MediaScannerConnection;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -1208,7 +1209,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
                 Environment.DIRECTORY_PICTURES) + File.separator + "ARHolo_Photos/" + date + "_screenshot.jpg";
     }
 
-    private void saveBitmapToDisk(Bitmap bitmap, String filename) throws IOException {
+    private File saveBitmapToDisk(Bitmap bitmap, String filename) throws IOException {
 
         File out = new File(filename);
         if (!out.getParentFile().exists()) {
@@ -1220,13 +1221,15 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
             outputData.writeTo(outputStream);
             outputStream.flush();
             outputStream.close();
+            return out;
         } catch (IOException ex) {
             throw new IOException("Failed to save bitmap to disk", ex);
         }
     }
 
+
     private void takePhoto() {
-        Toast.makeText(ChromaKeyVideoActivity.this, "Hold your camera still.", Toast.LENGTH_LONG).show();
+        Toast.makeText(ChromaKeyVideoActivity.this, "Capturing photo...", Toast.LENGTH_LONG).show();
         if(enablePlane){toggleArPlane();}
 
         final String filename = generateFilename();
@@ -1243,7 +1246,15 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
         PixelCopy.request(view, bitmap, (copyResult) -> {
             if (copyResult == PixelCopy.SUCCESS) {
                 try {
-                    saveBitmapToDisk(bitmap, filename);
+                    File file = saveBitmapToDisk(bitmap, filename);
+                    MediaScannerConnection.scanFile(this,
+                            new String[] { file.toString() }, null,
+                            new MediaScannerConnection.OnScanCompletedListener() {
+                                public void onScanCompleted(String path, Uri uri) {
+                                    Log.i("ExternalStorage", "Scanned " + path + ":");
+                                    Log.i("ExternalStorage", "-> uri=" + uri);
+                                }
+                            });
                 } catch (IOException e) {
                     Toast toast = Toast.makeText(ChromaKeyVideoActivity.this, e.toString(),
                             Toast.LENGTH_LONG);
@@ -1276,6 +1287,12 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
 
     }
 
+    private void addImageGallery( File file ) {
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.DATA, file.getAbsolutePath());
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpg"); // or image/png
+        getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+    }
 
     @Deprecated
     private void addNodeToScene_old(Anchor anchor, ModelRenderable renderable, ExternalTexture texture, MediaPlayer mediaPlayer) {

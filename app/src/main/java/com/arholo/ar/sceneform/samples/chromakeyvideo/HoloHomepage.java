@@ -25,7 +25,7 @@ public class HoloHomepage extends AppCompatActivity implements PopupMenu.OnMenuI
         // Initialise 'Help' Dialog
         aboutDialogBuilder = new AlertDialog.Builder(this);
         aboutDialogBuilder.setTitle("About ARHolo");
-        aboutDialogBuilder.setMessage("ARHolo is created by the following students fr om NTU School of Computer Science and Engineering (SCSE):\n- Ng Jing Heng (ngjingheng95@gmail.com)\n- Shiro Takeguchi (shiro.take96@gmail.com)\n\nSupervised by:\n- Dr Owen Noel Newton Fernando (ofernando@ntu.edu.sg)\n\n******\n\nIcons that appear in ARHolo are retrieved from\n- The Noun Project (thenounproject.com)\n- Flaticon (flaticon.com)\n\nAnd uses the following resources to search for video assets:\n- Pixabay API (pixabay.com)");
+        aboutDialogBuilder.setMessage("ARHolo is created by the following students from NTU School of Computer Science and Engineering (SCSE):\n- Ng Jing Heng (ngjingheng95@gmail.com)\n- Shiro Takeguchi (shiro.take96@gmail.com)\n\nSupervised by:\n- Dr Owen Noel Newton Fernando (ofernando@ntu.edu.sg)\n\n******\n\nIcons that appear in ARHolo were retrieved from\n- The Noun Project (thenounproject.com)\n- Flaticon (flaticon.com)\n\nARHolo uses the following resources to search for video assets:\n- Pixabay API (pixabay.com)");
         aboutDialogBuilder.setPositiveButton("Ok bro", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
