@@ -1287,13 +1287,6 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
 
     }
 
-    private void addImageGallery( File file ) {
-        ContentValues values = new ContentValues();
-        values.put(MediaStore.Images.Media.DATA, file.getAbsolutePath());
-        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpg"); // or image/png
-        getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-    }
-
     @Deprecated
     private void addNodeToScene_old(Anchor anchor, ModelRenderable renderable, ExternalTexture texture, MediaPlayer mediaPlayer) {
         AnchorNode anchorNode = new AnchorNode(anchor);

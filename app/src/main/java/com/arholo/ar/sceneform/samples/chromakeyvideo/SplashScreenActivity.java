@@ -122,9 +122,13 @@ public class SplashScreenActivity extends AppCompatActivity {
             try {
                 saveToSDCard(R.raw.dancingman, "dancingman.mp4", "Featured");
                 saveToSDCard(R.raw.thanosdance, "thanosdance.mp4", "Featured");
-                saveToSDCard(R.raw.peppapig2, "peppapig2.mp4", "Featured");
                 saveToSDCard(R.raw.ironman, "ironman.mp4", "Featured");
                 saveToSDCard(R.raw.alien, "alien.mp4", "Featured");
+                saveToSDCard(R.raw.snoopdogg, "snoopdogg.mp4", "Featured");
+                saveToSDCard(R.raw.vitasthanos, "vitasthanos.mp4", "Featured");
+                saveToSDCard(R.raw.trex1, "trex1.mp4", "Featured");
+                saveToSDCard(R.raw.trex2, "trex2.mp4", "Featured");
+
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
             }
@@ -150,6 +154,11 @@ public class SplashScreenActivity extends AppCompatActivity {
                 saveToSDCard(R.raw.peppapig1, "peppapig1.mp4", "Characters");
                 saveToSDCard(R.raw.peppapig2, "peppapig2.mp4", "Characters");
                 saveToSDCard(R.raw.spiderman, "spiderman.mp4", "Characters");
+                saveToSDCard(R.raw.vitasthanos, "vitasthanos.mp4", "Characters");
+                saveToSDCard(R.raw.lazytown, "lazytown.mp4", "Characters");
+                saveToSDCard(R.raw.minionsdab, "minionsdab.mp4", "Characters");
+                saveToSDCard(R.raw.snoopdogg, "snoopdogg.mp4", "Characters");
+                saveToSDCard(R.raw.skeletondance, "skeletondance.mp4", "Characters");
 
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
@@ -167,7 +176,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         if (success3) {
             try {
                 saveToSDCard(R.raw.monkey, "monkey.mp4", "Animals");
-                saveToSDCard(R.raw.eagle, "eagle.mp4", "Animals");
                 saveToSDCard(R.raw.flamingo, "flamingo.mp4", "Animals");
                 saveToSDCard(R.raw.giraffe, "giraffe.mp4", "Animals");
                 saveToSDCard(R.raw.rabbit, "rabbit.mp4", "Animals");

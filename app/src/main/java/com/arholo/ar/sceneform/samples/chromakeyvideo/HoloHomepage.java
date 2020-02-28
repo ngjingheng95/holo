@@ -79,17 +79,5 @@ public class HoloHomepage extends AppCompatActivity implements PopupMenu.OnMenuI
         }
 
 
-//        Intent helpIntent = new Intent(HoloHomepage.this, ChromaKeyVideoActivity.class);
-//        Intent aboutIntent = new Intent(HoloHomepage.this, CameraActivity.class);
-//        switch (menuItem.getItemId()) {
-//            case R.id.homepage_help:
-//                startActivity(helpIntent);
-//                return true;
-//            case R.id.homepage_about:
-//                startActivity(aboutIntent);
-//                return true;
-//            default:
-//                return false;
-//        }
     }
 }
