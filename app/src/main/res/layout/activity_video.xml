@@ -25,6 +25,15 @@
       class="com.arholo.ar.sceneform.samples.chromakeyvideo.WritingArFragment"
       android:layout_width="match_parent"
       android:layout_height="match_parent" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/camera_flash"
+        android:visibility="gone"
+        android:background="#FFFFFF"/>
+
+
   <RelativeLayout
       android:id="@+id/playback_group"
       android:layout_width="match_parent"
@@ -76,7 +85,7 @@
               android:clickable="true"
               android:onClick="onClickMainTabView"
               android:layout_centerHorizontal="true"
-              app:elevation="10dp"
+              app:elevation="5dp"
               android:layout_marginBottom="35dp"
               app:fabSize="normal"/>
 
@@ -128,22 +137,45 @@
         </RelativeLayout>
 
 
+      <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_alignParentBottom="true"
+          android:layout_marginBottom="25dp"
+          >
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/capture_video"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="25dp"
-        app:elevation="1dp"
-        android:clickable="true"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:srcCompat="@drawable/round_videocam"
-        android:tint="@color/darkGrey"
-        app:backgroundTint="@color/ultraLightGrey"
-        app:fabSize="normal"/>
+
+          <android.support.design.widget.FloatingActionButton
+              android:id="@+id/capture_video"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              app:elevation="1dp"
+              android:clickable="true"
+              android:layout_centerHorizontal="true"
+              app:layout_constraintHorizontal_bias="0.5"
+              app:layout_constraintHorizontal_chainStyle="spread"
+              app:srcCompat="@drawable/round_videocam"
+              android:tint="@color/darkGrey"
+              app:backgroundTint="@color/ultraLightGrey"
+              app:fabSize="normal"/>
+
+          <android.support.design.widget.FloatingActionButton
+              android:id="@+id/capture_photo"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_centerHorizontal="true"
+              app:elevation="1dp"
+              android:clickable="true"
+              android:layout_toRightOf="@id/capture_video"
+              android:layout_marginLeft="40dp"
+              app:layout_constraintHorizontal_bias="0.5"
+              app:layout_constraintHorizontal_chainStyle="spread"
+              app:srcCompat="@drawable/round_camera"
+              android:tint="@color/darkGrey"
+              app:backgroundTint="@color/ultraLightGrey"
+              app:fabSize="normal"/>
+
+      </RelativeLayout>
 
   </RelativeLayout>
 

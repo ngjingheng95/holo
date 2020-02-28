@@ -22,6 +22,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
 import android.media.CamcorderProfile;
@@ -32,9 +33,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.LinearLayoutManager;
@@ -43,9 +49,12 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.PixelCopy;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
@@ -75,10 +84,14 @@ import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.arholo.ar.sceneform.samples.chromakeyvideo.R;
 import com.google.ar.sceneform.ux.TransformableNode;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -121,6 +134,9 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
 
     @BindView(R.id.add_holo_fab)
     FloatingActionButton addHoloFab;
+
+    @BindView(R.id.capture_photo)
+    FloatingActionButton capturePhotoBtn;
 
     @BindView(R.id.main_tab)
     RelativeLayout mainTab;
@@ -178,6 +194,9 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
 
     @BindView(R.id.searching_for_plane3)
     TextView searchingForPlane3;
+
+    @BindView(R.id.camera_flash)
+    ImageView cameraFlash;
 
     private List<File> mediaFiles = new ArrayList<>();
     private List<File> mediaFiles2 = new ArrayList<>();
@@ -285,7 +304,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
 
         ButterKnife.bind(this);
 
-
+        capturePhotoBtn.setOnClickListener(view -> takePhoto());
 
         /***
         *
@@ -421,7 +440,9 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
         planeDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
-                toggleArPlane();
+                if(enablePlane){
+                    toggleArPlane();
+                }
                 dialog.dismiss();
             }
         });
@@ -1179,6 +1200,82 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
             getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
         }
     }
+
+    private String generateFilename() {
+        String date =
+                new SimpleDateFormat("yyyyMMddHHmmss", java.util.Locale.getDefault()).format(new Date());
+        return Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES) + File.separator + "ARHolo_Photos/" + date + "_screenshot.jpg";
+    }
+
+    private void saveBitmapToDisk(Bitmap bitmap, String filename) throws IOException {
+
+        File out = new File(filename);
+        if (!out.getParentFile().exists()) {
+            out.getParentFile().mkdirs();
+        }
+        try (FileOutputStream outputStream = new FileOutputStream(filename);
+             ByteArrayOutputStream outputData = new ByteArrayOutputStream()) {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputData);
+            outputData.writeTo(outputStream);
+            outputStream.flush();
+            outputStream.close();
+        } catch (IOException ex) {
+            throw new IOException("Failed to save bitmap to disk", ex);
+        }
+    }
+
+    private void takePhoto() {
+        Toast.makeText(ChromaKeyVideoActivity.this, "Hold your camera still.", Toast.LENGTH_LONG).show();
+        if(enablePlane){toggleArPlane();}
+
+        final String filename = generateFilename();
+        ArSceneView view = arFragment.getArSceneView();
+
+        // Create a bitmap the size of the scene view.
+        final Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),
+                Bitmap.Config.ARGB_8888);
+
+        // Create a handler thread to offload the processing of the image.
+        final HandlerThread handlerThread = new HandlerThread("PixelCopier");
+        handlerThread.start();
+        // Make the request to copy.
+        PixelCopy.request(view, bitmap, (copyResult) -> {
+            if (copyResult == PixelCopy.SUCCESS) {
+                try {
+                    saveBitmapToDisk(bitmap, filename);
+                } catch (IOException e) {
+                    Toast toast = Toast.makeText(ChromaKeyVideoActivity.this, e.toString(),
+                            Toast.LENGTH_LONG);
+                    toast.show();
+                    return;
+                }
+                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
+                        "Photo saved", Snackbar.LENGTH_LONG);
+                snackbar.setAction("Open in Photos", v -> {
+                    File photoFile = new File(filename);
+
+                    Uri photoURI = FileProvider.getUriForFile(ChromaKeyVideoActivity.this,
+                            ChromaKeyVideoActivity.this.getPackageName() + ".provider",
+                            photoFile);
+                    Intent intent = new Intent(Intent.ACTION_VIEW, photoURI);
+                    intent.setDataAndType(photoURI, "image/*");
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    startActivity(intent);
+
+                });
+                snackbar.show();
+            } else {
+                Toast toast = Toast.makeText(ChromaKeyVideoActivity.this,
+                        "Failed to copyPixels: " + copyResult, Toast.LENGTH_LONG);
+                toast.show();
+            }
+            handlerThread.quitSafely();
+        }, new Handler(handlerThread.getLooper()));
+
+
+    }
+
 
     @Deprecated
     private void addNodeToScene_old(Anchor anchor, ModelRenderable renderable, ExternalTexture texture, MediaPlayer mediaPlayer) {

@@ -8,7 +8,7 @@ import java.util.List;
 
 public class    Commons {
 
-    public static final String MEDIA_DIR = Environment.getExternalStorageDirectory().getPath() + "/0/dev/CameraApp";
+    public static final String MEDIA_DIR = Environment.getExternalStorageDirectory().getPath() + "/0/dev/MyHolos";
 
     public static <T, W extends PickerItemWrapper<T>> List<W> wrapItems(Collection<T> items, PickerItemWrapper.WrapperFactory<T, W> factory) {
         List<W> wrappedItems = new ArrayList<>();

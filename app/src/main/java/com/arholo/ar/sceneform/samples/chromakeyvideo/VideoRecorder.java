@@ -104,7 +104,7 @@ public class VideoRecorder {
             videoDirectory =
                     new File(
                             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-                                    + "/ARHolo");
+                                    + "/ARHolo_Recordings");
         }
         if (videoBaseName == null || videoBaseName.isEmpty()) {
             videoBaseName = "Recording";

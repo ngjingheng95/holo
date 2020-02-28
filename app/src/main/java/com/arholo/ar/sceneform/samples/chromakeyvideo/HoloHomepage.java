@@ -1,5 +1,7 @@
 package com.arholo.ar.sceneform.samples.chromakeyvideo;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,10 +15,24 @@ import com.arholo.ar.sceneform.samples.chromakeyvideo.camera.CameraActivity;
 
 public class HoloHomepage extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
+    private AlertDialog.Builder aboutDialogBuilder;
+    private AlertDialog aboutAlert;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_homepage);
+        // Initialise 'Help' Dialog
+        aboutDialogBuilder = new AlertDialog.Builder(this);
+        aboutDialogBuilder.setTitle("About ARHolo");
+        aboutDialogBuilder.setMessage("ARHolo is created by the following students fr om NTU School of Computer Science and Engineering (SCSE):\n- Ng Jing Heng (ngjingheng95@gmail.com)\n- Shiro Takeguchi (shiro.take96@gmail.com)\n\nSupervised by:\n- Dr Owen Noel Newton Fernando (ofernando@ntu.edu.sg)\n\n******\n\nIcons that appear in ARHolo are retrieved from\n- The Noun Project (thenounproject.com)\n- Flaticon (flaticon.com)\n\nAnd uses the following resources to search for video assets:\n- Pixabay API (pixabay.com)");
+        aboutDialogBuilder.setPositiveButton("Ok bro", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        aboutAlert = aboutDialogBuilder.create();
     }
 
     public void onClickCreateAr(View view){
@@ -45,6 +61,10 @@ public class HoloHomepage extends AppCompatActivity implements PopupMenu.OnMenuI
         popup.show();
     }
 
+    public void onClickAboutDialog(View view){
+        aboutAlert.show();
+    }
+
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
@@ -52,7 +72,7 @@ public class HoloHomepage extends AppCompatActivity implements PopupMenu.OnMenuI
                 Toast.makeText(this, "\'Help\' page Coming Soon!", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.homepage_about:
-                Toast.makeText(this, "\'About\' page Coming Soon!", Toast.LENGTH_SHORT).show();
+                aboutAlert.show();
                 return true;
             default:
                 return false;

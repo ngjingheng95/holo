@@ -22,21 +22,6 @@ public class CameraActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
 
-        getWindow().getDecorView().getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-
-                Rect rect = new Rect();
-                getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
-                int screenHeight = getWindow().getDecorView().getRootView().getHeight();
-
-                int keyboardHeight = screenHeight - rect.bottom;
-
-                if (keyboardHeight > screenHeight * 0.15) {
-                    setToImmersiveMode();
-                }
-            }
-        });
 
         // Initialise 'Help' Dialog
         cameraHelpDialogBuilder = new AlertDialog.Builder(this);
@@ -57,23 +42,13 @@ public class CameraActivity extends AppCompatActivity {
         }
     }
 
-    public void onClickBackBtn(View view){
-        Intent intent=new Intent(CameraActivity.this, HoloHomepage.class);
+    public void onClickBackBtn(View view) {
+        Intent intent = new Intent(CameraActivity.this, HoloHomepage.class);
         startActivity(intent);
     }
 
-    public void onClickCameraHelpDialog(View view){
+    public void onClickCameraHelpDialog(View view) {
         cameraHelpAlert.show();
     }
 
-    private void setToImmersiveMode() {
-        // set to immersive
-        getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-    }
 }
