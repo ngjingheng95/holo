@@ -5,7 +5,7 @@
         android:title="About ARHolo"/>
 
     <item android:id="@+id/homepage_feedback"
-        android:title="Feedback to Developer"/>
+        android:title="Feedback"/>
 
     <item android:id="@+id/homepage_help"
         android:title="Help"/>

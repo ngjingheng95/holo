@@ -5,11 +5,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,7 +32,7 @@ public class HoloHomepage extends AppCompatActivity implements PopupMenu.OnMenuI
         aboutDialogBuilder = new AlertDialog.Builder(this);
         aboutDialogBuilder.setTitle("About ARHolo");
         aboutDialogBuilder.setMessage("ARHolo is created by the following students from NTU School of Computer Science and Engineering (SCSE):\n- Ng Jing Heng (ngjingheng95@gmail.com)\n- Gan Jia Jun (jia_jun_94@hotmail.com)\n- Shiro Takeguchi (shiro.take96@gmail.com)\n\nSupervised by:\n- Dr Owen Noel Newton Fernando (ofernando@ntu.edu.sg)\n\n******\n\nIcons that appear in ARHolo were retrieved from\n- The Noun Project (thenounproject.com)\n- Flaticon (flaticon.com)\n\nARHolo uses the following resources to search for video assets:\n- Pixabay API (pixabay.com)");
-        aboutDialogBuilder.setPositiveButton("Ok bro", new DialogInterface.OnClickListener() {
+        aboutDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
