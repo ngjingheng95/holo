@@ -155,8 +155,6 @@ public class SplashScreenActivity extends AppCompatActivity {
                 saveToSDCard(R.raw.peppapig2, "peppapig2.mp4", "Characters");
                 saveToSDCard(R.raw.spiderman, "spiderman.mp4", "Characters");
                 saveToSDCard(R.raw.vitasthanos, "vitasthanos.mp4", "Characters");
-                saveToSDCard(R.raw.lazytown, "lazytown.mp4", "Characters");
-                saveToSDCard(R.raw.minionsdab, "minionsdab.mp4", "Characters");
                 saveToSDCard(R.raw.snoopdogg, "snoopdogg.mp4", "Characters");
                 saveToSDCard(R.raw.skeletondance, "skeletondance.mp4", "Characters");
 

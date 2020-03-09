@@ -31,6 +31,7 @@ import android.media.MediaScannerConnection;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.opengl.GLES20;
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -83,6 +84,7 @@ import com.google.ar.sceneform.rendering.Color;
 import com.google.ar.sceneform.rendering.ExternalTexture;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.arholo.ar.sceneform.samples.chromakeyvideo.R;
+import com.google.ar.sceneform.ux.BaseTransformableNode;
 import com.google.ar.sceneform.ux.TransformableNode;
 
 import java.io.ByteArrayOutputStream;
@@ -94,6 +96,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+
+import javax.microedition.khronos.opengles.GL10;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -240,6 +244,8 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
     private boolean searched;
     private boolean planeDialogShown;
 
+    private TransformableNode selectedNode;
+
     private List<PixabayVideoInfo> pixabayVideoInfo = new ArrayList<>();
 
     @Override
@@ -281,6 +287,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
         arFragment.getPlaneDiscoveryController().hide();
         arFragment.getPlaneDiscoveryController().setInstructionView(null);
         arFragment.getArSceneView().getScene().setOnTouchListener(this::handleOnTouch);
+        enableArPlaneListenerTab();
 
         // Initialize the VideoRecorder.
         videoRecorder = new VideoRecorder();
@@ -305,7 +312,21 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
 
         ButterKnife.bind(this);
 
-        capturePhotoBtn.setOnClickListener(view -> takePhoto());
+//        capturePhotoBtn.setOnClickListener(view -> takePhoto());
+        capturePhotoBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(ChromaKeyVideoActivity.this, "Capturing photo...", Toast.LENGTH_LONG).show();
+                if(enablePlane){toggleArPlane();}
+                for (TransformableNode vNode : videoNodeList){
+                    if (vNode.isSelected()){
+                        vNode.getTransformationSystem().selectNode(null);
+                    }
+                }
+                takePhoto();
+
+            }
+        });
 
         /***
         *
@@ -705,6 +726,17 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
         Log.d(TAG, "numArObject -> " + numArObjects);
     }
 
+    public void enableArPlaneListenerTab(){
+        arFragment.setOnTapArPlaneListener(
+                (HitResult hitresult, Plane plane, MotionEvent motionevent) -> {
+                    if (mainTabGroup.getVisibility() == View.GONE){
+                        isRotate = FabAnimator.rotateFab(addHoloFab, !isRotate);
+                        mainTabGroup.setVisibility(View.VISIBLE);
+                    }
+                }
+        );
+    }
+
     public void enableArPlaneListener(int position, String tag){
 
         switch(tag){
@@ -737,6 +769,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
                         changeObject1_vimeo(hitresult.createAnchor());
                         showResizePrompt(6000);
                         disableArPlaneListener(tag);
+                        enableArPlaneListenerTab();
                     }
             );
         }
@@ -746,6 +779,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
                         changeObject1(hitresult.createAnchor());
                         showResizePrompt(6000);
                         disableArPlaneListener(tag);
+                        enableArPlaneListenerTab();
                     }
             );
         }
@@ -772,6 +806,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
         }
     }
 
+    // Initial query on Pixabay
     public void loadPixabayResults(String q, boolean safesearch, int page, int perPage){
         pixabayVideoInfo.clear();
         PixabayService.createPixabayService().getVideoResults(getString(R.string.pixabay_api_key), q, safesearch, page, perPage).enqueue(new Callback<PixabayVideoRequestInfo>() {
@@ -785,10 +820,11 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
         });
     }
 
+    //  Query on Pixabay with text from search bar
     //  Cases:
-//  - totalHits > 0 => Success
-//  - totalHits == 0 => No Results
-//  - totalHits == -1 => Failure
+    //  - totalHits > 0 => Success
+    //  - totalHits == 0 => No Results
+    //  - totalHits == -1 => Failure
     public void loadPixabayVideoRequestInfo1(String q, boolean safesearch, int page, int perPage) {
         pixabayVideoInfo.clear();
         PixabayService.createPixabayService().getVideoResults(getString(R.string.pixabay_api_key), q, safesearch, page, perPage).enqueue(new Callback<PixabayVideoRequestInfo>() {
@@ -1015,6 +1051,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
         Log.d(TAG, "numArObjects -> " + numArObjects);
     }
 
+    // Trash can button
     public void enableDeleteHolo(AnchorNode anchorNode1, TransformableNode videoNode1, MediaPlayer mediaPlayer1) {
         deleteHolo.setVisibility(View.VISIBLE);
         deleteHolo.setOnClickListener(new View.OnClickListener() {
@@ -1030,6 +1067,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
         });
     }
 
+    // Hide trash can button
     public void disableDeleteHolo(){
         deleteHolo.setVisibility(View.GONE);
     }
@@ -1183,14 +1221,23 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
                 toggleArPlane();
                 toggleArPlane.setClickable(false);
             }
+            // Deselects node when recording
+            for (TransformableNode vNode : videoNodeList){
+                if (vNode.isSelected()){
+                    selectedNode = vNode;
+                    vNode.getTransformationSystem().selectNode(null);
+                }
+            }
         } else {
             captureBtn.setImageResource(R.drawable.round_videocam);
             if(!enablePlane){
                 toggleArPlane();
                 toggleArPlane.setClickable(true);
             }
+            selectedNode.getTransformationSystem().selectNode(selectedNode);
+            selectedNode = null;
             String videoPath = videoRecorder.getVideoPath().getAbsolutePath();
-            Toast.makeText(this, "Video saved: " + videoPath, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Video saved to gallery", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Video saved: " + videoPath);
 
             // Send  notification of updated content.
@@ -1227,10 +1274,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
         }
     }
 
-
     private void takePhoto() {
-        Toast.makeText(ChromaKeyVideoActivity.this, "Capturing photo...", Toast.LENGTH_LONG).show();
-        if(enablePlane){toggleArPlane();}
 
         final String filename = generateFilename();
         ArSceneView view = arFragment.getArSceneView();
@@ -1283,7 +1327,6 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
             }
             handlerThread.quitSafely();
         }, new Handler(handlerThread.getLooper()));
-
 
     }
 

@@ -69,4 +69,15 @@ public class DoubleTapTransformableNode extends TransformableNode {
     interface OnDoubleTapListener {
         void onDoubleTap();
     }
+
+    public void deselectNode(){
+        if(this.getTransformationSystem().getSelectedNode() == null) {
+            return;
+        }
+
+        this.getTransformationSystem().getSelectionVisualizer().removeSelectionVisual(this.getTransformationSystem().getSelectedNode());}
+
+    public void selectNode(){
+        this.getTransformationSystem().getSelectionVisualizer().applySelectionVisual(this.getTransformationSystem().getSelectedNode());
+    }
 }

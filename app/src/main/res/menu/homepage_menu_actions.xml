@@ -4,6 +4,9 @@
     <item android:id="@+id/homepage_about"
         android:title="About ARHolo"/>
 
+    <item android:id="@+id/homepage_feedback"
+        android:title="Feedback to Developer"/>
+
     <item android:id="@+id/homepage_help"
         android:title="Help"/>
 

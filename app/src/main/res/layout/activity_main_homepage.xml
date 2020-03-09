@@ -30,6 +30,8 @@
         android:background="@null"
         />
 
+
+
     <TextView
         android:id="@+id/homepage_tagline"
         android:layout_width="wrap_content"
