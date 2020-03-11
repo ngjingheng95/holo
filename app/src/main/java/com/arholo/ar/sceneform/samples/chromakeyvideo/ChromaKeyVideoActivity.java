@@ -96,6 +96,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -244,9 +246,14 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
     private boolean searched;
     private boolean planeDialogShown;
 
+    private boolean doneHide;
+
+
     private TransformableNode selectedNode;
 
     private List<PixabayVideoInfo> pixabayVideoInfo = new ArrayList<>();
+
+
 
     @Override
     @SuppressWarnings({"AndroidApiChecker", "FutureReturnValueIgnored"})
@@ -276,8 +283,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
             }
         });
 
-
-
+        doneHide = false;
 
         arFragment = (WritingArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
         //Animation that ask you to place the screen at a surface
@@ -316,14 +322,30 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
         capturePhotoBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Toast.makeText(ChromaKeyVideoActivity.this, "Capturing photo...", Toast.LENGTH_LONG).show();
-                if(enablePlane){toggleArPlane();}
-                for (TransformableNode vNode : videoNodeList){
-                    if (vNode.isSelected()){
+                boolean lastFlag = enablePlane;
+                disableDeleteHolo();
+                for (TransformableNode vNode : videoNodeList) {
+                    if (vNode.isSelected()) {
                         vNode.getTransformationSystem().selectNode(null);
+                        Log.d(TAG, "onClick: deselect");
                     }
                 }
-                takePhoto();
+                if(enablePlane){
+                    toggleArPlane();
+                }
+
+                v.postDelayed(new Runnable() {
+                    public void run() {
+                        takePhoto();
+                        //enable arplane again if it was originally enabled
+                        if(lastFlag){
+                            if(!enablePlane) {
+                                toggleArPlane();
+                            }
+                        }
+                        Toast.makeText(ChromaKeyVideoActivity.this, "Saving photo... Please wait", Toast.LENGTH_LONG).show();
+                    }
+                }, 80);
 
             }
         });
@@ -519,6 +541,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
         });
     }
 
+
     // To disable "Delete Holo Button" when touch user deselects by tapping surrounding
     private boolean handleOnTouch(HitTestResult hitTestResult, MotionEvent motionEvent) {
         Log.d(TAG, "handleOnTouch: start");
@@ -710,7 +733,13 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
 
     public void toggleArPlane(){
         enablePlane = !enablePlane;
-        arFragment.getArSceneView().getPlaneRenderer().setEnabled(enablePlane);
+        arFragment.getArSceneView().getPlaneRenderer().setVisible(enablePlane);
+        toggleArPlane.setImageResource(enablePlane ? R.drawable.ar_plane : R.drawable.ar_plane_disabled);
+    }
+
+    public void toggleArPlane(ArSceneView view){
+        enablePlane = !enablePlane;
+        view.getPlaneRenderer().setVisible(enablePlane);
         toggleArPlane.setImageResource(enablePlane ? R.drawable.ar_plane : R.drawable.ar_plane_disabled);
     }
 
@@ -720,6 +749,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
         while(numArObjects > 0){
             mediaPlayerList.get(0).stop();
             mediaPlayerList.get(0).release();
+            anchorNodeList.get(0).getAnchor().detach();
             anchorNodeList.get(0).removeChild((Node)videoNodeList.get(0));
             removeObjectFromList(anchorNodeList.get(0), videoNodeList.get(0), mediaPlayerList.get(0));
         }
@@ -988,6 +1018,8 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
 
 
         if (!mediaPlayer.isPlaying()) {
+            Log.d(TAG, "addNodeToScene: not playing");
+
             mediaPlayer.start();
 
             // Wait to set the renderable until the first frame of the  video becomes available.
@@ -1001,6 +1033,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
                                 texture.getSurfaceTexture().setOnFrameAvailableListener(null);
                             });
         } else {
+            Log.d(TAG, "addNodeToScene: playing");
             videoNode.setRenderable(renderable);
         }
 
@@ -1060,13 +1093,14 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
                     mediaPlayer1.stop();
                     mediaPlayer1.release();
 //                anchor = null;
-                anchorNode1.removeChild((Node)videoNode1);
-                removeObjectFromList(anchorNode1, videoNode1,mediaPlayer1);
-                deleteHolo.setVisibility(View.GONE);
-            }
-        });
-    }
-
+                if (anchorNode1 != null) {
+//                    arFragment.getArSceneView().getScene().removeChild(anchorNode1);
+                    anchorNode1.getAnchor().detach();
+                    anchorNode1.removeChild((Node)videoNode1);
+                    removeObjectFromList(anchorNode1, videoNode1,mediaPlayer1);
+                    deleteHolo.setVisibility(View.GONE); }}
+            });
+        }
     // Hide trash can button
     public void disableDeleteHolo(){
         deleteHolo.setVisibility(View.GONE);
@@ -1076,6 +1110,9 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
     @Override
     protected void onResume() {
         super.onResume();
+        if(!enablePlane){
+            toggleArPlane();
+        }
         File file = new File(Commons.MEDIA_DIR);
         if (file.isDirectory()) {
             mediaFiles.clear();
@@ -1234,8 +1271,12 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
                 toggleArPlane();
                 toggleArPlane.setClickable(true);
             }
-            selectedNode.getTransformationSystem().selectNode(selectedNode);
-            selectedNode = null;
+
+            // Select unselected node if have
+            if(selectedNode != null) {
+                selectedNode.getTransformationSystem().selectNode(selectedNode);
+                selectedNode = null;
+            }
             String videoPath = videoRecorder.getVideoPath().getAbsolutePath();
             Toast.makeText(this, "Video saved to gallery", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Video saved: " + videoPath);
@@ -1274,39 +1315,55 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
         }
     }
 
+    private boolean hidePlaneBeforePhoto() {
+        if(enablePlane){toggleArPlane();
+            Log.d(TAG, "onClick: close plane");}
+        for (TransformableNode vNode : videoNodeList){
+            if (vNode.isSelected()){
+                vNode.getTransformationSystem().selectNode(null);
+                Log.d(TAG, "onClick: deselect");
+            }
+        }
+        return true;
+    }
+
     private void takePhoto() {
-
+        Log.d(TAG, "takePhoto: start");
         final String filename = generateFilename();
-        ArSceneView view = arFragment.getArSceneView();
-
+        ArSceneView view1 = arFragment.getArSceneView();
+        Log.d(TAG, "takePhoto: getarsceneview");
         // Create a bitmap the size of the scene view.
-        final Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),
+        final Bitmap bitmap = Bitmap.createBitmap(view1.getWidth(), view1.getHeight(),
                 Bitmap.Config.ARGB_8888);
-
         // Create a handler thread to offload the processing of the image.
         final HandlerThread handlerThread = new HandlerThread("PixelCopier");
+
         handlerThread.start();
         // Make the request to copy.
-        PixelCopy.request(view, bitmap, (copyResult) -> {
+        PixelCopy.request(view1, bitmap, (copyResult) -> {
+            Log.d(TAG, "in thread: ");
             if (copyResult == PixelCopy.SUCCESS) {
                 try {
                     File file = saveBitmapToDisk(bitmap, filename);
                     MediaScannerConnection.scanFile(this,
-                            new String[] { file.toString() }, null,
+                            new String[]{file.toString()}, null,
                             new MediaScannerConnection.OnScanCompletedListener() {
                                 public void onScanCompleted(String path, Uri uri) {
                                     Log.i("ExternalStorage", "Scanned " + path + ":");
                                     Log.i("ExternalStorage", "-> uri=" + uri);
                                 }
                             });
+
+
                 } catch (IOException e) {
                     Toast toast = Toast.makeText(ChromaKeyVideoActivity.this, e.toString(),
                             Toast.LENGTH_LONG);
                     toast.show();
                     return;
                 }
+
                 Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
-                        "Photo saved", Snackbar.LENGTH_LONG);
+                        "Done! Photo saved.", Snackbar.LENGTH_LONG);
                 snackbar.setAction("Open in Photos", v -> {
                     File photoFile = new File(filename);
 
@@ -1325,8 +1382,13 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
                         "Failed to copyPixels: " + copyResult, Toast.LENGTH_LONG);
                 toast.show();
             }
+            Log.d(TAG, "done thread");
             handlerThread.quitSafely();
+
         }, new Handler(handlerThread.getLooper()));
+
+
+
 
     }
 

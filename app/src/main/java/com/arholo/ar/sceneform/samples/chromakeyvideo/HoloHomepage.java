@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
@@ -19,15 +20,20 @@ import com.arholo.ar.sceneform.samples.chromakeyvideo.camera.CameraActivity;
 import java.util.List;
 import java.util.Stack;
 
+
 public class HoloHomepage extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
     private AlertDialog.Builder aboutDialogBuilder;
     private AlertDialog aboutAlert;
+    private ImageView feedbackIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_homepage);
+
+        feedbackIcon = (ImageView) findViewById(R.id.homepage_feedback);
+
         // Initialise 'Help' Dialog
         aboutDialogBuilder = new AlertDialog.Builder(this);
         aboutDialogBuilder.setTitle("About ARHolo");
@@ -87,6 +93,9 @@ public class HoloHomepage extends AppCompatActivity implements PopupMenu.OnMenuI
                 return false;
         }
 
+    }
+    public void onClickFeedbackIcon(View view){
+        feedbackIcon.setVisibility(View.GONE);
     }
 
     public void sendEmail(){

@@ -13,7 +13,7 @@
     <ImageView
         android:layout_width="250dp"
         android:layout_height="100dp"
-        android:src="@drawable/arholo_full"
+        android:src="@drawable/arholo_logo_full"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:id="@+id/homepage_logo"
@@ -26,9 +26,23 @@
         android:id="@+id/homepage_menu"
         android:onClick="showMenu"
         android:layout_alignParentRight="true"
-        android:layout_margin="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="10dp"
         android:background="@null"
         />
+    
+    <ImageView
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:src="@drawable/feedback_icon"
+        android:layout_below="@id/homepage_menu"
+        android:layout_alignParentRight="true"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="5dp"
+        android:clickable="true"
+        android:onClick="onClickFeedbackIcon"
+        android:id="@+id/homepage_feedback"/>
+
 
 
 
