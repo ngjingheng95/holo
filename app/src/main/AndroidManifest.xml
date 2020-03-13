@@ -37,6 +37,15 @@
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.arholo.ar.sceneform.samples.chromakeyvideo.PlaceArTutorial"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.arholo.ar.sceneform.samples.chromakeyvideo.CreateArTutorial"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:screenOrientation="portrait"/>
+
         <!--
              This tag indicates that this application requires ARCore. This results in the
             application only being visible in the Google Play Store on devices that support

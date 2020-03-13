@@ -1,21 +1,22 @@
 package com.arholo.ar.sceneform.samples.chromakeyvideo.camera;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewTreeObserver;
+import android.widget.ViewFlipper;
 
+
+import com.arholo.ar.sceneform.samples.chromakeyvideo.CreateArTutorial;
 import com.arholo.ar.sceneform.samples.chromakeyvideo.HoloHomepage;
 import com.arholo.ar.sceneform.samples.chromakeyvideo.R;
 
 public class CameraActivity extends AppCompatActivity {
 
-    private AlertDialog.Builder cameraHelpDialogBuilder;
-    private AlertDialog cameraHelpAlert;
+   // private AlertDialog.Builder cameraHelpDialogBuilder;
+    //private AlertDialog cameraHelpAlert;
+
+    private ViewFlipper viewFlipper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +25,7 @@ public class CameraActivity extends AppCompatActivity {
 
 
         // Initialise 'Help' Dialog
-        cameraHelpDialogBuilder = new AlertDialog.Builder(this);
+/*        cameraHelpDialogBuilder = new AlertDialog.Builder(this);
         cameraHelpDialogBuilder.setTitle("Create a Holo");
         cameraHelpDialogBuilder.setMessage("1. Stand in front of a green screen\n2. Ensure that the green screen covers your whole screen\n3. Tap on the red dot to start recording\n4. Tap on the white square once you are done to end recording.\n5. You can now add your creation into the surroundings!");
         cameraHelpDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -34,7 +35,7 @@ public class CameraActivity extends AppCompatActivity {
             }
         });
         cameraHelpAlert = cameraHelpDialogBuilder.create();
-
+*/
         if (null == savedInstanceState) {
             getFragmentManager().beginTransaction()
                     .replace(R.id.container, VideoRecordingFragment.newInstance())
@@ -42,13 +43,19 @@ public class CameraActivity extends AppCompatActivity {
         }
     }
 
+    // Flipper Tutorial
+    public void onClickCreateArTutorial(View view) {
+        Intent intent = new Intent(CameraActivity.this, CreateArTutorial.class);
+        startActivity(intent);
+    }
+
     public void onClickBackBtn(View view) {
         Intent intent = new Intent(CameraActivity.this, HoloHomepage.class);
         startActivity(intent);
     }
 
-    public void onClickCameraHelpDialog(View view) {
-        cameraHelpAlert.show();
-    }
+    //public void onClickCameraHelpDialog(View view) {
+    //    cameraHelpAlert.show();
+    //}
 
 }

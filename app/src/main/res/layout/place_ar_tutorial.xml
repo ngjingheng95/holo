@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_bg"
+    tools:context="com.arholo.ar.sceneform.samples.chromakeyvideo.PlaceArTutorial">
+
+    <ViewFlipper
+        android:id="@+id/view_flipper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:inAnimation="@android:anim/slide_in_left"
+        android:outAnimation="@android:anim/slide_out_right">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/title1"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                android:paddingTop="100dp"
+                android:gravity="center"
+                android:text="1) Place Holo"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/text1"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:text="Tap on the Blue Button to choose the holo you want to place."/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="5dp"
+                android:adjustViewBounds="true"
+                android:maxWidth="300dp"
+                android:maxHeight="300dp"
+                android:scaleType="fitCenter"
+                android:layout_marginLeft="3dp"
+                android:src="@drawable/place_ar_tutorial_1"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/title2"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                android:paddingTop="100dp"
+                android:gravity="center"
+                android:text="2) Detect a Plane\n"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/text2"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:text="Look around as ARHolo tries to detect a plane."/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="5dp"
+                android:adjustViewBounds="true"
+                android:maxWidth="300dp"
+                android:maxHeight="300dp"
+                android:scaleType="fitCenter"
+                android:layout_marginLeft="3dp"
+                android:src="@drawable/place_ar_tutorial_2"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/title3"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                android:paddingTop="100dp"
+                android:gravity="center"
+                android:text="3) Inserting Holo\n"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/text3"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:text="Tap on the plane (white dots) to insert your holo."/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="5dp"
+                android:adjustViewBounds="true"
+                android:maxWidth="300dp"
+                android:maxHeight="300dp"
+                android:scaleType="fitCenter"
+                android:layout_marginLeft="3dp"
+                android:src="@drawable/place_ar_tutorial_3"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/title4"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                android:paddingLeft="20dp"
+                android:paddingTop="100dp"
+                android:gravity="center"
+                android:text="4) Add more Holos!\n"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/text4"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="52dp"
+                android:paddingRight="32dp"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:text="Add as many holos as you want!"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="5dp"
+                android:paddingLeft="20dp"
+                android:adjustViewBounds="true"
+                android:maxWidth="300dp"
+                android:maxHeight="300dp"
+                android:scaleType="fitCenter"
+                android:layout_marginLeft="3dp"
+                android:src="@drawable/place_ar_tutorial_4"/>
+        </LinearLayout>
+        <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/title5"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:paddingTop="100dp"
+            android:gravity="center"
+            android:text="5) Remove Holos\n"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/text5"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="32dp"
+            android:paddingRight="32dp"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:text="Tap on the holo and tap on the trash can on the right to remove."/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="5dp"
+            android:adjustViewBounds="true"
+            android:maxWidth="300dp"
+            android:maxHeight="300dp"
+            android:scaleType="fitCenter"
+            android:layout_marginLeft="3dp"
+            android:src="@drawable/place_ar_tutorial_5"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/text6"
+                android:paddingTop="150dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:text="You can also tap on the broom to clear all holos!"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="5dp"
+                android:adjustViewBounds="true"
+                android:maxWidth="300dp"
+                android:maxHeight="300dp"
+                android:scaleType="fitCenter"
+                android:layout_marginLeft="3dp"
+                android:src="@drawable/place_ar_tutorial_6"/>
+        </LinearLayout>
+    </ViewFlipper>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="16dp"
+        android:onClick="previousView"
+        android:text="Previous" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="16dp"
+        android:onClick="nextView"
+        android:text="Next" />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="20dp"
+        android:padding="10dp">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:clickable="true"
+            android:onClick="onClickBackBtn"
+            android:id="@+id/go_back_button"
+            android:src="@drawable/back_icon_main"/>
+    </RelativeLayout>
+</RelativeLayout>

@@ -31,7 +31,6 @@ import android.media.MediaScannerConnection;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.opengl.GLES20;
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -55,8 +54,6 @@ import android.view.PixelCopy;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.animation.Animation;
-import android.view.animation.Transformation;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
@@ -64,6 +61,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import com.arholo.ar.sceneform.samples.chromakeyvideo.options.Commons;
 import com.arholo.ar.sceneform.samples.chromakeyvideo.options.Commons2;
@@ -83,8 +81,6 @@ import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.Color;
 import com.google.ar.sceneform.rendering.ExternalTexture;
 import com.google.ar.sceneform.rendering.ModelRenderable;
-import com.arholo.ar.sceneform.samples.chromakeyvideo.R;
-import com.google.ar.sceneform.ux.BaseTransformableNode;
 import com.google.ar.sceneform.ux.TransformableNode;
 
 import java.io.ByteArrayOutputStream;
@@ -96,10 +92,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-
-import javax.microedition.khronos.opengles.GL10;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -230,6 +222,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
 
     private AlertDialog.Builder helpDialogBuilder;
     private AlertDialog helpAlert;
+    private AlertDialog.Builder help2DialogBuilder;
 
     private AlertDialog.Builder planeDialogBuilder;
     private AlertDialog planeAlert;
@@ -239,6 +232,8 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
 
     private AlertDialog.Builder broomDialogBuilder;
     private AlertDialog broomAlert;
+
+    private ViewFlipper viewFlipper;
 
     private boolean mIsPlayerRelease = true;
     private boolean enablePlane;
@@ -466,16 +461,26 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
         deleteAlert = dialogBuilder.create();
 
         // Initialise 'Help' Dialog
+/*        ImageView help1 = new ImageView(this);
+        help1.setImageResource(R.drawable.help_icon);
+
         helpDialogBuilder = new AlertDialog.Builder(this);
         helpDialogBuilder.setTitle("Place Holos");
         helpDialogBuilder.setMessage("1. Tap on the Blue Button on the right to choose the holo you want to place. \n2. Look around as ARHolo tries to detect a plane. \n3. Tap on the plane (white dots) to insert your holo\n4. Add as many holos as you want!\n\nTo remove holos:\n- Tap on the holo and tap on the trash can on the right to remove.\n- You can also tap on the broom to clear all holos!");
-        helpDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-
+        helpDialogBuilder.setPositiveButton("Next", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                showDialog2();
+            }
+        });
+        helpDialogBuilder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
+        helpDialogBuilder.setView(help1);
         helpAlert = helpDialogBuilder.create();
+*/
 
         // Initialise 'Plane' initial Dialog
         planeDialogBuilder = new AlertDialog.Builder(this);
@@ -626,6 +631,12 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
     }
 
 
+    // Flipper Tutorial
+    public void onClickPlaceArTutorial(View view) {
+        Intent intent = new Intent(ChromaKeyVideoActivity.this, PlaceArTutorial.class);
+        startActivity(intent);
+    }
+
     public void onClickMainTabView(View view){
         isRotate = FabAnimator.rotateFab(view, !isRotate);
         if (mainTabGroup.getVisibility() == View.GONE) {
@@ -713,9 +724,9 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
         deleteAlert.show();
     }
 
-    public void onClickHelpDialog(View view){
-        helpAlert.show();
-    }
+    //public void onClickHelpDialog(View view){
+    //    helpAlert.show();
+    //}
 
     public void onClickPlaneDialog(View view){
         planeAlert1.show();
