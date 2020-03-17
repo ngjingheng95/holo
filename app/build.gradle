@@ -44,9 +44,24 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    configurations.all {
+        resolutionStrategy.force 'com.google.code.findbugs:jsr305:3.0.2'
+    }
 
     lintOptions {
         abortOnError false
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+        exclude("META-INF/*.kotlin_module")
     }
 }
 
@@ -82,7 +97,14 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.2.0'
     implementation 'rongi.rotate-layout:rotate-layout:3.0.0'
     implementation 'com.github.uin3566:AllAngleExpandableButton:v1.2.0'
+    compile 'com.google.apis:google-api-services-youtube:v3-rev183-1.22.0'
+    compile 'com.google.http-client:google-http-client-android:+'
+    compile 'com.google.api-client:google-api-client-android:+'
+    compile 'com.google.api-client:google-api-client-gson:+'
+    implementation 'com.github.HaarigerHarald:android-youtubeExtractor:master-SNAPSHOT'
 }
+
+
 
 apply plugin: 'com.google.ar.sceneform.plugin'
 

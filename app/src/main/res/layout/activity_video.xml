@@ -395,6 +395,15 @@
                   android:visibility="gone"
                   android:scrollbarSize="5dp"/>
 
+              <!--       Youtube Tab       -->
+              <android.support.v7.widget.RecyclerView
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:scrollbars="horizontal"
+                  android:id="@+id/youtube_tab"
+                  android:visibility="gone"
+                  android:scrollbarSize="5dp"/>
+
               <!--       No Internet View       -->
               <RelativeLayout
                   android:layout_width="match_parent"
@@ -618,7 +627,7 @@
                           android:padding="10dp"
                           android:layout_margin="3dp"
                           android:clickable="true"
-                          android:onClick="onClickComingSoon"
+                          android:onClick="onClickYoutubeView"
                           android:elevation="2dp"
                           >
 

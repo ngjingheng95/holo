@@ -46,5 +46,6 @@
     <string name="permission_request">Permission required for camera and audio recording.</string>
     <string name="camera_error">This device doesn\'t support Camera2 API.</string>
     <string name="app_tagline">Augment your world!</string>
+    <string name="youtube_api_key">342609463433-cra7aam1p7n54hgkldr8r0u9t0f0m6m7.apps.googleusercontent.com</string>
 
 </resources>

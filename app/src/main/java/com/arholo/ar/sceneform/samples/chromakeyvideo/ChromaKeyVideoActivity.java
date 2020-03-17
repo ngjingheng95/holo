@@ -18,6 +18,7 @@ package com.arholo.ar.sceneform.samples.chromakeyvideo;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -47,6 +48,7 @@ import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -67,6 +69,12 @@ import com.arholo.ar.sceneform.samples.chromakeyvideo.options.Commons;
 import com.arholo.ar.sceneform.samples.chromakeyvideo.options.Commons2;
 import com.arholo.ar.sceneform.samples.chromakeyvideo.options.Commons3;
 import com.arholo.ar.sceneform.samples.chromakeyvideo.options.Commons4;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.services.youtube.YouTube;
+import com.google.api.services.youtube.model.PlaylistItem;
+import com.google.api.services.youtube.model.PlaylistItemListResponse;
 import com.google.ar.core.Anchor;
 import com.google.ar.core.Frame;
 import com.google.ar.core.HitResult;
@@ -83,16 +91,32 @@ import com.google.ar.sceneform.rendering.ExternalTexture;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.ux.TransformableNode;
 
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.NodeList;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import at.huber.youtubeExtractor.VideoMeta;
+import at.huber.youtubeExtractor.YouTubeExtractor;
+import at.huber.youtubeExtractor.YtFile;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
@@ -124,6 +148,8 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
 
     String object;
     String vimeoUrl;
+    //keep track of whether vimeourl is changed
+    boolean vimeoUrlChanged = false;
     final String defaultQuery = "green+screen";
     boolean safesearch = true;
     int page = 1;
@@ -160,6 +186,9 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
 
     @BindView(R.id.pixabay_tab)
     RecyclerView pixabayRecyclerView;
+
+    @BindView(R.id.youtube_tab)
+    RecyclerView youtubeRecyclerView;
 
     @BindView(R.id.back_button)
     RelativeLayout backButton;
@@ -211,6 +240,9 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
     private RecyclerView.LayoutManager myHoloLayoutManager;
     private RecyclerViewPixabayAdapter pixabayRecyclerAdapter;
     private RecyclerView.LayoutManager pixabayLayoutManager;
+    private RecyclerViewYoutubeAdapter youtubeRecyclerAdapter;
+    private RecyclerView.LayoutManager youtubeLayoutManager;
+
 
     private List<AnchorNode> anchorNodeList = new ArrayList<>();
     private List<TransformableNode> videoNodeList = new ArrayList<>();
@@ -247,7 +279,12 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
     private TransformableNode selectedNode;
 
     private List<PixabayVideoInfo> pixabayVideoInfo = new ArrayList<>();
+    private List<PlaylistItem> youtubeItemsInfo = new ArrayList<PlaylistItem>();
 
+
+    private YouTube mYoutubeDataApi;
+    private final GsonFactory mJsonFactory = new GsonFactory();
+    private final HttpTransport mTransport = AndroidHttp.newCompatibleTransport();
 
 
     @Override
@@ -435,6 +472,15 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
             }
         });
 
+        // Youtube Tab
+        String ids = "PLSle1wnpYZatyxVWP0i0uuYe2mQH34sN7";
+        loadYoutubeResults(ids);
+        youtubeRecyclerView.setHasFixedSize(true);
+        youtubeLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        youtubeRecyclerView.setLayoutManager(youtubeLayoutManager);
+        youtubeRecyclerAdapter = new RecyclerViewYoutubeAdapter(this, youtubeItemsInfo, this::onArObjectClick, "youtube");
+        youtubeRecyclerView.setAdapter(youtubeRecyclerAdapter);
+
         // Initialise 'Clear All' Dialog
         dialogBuilder = new AlertDialog.Builder(this);
         dialogBuilder.setTitle("Remove All Objects");
@@ -546,6 +592,26 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
         });
     }
 
+    private void loadYoutubeResults(String ids) {
+        youtubeItemsInfo.clear();
+        mYoutubeDataApi = new YouTube.Builder(mTransport, mJsonFactory, null)
+                .setApplicationName(getResources().getString(R.string.app_name))
+                .build();
+        new GetPlaylistDataAsyncTask(mYoutubeDataApi) {
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+            }
+
+            @Override
+            protected void onPostExecute(PlaylistItemListResponse playlistItemListResponse) {
+                super.onPostExecute(playlistItemListResponse);
+                //Here we get the playlist data
+                youtubeItemsInfo.addAll(playlistItemListResponse.getItems());
+            }
+        }.execute(ids);
+    }
+
 
     // To disable "Delete Holo Button" when touch user deselects by tapping surrounding
     private boolean handleOnTouch(HitTestResult hitTestResult, MotionEvent motionEvent) {
@@ -592,6 +658,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
         enableSearchingForPlane();
         enableArPlaneListener(position, tag);
     }
+
 
     public void enableSearchingForPlane(){
         searched = false;
@@ -683,6 +750,17 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
         backButton.setVisibility(View.VISIBLE);
     }
 
+    public void onClickYoutubeView(View view){
+        buttonsTab.setVisibility(View.GONE);
+        if (internetCheck()){
+            youtubeRecyclerView.setVisibility(View.VISIBLE);
+        }
+        else{
+            noInternetView.setVisibility(View.VISIBLE);
+        }
+        backButton.setVisibility(View.VISIBLE);
+    }
+
     public void onClickInternetCheck(View view){
         if (internetCheck()){
             noInternetView.setVisibility(View.GONE);
@@ -700,6 +778,7 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
         newRecyclerView.setVisibility(View.GONE);
         myHoloRecyclerView.setVisibility(View.GONE);
         pixabayRecyclerView.setVisibility(View.GONE);
+        youtubeRecyclerView.setVisibility(View.GONE);
         pixabaySearchBar.setVisibility(View.GONE);
         noInternetView.setVisibility(View.GONE);
         buttonsTab.setVisibility(View.VISIBLE);
@@ -778,6 +857,39 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
         );
     }
 
+    private void extractYoutubeUrl(String youtubeUrl){
+        new YouTubeExtractor(this){
+
+            @Override
+            protected void onExtractionComplete(SparseArray<YtFile> ytFiles, VideoMeta videoMeta) {
+                if (ytFiles != null){
+                    Log.d(TAG, "onExtractionComplete: ok");
+                    ArrayList <Integer> iTags = new ArrayList<>();
+                    int index;
+                    for (int i = 0, itag; i < ytFiles.size(); i++) {
+                        itag = ytFiles.keyAt(i);
+                        iTags.add(itag);
+                    }
+                    if(iTags.contains(22)) {
+                        index = 22;
+                    } else if(iTags.contains(18)) {
+                        index = 18;
+                    } else if(iTags.contains(36)) {
+                        index = 36;
+                    } else if(iTags.contains(17)) {
+                        index = 17;
+                    } else {
+                        index = ytFiles.keyAt(ytFiles.size() - 1);
+                    }
+                    vimeoUrl = ytFiles.get(index).getUrl();
+                    vimeoUrlChanged = true;
+                }
+
+
+            }
+        }.extract(youtubeUrl, true , true);
+    }
+
     public void enableArPlaneListener(int position, String tag){
 
         switch(tag){
@@ -801,10 +913,22 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
                 RecyclerViewPixabayAdapter pixabayRecyclerAdapter1 = (RecyclerViewPixabayAdapter) pixabayRecyclerView.getAdapter();
                 vimeoUrl = pixabayRecyclerAdapter1.getItem(position).getVideos().getSmall().getUrl();
                 break;
+            case "youtube":
+                RecyclerViewYoutubeAdapter youtubeRecyclerAdapter1 = (RecyclerViewYoutubeAdapter) youtubeRecyclerView.getAdapter();
+                String youtubeLink = youtubeRecyclerAdapter1.getUrl(position);
+                extractYoutubeUrl(youtubeLink);
+                Log.d(TAG, "enableArPlaneListener: vimeoUrl -> "+ vimeoUrl);
+                break;
 
         }
 
-        if (tag == "pixabay") {
+        if (tag == "pixabay" || tag == "youtube") {
+            try {
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Log.d(TAG, "setOnTapArPlaneListener");
             arFragment.setOnTapArPlaneListener(
                     (HitResult hitresult, Plane plane, MotionEvent motionevent) -> {
                         changeObject1_vimeo(hitresult.createAnchor());
@@ -842,6 +966,9 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
                 myHoloAdapter.clearHighlight();
                 break;
             case "pixabay":
+                pixabayRecyclerAdapter.clearHighlight();
+                break;
+            case "youtube":
                 pixabayRecyclerAdapter.clearHighlight();
                 break;
         }
@@ -884,6 +1011,89 @@ public class ChromaKeyVideoActivity extends AppCompatActivity implements Recycle
         });
 
         Log.d("MyApp", "loadPixabayVideoRequestInfo1 END");
+    }
+
+    public static String getUrlVideoRTSP(String urlYoutube)
+    {
+        try
+        {
+            String gdy = "http://gdata.youtube.com/feeds/api/videos/";
+            DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            String id = extractYoutubeId(urlYoutube);
+            URL url = new URL(gdy + id);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            Document doc = documentBuilder.parse(connection.getInputStream());
+            Element el = doc.getDocumentElement();
+            NodeList list = el.getElementsByTagName("media:content");///media:content
+            String cursor = urlYoutube;
+            for (int i = 0; i < list.getLength(); i++)
+            {
+                Node node = (Node) list.item(i);
+                if (node != null)
+                {
+                    NamedNodeMap nodeMap = ((org.w3c.dom.Node) node).getAttributes();
+                    HashMap<String, String> maps = new HashMap<String, String>();
+                    for (int j = 0; j < nodeMap.getLength(); j++)
+                    {
+                        Attr att = (Attr) nodeMap.item(j);
+                        maps.put(att.getName(), att.getValue());
+                    }
+                    if (maps.containsKey("yt:format"))
+                    {
+                        String f = maps.get("yt:format");
+                        if (maps.containsKey("url"))
+                        {
+                            cursor = maps.get("url");
+                        }
+                        if (f.equals("1"))
+                            return cursor;
+                    }
+                }
+            }
+            return cursor;
+        }
+        catch (Exception ex)
+        {
+            Log.d(TAG, "getUrlVideoRTSP: failed");
+            Log.e("Get Url Video RTSP Exception======>>", ex.toString());
+        }
+
+        Log.d(TAG, "getUrlVideoRTSP: urlYoutube -> " + urlYoutube);
+        return urlYoutube;
+
+    }
+
+    protected static String extractYoutubeId(String url) throws MalformedURLException
+    {
+        String id = null;
+        try
+        {
+            String query = new URL(url).getQuery();
+            if (query != null)
+            {
+                String[] param = query.split("&");
+                for (String row : param)
+                {
+                    String[] param1 = row.split("=");
+                    if (param1[0].equals("v"))
+                    {
+                        id = param1[1];
+                    }
+                }
+            }
+            else
+            {
+                if (url.contains("embed"))
+                {
+                    id = url.substring(url.lastIndexOf("/") + 1);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.e("Exception", ex.toString());
+        }
+        return id;
     }
 
 //  Same as changeObject1 but streams video from online url
