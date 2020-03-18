@@ -224,6 +224,42 @@
                 android:layout_marginLeft="3dp"
                 android:src="@drawable/place_ar_tutorial_6"/>
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/title6"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                android:paddingTop="100dp"
+                android:gravity="center"
+                android:text="6) Pixabay and Youtube\n"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/text7"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:text="Find even more options on Pixabay and Youtube!"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="5dp"
+                android:adjustViewBounds="true"
+                android:maxWidth="300dp"
+                android:maxHeight="300dp"
+                android:scaleType="fitCenter"
+                android:layout_marginLeft="3dp"
+                android:src="@drawable/place_ar_tutorial_7"/>
+        </LinearLayout>
     </ViewFlipper>
 
     <Button
