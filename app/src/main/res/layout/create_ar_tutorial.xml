@@ -197,6 +197,8 @@
         android:layout_alignParentStart="true"
         android:layout_margin="16dp"
         android:onClick="previousView"
+        android:textColor="@color/black_overlay"
+        android:background="@drawable/bg_browse_holos"
         android:text="Previous" />
 
     <Button
@@ -206,6 +208,8 @@
         android:layout_alignParentEnd="true"
         android:layout_margin="16dp"
         android:onClick="nextView"
+        android:textColor="@color/black_overlay"
+        android:background="@drawable/bg_browse_holos"
         android:text="Next" />
     <RelativeLayout
         android:layout_width="wrap_content"
